@@ -1,0 +1,72 @@
+{
+  "name": "@spike/global",
+  "version": "1.0.2",
+  "description": "global.log + SPIKE_DEBUG + other globals used by spike repos",
+  "main": "build/main/index.js",
+  "typings": "build/main/index.d.ts",
+  "xtype": "module",
+  "xmodule": "build/module/index.mjs",
+  "exports": {
+    ".": {
+      "import": "./build/module/index.mjs",
+      "require": "./build/main/index.js"
+    }
+  },
+  "sideEffects": false,
+  "author": "ilan@spikedata.co.za",
+  "repository": "https://github.com/spikedata/global",
+  "license": "UNLICENSED",
+  "keywords": [],
+  "scripts": {
+    "describe": "npm-scripts-info",
+    "build": "run-s clean && run-p build:*",
+    "build:main": "tsc -p tsconfig.json",
+    "build:module": "./build-module.sh",
+    "watch": "run-s clean \"build:main -- -w\"",
+    "fix": "run-s fix:*",
+    "fix:prettier": "prettier \"src/**/*.ts\" --write",
+    "fix:lint": "tsc --noEmit && eslint \"**/*.ts\" --quiet --fix",
+    "version": "standard-version",
+    "reset": "run-s reset:check reset:force",
+    "reset:check": "./scripts/git-check-uncommitted-changes.sh",
+    "reset:force": "git clean -dfx && git reset --hard && npm update && npm i",
+    "clean": "trash build",
+    "prepare-release": "run-s reset build version",
+    "test": "echo there is no test"
+  },
+  "scripts-info": {
+    "info": "Display information about the package scripts",
+    "build": "Clean and rebuild the project",
+    "fix": "Try to automatically fix any linting problems",
+    "watch": "Watch and rebuild the project on save, then rerun relevant tests",
+    "version": "Bump package.json version, update CHANGELOG.md, tag release",
+    "reset": "Delete all untracked files and reset the repo to the last commit after checking for uncommitted changes",
+    "prepare-release": "One-step: clean, build, test, and prep a release"
+  },
+  "engines": {
+    "node": ">=8.9"
+  },
+  "devDependencies": {
+    "@bitjson/npm-scripts-info": "^1.0.0",
+    "@types/node": "^13.13.5",
+    "@typescript-eslint/eslint-plugin": "^2.28.0",
+    "@typescript-eslint/parser": "^2.28.0",
+    "cz-conventional-changelog": "^2.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-prettier": "^3.1.3",
+    "jscodeshift": "^0.9.0",
+    "npm-run-all": "^4.1.5",
+    "open-cli": "^5.0.0",
+    "prettier": "^2.0.5",
+    "standard-version": "^6.0.1",
+    "trash-cli": "^3.0.0",
+    "ts-node": "^8.8.2",
+    "typescript": "^3.8.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  }
+}

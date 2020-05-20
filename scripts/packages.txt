@@ -1,0 +1,5 @@
+# NOTE: must be in build order
+lib/base/global
+lib/core/api
+samples/sample-web
+samples/sample-simple

@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "workspaces": [
+    "app/*",
+    "lib/base/*",
+    "lib/core/*",
+    "samples/*"
+  ],
+  "scripts": {
+    "build": "./scripts/workspace/build-all.sh",
+    "test": "./scripts/workspace/test-all.sh"
+  }
+}

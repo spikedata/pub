@@ -1,0 +1,27 @@
+{
+  "name": "@spike/sample-simple",
+  "version": "1.0.1",
+  "description": "Spike API sample",
+  "main": "src/pdf/app.js",
+  "author": "ilan@spikedata.co.za",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spikedata/sample-simple"
+  },
+  "scripts": {
+    "start": "run-s start:*",
+    "start:pdf": "node ./src/pdf/app.js",
+    "start:csv": "node ./src/csv/app.js",
+    "start:web": "node ./src/web/app.js",
+    "build": "echo there is no build",
+    "test": "echo there is no test"
+  },
+  "dependencies": {
+    "@spike/api": "^1.0.0",
+    "chalk": "^2.4.2"
+  },
+  "devDependencies": {
+    "npm-run-all": "4.1.5"
+  }
+}

@@ -1,0 +1,2 @@
+import "@spike/global";
+export {};
