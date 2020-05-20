@@ -1,6 +1,5 @@
 #!/bin/bash
 
-FILENAME=$1
 SPIKE_ROOT=/spike/v8/pub # HACK
 PACKAGESTXT=$SPIKE_ROOT/scripts/packages.txt
 
@@ -25,6 +24,3 @@ do
   yarn run watch &
   sleep 5
 done
-
-
-

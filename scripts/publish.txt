@@ -1,0 +1,3 @@
+# NOTE: must be in build order
+lib/base/global
+lib/core/api

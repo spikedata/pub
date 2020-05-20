@@ -1,6 +1,6 @@
 {
   "name": "@spike/api",
-  "version": "1.0.15",
+  "version": "1.2.0",
   "description": "Spike API library helper",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
@@ -43,12 +43,8 @@
     "cov:html": "nyc report --reporter=html",
     "cov:send": "nyc report --reporter=lcov && codecov",
     "cov:check": "nyc report && nyc check-coverage --lines 20 --functions 30 --branches 25",
-    "version": "standard-version",
-    "reset": "run-s reset:check reset:force",
-    "reset:check": "./scripts/git-check-uncommitted-changes.sh",
-    "reset:force": "git clean -dfx && git reset --hard && npm update && npm i",
     "clean": "trash build coverage .nyc_output",
-    "prepare-release": "run-s reset test cov:check version"
+    "pre-publish": "run-s test"
   },
   "scripts-info": {
     "info": "Display information about the package scripts",
@@ -57,9 +53,7 @@
     "test": "Lint and unit test the project",
     "watch": "Watch and rebuild the project on save, then rerun relevant tests",
     "cov": "Rebuild, run tests, then create and open the coverage report",
-    "version": "Bump package.json version, update CHANGELOG.md, tag release",
-    "reset": "Delete all untracked files and reset the repo to the last commit after checking for uncommitted changes",
-    "prepare-release": "One-step: clean, build, test, and prep a release"
+    "pre-publish": "One-step: clean, build, test, and prep a release"
   },
   "engines": {
     "node": ">=8.9"
@@ -68,8 +62,7 @@
     "@spike/global": "^1.0.0",
     "ajv": "^6.12.0",
     "axios": "^0.19.2",
-    "lodash": "^4.17.15",
-    "lodash-es": "^4.17.15"
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@babel/core": "7.8.6",
@@ -85,7 +78,6 @@
     "chai-uuid": "1.0.6",
     "chalk": "^2.4.2",
     "codecov": "^3.5.0",
-    "cz-conventional-changelog": "^2.1.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-prettier": "^3.1.3",
@@ -97,15 +89,9 @@
     "prettier": "^2.0.5",
     "rollup": "1.32.0",
     "rollup-plugin-babel": "4.3.3",
-    "standard-version": "^6.0.1",
     "trash-cli": "^3.0.0",
     "ts-node": "^8.8.2",
     "typescript": "^3.8.3"
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
   },
   "nyc": {
     "extends": "@istanbuljs/nyc-config-typescript",
