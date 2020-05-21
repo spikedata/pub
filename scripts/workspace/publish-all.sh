@@ -72,8 +72,8 @@ do
 done
 printf "${CYAN}version bump the monorepo${NC}\n"
 cd $MONOREPO_ROOT
-yarn version $BUMP # package.json:version + git tag for monorepo + commit version bumps in $PACKAGES
-# git commit -m "version bump"
+git commit -m "version bump" # commit version bumps in $PACKAGES/package.json
+yarn version $BUMP # package.json:version + git tag for monorepo
 # TODO: use standard-version for changelog?
 printf "${CYAN}push monorepo to git${NC}\n"
 git push --follow-tags origin master
