@@ -24,8 +24,12 @@ module.exports = {
         ignoreParameters: true,
       },
     ],
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/interface-name-prefix": "off",
+    "@typescript-eslint/ban-ts-ignore": "off",
+    "@typescript-eslint/camelcase": "off",
   },
   globals: {
     log: "readonly",
