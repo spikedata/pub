@@ -24,7 +24,7 @@
     "describe": "npm-scripts-info",
     "build": "run-s clean && run-p build:*",
     "build:main": "tsc -p tsconfig.json",
-    "build:module": "./build-module.sh",
+    "build:module": "../../../scripts/tsc/build-module.sh $(pwd)",
     "watch": "run-s clean \"build:main -- -w\"",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",

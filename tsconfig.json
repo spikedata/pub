@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
+    // "rootDir": "src",
+    // "outDir": "build/main",
     "target": "es2017",
-    "outDir": "build/main",
     "moduleResolution": "node",
     "module": "commonjs",
     "declaration": true,
@@ -9,6 +10,9 @@
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
 
     // "strict": true /* Enable all strict type-checking options. */,
+
+    // partial migration
+    "allowJs": true,
 
     /* Strict Type-Checking Options */
     // "noImplicitAny": true /* Raise error on expressions and declarations with an implied 'any' type. */,
@@ -35,9 +39,10 @@
     // "emitDecoratorMetadata": true /* Enables experimental support for emitting type metadata for decorators. */,
 
     "lib": ["es2017"],
-    "types": ["node"],
-    "typeRoots": ["node_modules/@types"]
+    "types": ["node", "mocha"],
+    "typeRoots": ["node_modules/@types", "types"] // common node_module types + common custom types
   },
+  // "include": ["src/**/*.ts", "src/**/*.js"],
   "exclude": ["node_modules/**"],
   "compileOnSave": false
 }
