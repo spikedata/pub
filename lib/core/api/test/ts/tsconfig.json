@@ -1,0 +1,12 @@
+{
+  "extends": "../../../../../tsconfig",
+  "compilerOptions": {
+    "typeRoots": [
+      // "../../../../../node_modules/@types",
+      "../../node_modules/@types",
+      "../../src/types"
+    ]
+  }
+  // "include": ["src/**/*.ts", "src/**/*.js", "test/ts/**/*.ts", "test/ts/**/*.js"], // only needed if we transpile, but these tests is run with ts-node on ./**/*.ts directly
+  // "exclude": ["../../../../../node_modules/**", "../../node_modules/**"]
+}

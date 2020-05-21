@@ -106,6 +106,8 @@ describe("full request pipeline = client-gw-lambda", function () {
 
 function transform(requestId, clientId, apiKey, userKey, clientGwShape, clientGwInstance) {
   if (clientGwShape.channel === API.enums.Channel.Lchan) {
+    // TODO: this code needs to move to backchannel
+    //@ts-ignore
     return API.gw.microservice.lchanInstance(
       requestId, // /pdf & /login use first http requestId as sessionId
       requestId,
@@ -118,6 +120,7 @@ function transform(requestId, clientId, apiKey, userKey, clientGwShape, clientGw
       clientGwInstance
     );
   } else {
+    //@ts-ignore
     return API.gw.microservice.bchanInstance(requestId, clientGwShape, clientGwInstance);
   }
 }
