@@ -1,6 +1,6 @@
 {
   "name": "@spike/global",
-  "version": "1.2.0",
+  "version": "1.4.0",
   "description": "global.log + SPIKE_DEBUG + other globals used by spike repos",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
@@ -14,7 +14,10 @@
   },
   "sideEffects": false,
   "author": "ilan@spikedata.co.za",
-  "repository": "https://github.com/spikedata/global",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spikedata/pub"
+  },
   "license": "UNLICENSED",
   "keywords": [],
   "scripts": {
@@ -39,21 +42,5 @@
   },
   "engines": {
     "node": ">=8.9"
-  },
-  "devDependencies": {
-    "@bitjson/npm-scripts-info": "^1.0.0",
-    "@types/node": "^13.13.5",
-    "@typescript-eslint/eslint-plugin": "^2.28.0",
-    "@typescript-eslint/parser": "^2.28.0",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.1",
-    "eslint-plugin-prettier": "^3.1.3",
-    "jscodeshift": "^0.9.0",
-    "npm-run-all": "^4.1.5",
-    "open-cli": "^5.0.0",
-    "prettier": "^2.0.5",
-    "trash-cli": "^3.0.0",
-    "ts-node": "^8.8.2",
-    "typescript": "^3.8.3"
   }
 }

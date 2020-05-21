@@ -57,8 +57,8 @@ done
 # all pre-publish scripts succeded, so bump versions and publish
 printf "${GREEN}------------------------------------------\nall pre-publish succeeded, next: bump, publish and push\n------------------------------------------\n${NC}"
 printf "${CYAN}version bump the monorepo version${NC}\n"
-yarn version $BUMP
-# use standard-version for changelog?
+yarn version $BUMP # package.json:version + git tag for monorepo
+# TODO: use standard-version for changelog?
 for i in $PACKAGES
 do
   DIR=${MONOREPO_ROOT}/${i}
@@ -67,11 +67,11 @@ do
     continue
   fi
   cd $DIR
-  printf "${GREEN}------------------------------------------\n${DIR} : pre-publish\n------------------------------------------\n${NC}"
+  printf "${GREEN}------------------------------------------\n${DIR} : version & publish\n------------------------------------------\n${NC}"
 
   # note: tagged monorepo
   yarn version --no-git-tag-version $BUMP
-  yarn publish
+  npm publish --access public # not `yarn publish` - it will do a version bump
 done
 printf "${CYAN}push monorepo to git${NC}\n"
 git push --follow-tags origin master
