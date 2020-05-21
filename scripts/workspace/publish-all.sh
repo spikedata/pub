@@ -57,6 +57,7 @@ done
 # all pre-publish scripts succeded, so bump versions and publish
 printf "${GREEN}------------------------------------------\nall pre-publish succeeded, next: bump, publish and push\n------------------------------------------\n${NC}"
 printf "${CYAN}version bump the monorepo version${NC}\n"
+cd $MONOREPO_ROOT
 yarn version $BUMP # package.json:version + git tag for monorepo
 # TODO: use standard-version for changelog?
 for i in $PACKAGES
