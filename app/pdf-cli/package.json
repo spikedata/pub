@@ -1,0 +1,56 @@
+{
+  "name": "@spike/pdf-cli",
+  "version": "1.0.0",
+  "description": "Spike cli app to find and process pdfs using the Spike API",
+  "main": "src/app.js",
+  "homepage": "https://spikedata.co.za",
+  "author": "ilan@spikedata.co.za",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spikedata/pub"
+  },
+  "license": "MIT",
+  "keywords": [
+    "spike",
+    "pdf",
+    "south africa",
+    "bank",
+    "statements"
+  ],
+  "scripts": {
+    "build": "run-p build:*",
+    "build:cli": "rsync src/cli.js dist/",
+    "build:app": "webpack --progress --colors --display-modules --config ./src/webpack.config.js",
+    "fix": "run-s fix:*",
+    "fix:prettier": "prettier \"{src,test}/**/*.{js,cjs,mjs,ts}\" --write",
+    "fix:lint": "eslint \"{src,test}/**/*.{js,cjs,mjs,ts}\" --quiet --fix",
+    "publish": "./scripts/publish.sh"
+  },
+  "bin": {
+    "spike-pdf-tool": "dist/cli.js",
+    "spike-pdf-tool-update": "scripts/update.bat"
+  },
+  "files": [
+    "dist/",
+    "scripts/"
+  ],
+  "dependencies": {
+    "@spike/api": "^1.0.0",
+    "argparse": "1.0.10",
+    "async": "3.1.0",
+    "chalk": "2.4.2",
+    "deep-extend": "0.6.0",
+    "duration": "0.2.2",
+    "json5": "2.1.0",
+    "minimatch": "3.0.4",
+    "read": "1.0.7"
+  },
+  "devDependencies": {
+    "babel-cli": "6.26.0",
+    "babel-core": "6.26.3",
+    "babel-loader": "7.1.1",
+    "babel-preset-env": "1.7.0",
+    "babel-preset-stage-3": "6.24.1",
+    "webpack": "3.4.1"
+  }
+}

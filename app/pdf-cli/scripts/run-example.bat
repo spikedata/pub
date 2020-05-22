@@ -1,0 +1,1 @@
+npx @spike/pdf-cli folder --folder C:\pdfs --filterPreset new
