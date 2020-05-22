@@ -1,6 +1,6 @@
 {
   "name": "@spike/pdf-cli",
-  "version": "1.0.0",
+  "version": "1.7.0",
   "description": "Spike cli app to find and process pdfs using the Spike API",
   "main": "src/app.js",
   "homepage": "https://spikedata.co.za",
@@ -18,13 +18,15 @@
     "statements"
   ],
   "scripts": {
-    "build": "run-p build:*",
+    "build": "run-s clean && run-p build:*",
     "build:cli": "rsync src/cli.js dist/",
-    "build:app": "webpack --progress --colors --display-modules --config ./src/webpack.config.js",
+    "build:app": "webpack --config ./src/webpack.config.js",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"{src,test}/**/*.{js,cjs,mjs,ts}\" --write",
     "fix:lint": "eslint \"{src,test}/**/*.{js,cjs,mjs,ts}\" --quiet --fix",
-    "publish": "./scripts/publish.sh"
+    "clean": "trash dist",
+    "pre-publish": "run-s build",
+    "test": "echo there is no test"
   },
   "bin": {
     "spike-pdf-cli": "dist/cli.js",

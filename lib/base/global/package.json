@@ -33,13 +33,6 @@
     "pre-publish": "run-s build",
     "test": "echo there is no test"
   },
-  "scripts-info": {
-    "info": "Display information about the package scripts",
-    "build": "Clean and rebuild the project",
-    "fix": "Try to automatically fix any linting problems",
-    "watch": "Watch and rebuild the project on save, then rerun relevant tests",
-    "pre-publish": "One-step: clean, build, test, and prep a release"
-  },
   "engines": {
     "node": ">=8.9"
   }
