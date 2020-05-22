@@ -2,6 +2,7 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 const userInput = require("./lib/userInput");
+const output = require("./lib/output");
 
 function getConfigPath() {
   const home = os.homedir();
@@ -40,7 +41,7 @@ exports.write = async function () {
     if (validUuidV4(apiKey)) {
       break;
     } else {
-      cliLog.fatal("Invalid key entered, please try again");
+      output.red("Invalid key entered, please try again");
     }
   }
 
@@ -50,7 +51,7 @@ exports.write = async function () {
     if (validUuidV4(userKey)) {
       break;
     } else {
-      cliLog.fatal("Invalid key entered, please try again");
+      output.red("Invalid key entered, please try again");
     }
   }
 

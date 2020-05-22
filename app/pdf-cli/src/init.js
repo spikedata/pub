@@ -1,15 +1,11 @@
 const defaultConfig = require("./config/default");
 const SpikeConfig = require("./spikeConfig");
 
-async function initGlobals(logSettings, logger, cliLogSettings, cliLogger) {
+async function initGlobals(logger, logSettings) {
   // logger
   if (!global.log) {
     logger.implementation.init(logSettings);
     global.log = logger.implementation;
-  }
-  if (!global.cliLog) {
-    cliLogger.implementation.init(cliLogSettings);
-    global.cliLog = cliLogger.implementation;
   }
 }
 
@@ -28,24 +24,19 @@ exports.config = function () {
 };
 
 exports.init = async function (
-  {
-    singletons = defaultConfig.singletons,
-    log: logSettings,
-    cliLog: cliLogSettings,
-    quiet,
-  } = defaultConfig, // config
+  { singletons = defaultConfig.singletons, log: logSettings, quiet } = defaultConfig, // config
   args
 ) {
   if (_initted) {
     global.log.info("already initialised");
     return true;
   }
-  _config = { singletons, logSettings, cliLogSettings, quiet };
+  _config = { singletons, logSettings, quiet };
 
   // initGlobals, initDeps, initSelf, fixConfig, shutdown
   try {
-    const { logger, cliLogger } = singletons;
-    await initGlobals(logSettings, logger, cliLogSettings, cliLogger);
+    const { logger } = singletons;
+    await initGlobals(logger, logSettings);
     if (args.subcommand === "configure") {
       return true; // don't SpikeConfig.read() otherwise we will setup the config file twice
     }

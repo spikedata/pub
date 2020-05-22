@@ -16,6 +16,7 @@
   "[markdown]": {
     // "editor.formatOnSave": false
   },
+  "markdown-preview-enhanced.automaticallyShowPreviewOfMarkdownBeingEdited": false,
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
     // "editor.formatOnSave": false

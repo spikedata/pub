@@ -8,6 +8,7 @@ const appInit = require("./init");
 const SpikeConfig = require("./spikeConfig");
 const Args = require("./lib/args");
 const Csv = require("./lib/csv");
+const output = require("./lib/output");
 const pdfHelpers = require("./lib/pdfHelpers");
 const userInput = require("./lib/userInput");
 const Config = require("./config/index");
@@ -236,7 +237,7 @@ function fixArgs(args) {
 function fixArgsAndConfig(args, config) {
   // quiet
   if (args.quiet) {
-    // just quieten the library logger, not cliLogger
+    // quieten the library logger
     config.log.levelFilter = {
       net: false,
       debug: false,
@@ -274,8 +275,7 @@ async function run() {
     // implement
     await implementation(args);
   } catch (ex) {
-    const logger = global.cliLog ? global.cliLog.fatal : console.error;
-    logger("top-level exception", ex);
+    output.red("top-level exception", ex);
   } finally {
     await appInit.shutdown();
   }
@@ -308,7 +308,7 @@ async function implementation(args) {
       process.exit(-1);
     }
 
-    cliLog.fatal("exception", ex);
+    output.red("exception", ex);
   }
 }
 
@@ -344,7 +344,7 @@ async function folder(args) {
 
   const filtered = await filterPdfs(args, found);
   if (!filtered || filtered.length === 0) {
-    cliLog.info("No files to process, exiting ...");
+    output.white("No files to process, exiting ...");
     process.exit(0);
   }
   // console.log(JSON.stringify(filtered, null, 2))
@@ -365,9 +365,9 @@ async function folder(args) {
 
 async function findPdfs(args, prevIndex) {
   let filePaths = await pdfHelpers.find(args.folder, args.filterPath);
-  cliLog.net("--------------------------------");
-  cliLog.net("Pdfs found:");
-  cliLog.net("--------------------------------");
+  output.green("--------------------------------");
+  output.green("Pdfs found:");
+  output.green("--------------------------------");
   if (args.max > 0) {
     filePaths = filePaths.slice(0, args.max);
   }
@@ -379,22 +379,22 @@ async function findPdfs(args, prevIndex) {
     let logger;
     switch (x.state) {
       case Category.new:
-        logger = cliLog.net;
+        logger = output.green;
         break;
       case Category.prevError:
-        logger = cliLog.warn;
+        logger = output.orange;
         break;
       case Category.prevSuccess:
-        logger = cliLog.info;
+        logger = output.white;
         break;
     }
     logger(` ${x.short} (${x.state})`);
   }
 
-  cliLog.info("---");
-  cliLog.info(`new: ${counts.new}`);
-  cliLog.info(`prev-success: ${counts.prevSuccess}`);
-  cliLog.info(`prev-error: ${counts.prevError}`);
+  output.white("---");
+  output.white(`new: ${counts.new}`);
+  output.white(`prev-success: ${counts.prevSuccess}`);
+  output.white(`prev-error: ${counts.prevError}`);
 
   return categorized;
 }
@@ -441,11 +441,11 @@ async function filterPdfs(args, found) {
     filterType = args.filterType;
   } else {
     // let user pick the filter type
-    cliLog.net();
-    cliLog.net("--------------------------------");
-    cliLog.net("Which pdfs do you want to process:");
-    cliLog.net("--------------------------------");
-    cliLog.info(filterTypesMenu);
+    output.green();
+    output.green("--------------------------------");
+    output.green("Which pdfs do you want to process:");
+    output.green("--------------------------------");
+    output.white(filterTypesMenu);
     while (true) {
       let option = await userInput.question("Enter option: ", false, undefined, undefined);
       option = +option;
@@ -453,7 +453,7 @@ async function filterPdfs(args, found) {
         filterType = optionTofilterType[option];
         break;
       } else {
-        cliLog.fatal("Invalid, please try again");
+        output.red("Invalid, please try again");
       }
     }
   }
@@ -484,11 +484,11 @@ async function filterPdfs(args, found) {
 }
 
 async function wildcardMatch(args, found) {
-  cliLog.net("--------------------------------");
+  output.green("--------------------------------");
   while (true) {
     const pattern = await userInput.question("Enter pattern: ", false, undefined, undefined);
     const matches = found.filter((x) => minimatch(x.filePath, pattern));
-    cliLog.info("Matches:\n " + matches.map((x) => x.short).join("\n "));
+    output.white("Matches:\n " + matches.map((x) => x.short).join("\n "));
 
     const cont = await userInput.question("Process these files? (Y/n): ", false, undefined, "y");
     if (cont == "y" || cont == "Y") {
@@ -500,10 +500,10 @@ async function wildcardMatch(args, found) {
 //#region processAll
 
 async function processAll(args, filtered) {
-  cliLog.net();
-  cliLog.net("--------------------------------");
-  cliLog.net("Processing:");
-  cliLog.net("--------------------------------");
+  output.green();
+  output.green("--------------------------------");
+  output.green("Processing:");
+  output.green("--------------------------------");
 
   let i = 0;
   const results = [];
@@ -522,7 +522,7 @@ async function processAll(args, filtered) {
   for (const filt of filtered) {
     ++i;
     if (args.max > 0 && i > args.max) {
-      cliLog.warn("max reached");
+      output.orange("max reached");
       break;
     }
 
@@ -560,7 +560,7 @@ function writeIndex(args, results, prevIndex) {
   }
 
   Csv.writeCsv(args.index, results, undefined, false, true, "file");
-  cliLog.info("\nWrote: " + args.index);
+  output.white("\nWrote: " + args.index);
 }
 
 //#endregion
@@ -569,30 +569,30 @@ function writeIndex(args, results, prevIndex) {
 
 function writeSummary(numFound, results, start, end) {
   const numProcessed = results.length;
-  cliLog.net();
-  cliLog.net("--------------------------------");
-  cliLog.net("Summary:");
-  cliLog.net("--------------------------------");
-  cliLog.info(`Total found: ${numFound}`);
-  cliLog.info(`Total processed: ${numProcessed}`);
-  cliLog.info(`Time taken: ${new Duration(start, end).toString()}`);
+  output.green();
+  output.green("--------------------------------");
+  output.green("Summary:");
+  output.green("--------------------------------");
+  output.white(`Total found: ${numFound}`);
+  output.white(`Total processed: ${numProcessed}`);
+  output.white(`Time taken: ${new Duration(start, end).toString()}`);
 
   // API success/fails
-  cliLog.info("Processing results:");
+  output.white("Processing results:");
   let count;
   // successes
   count = results.filter((x) => x.type == spikeApi.enums.TYPES.SUCCESS).length;
-  cliLog.info(`- successes: ${count} / ${numProcessed}`);
+  output.white(`- successes: ${count} / ${numProcessed}`);
   // fails
   count = results.filter((x) => x.type == spikeApi.enums.TYPES.ERROR).length;
   if (count > 0) {
-    cliLog.error(`- fails: ${count} / ${numProcessed}`);
+    output.red(`- fails: ${count} / ${numProcessed}`);
   }
 
   // Tool exceptions
   count = results.filter((x) => x.summaryException).length;
   if (count > 0) {
-    cliLog.error(`Tool errors: ${count}`);
+    output.red(`Tool errors: ${count}`);
   }
 }
 
@@ -603,19 +603,19 @@ function writeSummary(numFound, results, start, end) {
 async function doProcess(filePath, args, prev) {
   // report filename (header before any library logs for this file)
   const shortFilePath = shorten(filePath, args.folder);
-  cliLog.info(`Processing ${shortFilePath} ...`);
+  output.white(`Processing ${shortFilePath} ...`);
 
   // settings
   const fileSettings = pdfHelpers.findPdfSettings(filePath, args.folder);
   if (!args.quiet && !args.password && fileSettings.pass) {
-    cliLog.debug("using password from settings.json");
+    output.gray("using password from settings.json");
   }
   const password = args.password || fileSettings.pass; // if set but not required then will be ignored
 
   // process
   if (fileSettings.skip) {
     if (!args.quiet) {
-      cliLog.info("skipped");
+      output.white("skipped");
     }
     return createSummarySkipped(args.folder, filePath, password);
   }
@@ -694,12 +694,12 @@ async function processPdf({
   // report success | fail
   if (!quiet) {
     if (result === undefined) {
-      cliLog.error(`${shortFilePath}: error: no response`);
+      output.red(`${shortFilePath}: error: no response`);
     } else if (result.type === spikeApi.enums.TYPES.ERROR) {
-      cliLog.error(`${shortFilePath}: error:`, result.code);
+      output.red(`${shortFilePath}: error:`, result.code);
     } else {
-      cliLog.net(`${shortFilePath}: success`);
-      // cliLog.info(`${shortFilePath}: SUCCESS:`, result.data.parser, result.code)
+      output.green(`${shortFilePath}: success`);
+      // output.white(`${shortFilePath}: SUCCESS:`, result.data.parser, result.code)
     }
   }
 
@@ -739,7 +739,7 @@ async function processPdf({
     summary.flags = dataSummary.flags;
   } catch (ex) {
     log.fatal(`${filePath}: exception whilst creating summary:`, ex);
-    cliLog.fatal(`${filePath}: exception whilst creating summary`);
+    output.red(`${filePath}: exception whilst creating summary`);
     summary.summaryException = true;
   }
   return summary;
@@ -766,12 +766,12 @@ async function processSinglePdf({ input, password, writeOutputJson, writeOutputC
   // report success | fail
   if (!quiet) {
     if (result === undefined) {
-      cliLog.error("error: no response");
+      output.red("error: no response");
     } else if (result.type === spikeApi.enums.TYPES.ERROR) {
-      cliLog.error("error:", result.code);
+      output.red("error:", result.code);
     } else {
-      cliLog.net("success");
-      // cliLog.info(`${shortFilePath}: SUCCESS:`, result.data.parser, result.code)
+      output.green("success");
+      // output.white(`${shortFilePath}: SUCCESS:`, result.data.parser, result.code)
     }
   }
 
