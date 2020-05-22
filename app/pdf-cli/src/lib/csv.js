@@ -1,8 +1,9 @@
+/* eslint-disable quotes */
 const fs = require("fs");
 const dateExt = require("./dateExt");
 const Sort = require("./sort");
 
-exports.objectArrayToCsvRows = function(
+exports.objectArrayToCsvRows = function (
   rows,
   cols = undefined,
   truncateDateTime = false,
@@ -12,29 +13,29 @@ exports.objectArrayToCsvRows = function(
   if (!cols) {
     // NOTE: union cols from all rows. Using first row cols will exclude missing cols e.g. row[0].amount = undefined
     cols = [];
-    rows.forEach(function(t) {
-      let currentCols = Object.keys(t);
+    rows.forEach(function (t) {
+      const currentCols = Object.keys(t);
       cols = [...new Set(cols.concat(currentCols))]; // merge unique
     });
   }
 
-  let csvRows = [];
+  const csvRows = [];
 
   // header row
   let header;
   if (quoted) {
     // quotes inside cell must be escaped as ""
-    header = cols.map(x => `"${x.replace(/\"/g, '""')}"`).join(",");
+    header = cols.map((x) => `"${x.replace(/\"/g, '""')}"`).join(",");
   } else {
     header = `"${cols.join('","')}"`;
   }
   csvRows.push(header);
 
   // rows
-  rows.forEach(function(t) {
+  rows.forEach(function (t) {
     let comma = "";
     let csvRow = "";
-    cols.forEach(function(c) {
+    cols.forEach(function (c) {
       let x = t[c];
       // if (c === "numDebug") {
       //   debugger;
@@ -64,7 +65,7 @@ exports.objectArrayToCsvRows = function(
 };
 
 // create .csv from array of objects
-exports.csvBuffer = function(
+exports.csvBuffer = function (
   rows,
   cols = undefined,
   truncateDateTime = false,
@@ -73,21 +74,21 @@ exports.csvBuffer = function(
   sortOrder = Sort.SortOrder.ASC
 ) {
   if (!rows || rows.length === 0) {
-    let buffer = "";
+    const buffer = "";
     return buffer;
   }
 
   if (sort) {
-    let header = rows.shift();
+    const header = rows.shift();
     rows = Sort.fuzzySort(rows, sort, sortOrder);
     rows.unshift(header);
   }
-  let csvRows = exports.objectArrayToCsvRows(rows, cols, truncateDateTime, quoted);
-  let buffer = csvRows.join("\n");
+  const csvRows = exports.objectArrayToCsvRows(rows, cols, truncateDateTime, quoted);
+  const buffer = csvRows.join("\n");
   return buffer;
 };
 
-exports.writeCsv = function(
+exports.writeCsv = function (
   path,
   rows,
   cols = undefined,
@@ -96,33 +97,33 @@ exports.writeCsv = function(
   sort = undefined, // name of column to sort by
   sortOrder = Sort.SortOrder.ASC
 ) {
-  let buffer = exports.csvBuffer(rows, cols, truncateDateTime, quoted, sort, sortOrder);
+  const buffer = exports.csvBuffer(rows, cols, truncateDateTime, quoted, sort, sortOrder);
   fs.writeFileSync(path, buffer);
   return buffer;
 };
 
-exports.csvRowsToObjectArray = function(rows, hasHeader = true, cols = undefined) {
+exports.csvRowsToObjectArray = function (rows, hasHeader = true, cols = undefined) {
   if (!hasHeader && !cols) {
     throw new Error("must supply cols if not in header");
   }
 
   if (!cols && hasHeader) {
     // read cols from header row
-    let header = rows[0];
+    const header = rows[0];
     cols = header.substr(1, header.length - 2).split('","'); // assumes it's quoted
   }
 
   let r = hasHeader ? 1 : 0;
-  let objArr = [];
+  const objArr = [];
   for (; r < rows.length; ++r) {
-    let row = rows[r];
+    const row = rows[r];
     if (!row || row === '""') {
       continue;
     }
-    let obj = {};
-    let cells = row.substr(1, row.length - 2).split('","'); // assumes it's quoted
+    const obj = {};
+    const cells = row.substr(1, row.length - 2).split('","'); // assumes it's quoted
     for (let c = 0; c < cols.length; ++c) {
-      let val = cells[c];
+      const val = cells[c];
       // if (cols[c] === "detected") {
       //   debugger;
       // }
@@ -139,9 +140,9 @@ exports.csvRowsToObjectArray = function(rows, hasHeader = true, cols = undefined
 // NOTE:
 //  - this function only works with csv's that use quoted cells (to handle \n's in cells)
 //  - it handles any EOL though (i.e.\n or \r\n or mixed)
-exports.readCsv = function(csvPath) {
-  let allText = fs.readFileSync(csvPath, "utf8");
-  let rows = splitQuotedCsvIntoRows(csvPath, allText);
+exports.readCsv = function (csvPath) {
+  const allText = fs.readFileSync(csvPath, "utf8");
+  const rows = splitQuotedCsvIntoRows(csvPath, allText);
   if (rows.length === 0) {
     return [];
   }
@@ -156,10 +157,10 @@ function splitQuotedCsvIntoRows(csvPath, allText) {
     process.exit(-1);
   }
   // strip \r if CRLF \r\n was used
-  rows = rows.map(x => (x.endsWith("\r") ? x.substr(0, x.length - 1) : x));
+  rows = rows.map((x) => (x.endsWith("\r") ? x.substr(0, x.length - 1) : x));
 
   // join rows which span multiple lines - i.e. quoted text with \n's
-  let joined = [];
+  const joined = [];
   let cur = undefined;
 
   function startLine(r) {
@@ -176,9 +177,9 @@ function splitQuotedCsvIntoRows(csvPath, allText) {
     return r && r[r.length - 1] === '"' && (r[r.length - 2] !== '"' || r[r.length - 3] === ",");
   }
 
-  for (let r of rows) {
-    let start = startLine(r);
-    let end = endLine(r);
+  for (const r of rows) {
+    const start = startLine(r);
+    const end = endLine(r);
     if (start && end) {
       // full row on single line
       joined.push(r);

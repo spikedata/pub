@@ -10,13 +10,13 @@ module.exports = Config.define(undefined, {
     logger: {
       interface: basicColoredLogger,
       implementation: basicColoredLogger,
-      implementationName: "basicColoredLogger"
+      implementationName: "basicColoredLogger",
     },
     cliLogger: {
       interface: basicColoredLoggerSimple,
       implementation: basicColoredLoggerSimple,
-      implementationName: "basicColoredLoggerSimple"
-    }
+      implementationName: "basicColoredLoggerSimple",
+    },
   },
 
   log: {
@@ -33,7 +33,7 @@ module.exports = Config.define(undefined, {
       alertError: true,
       scrape: true,
       screen: true,
-      step: true
+      step: true,
     },
     /* */
     colors: {
@@ -47,9 +47,9 @@ module.exports = Config.define(undefined, {
       alertError: chalk.red,
       scrape: chalk.gray,
       screen: chalk.gray,
-      step: chalk.gray
+      step: chalk.gray,
     },
-    quiet: true
+    quiet: true,
   },
 
   cliLog: {
@@ -66,7 +66,7 @@ module.exports = Config.define(undefined, {
       alertError: true,
       scrape: true,
       screen: true,
-      step: true
+      step: true,
     },
     /* */
     colors: {
@@ -80,10 +80,10 @@ module.exports = Config.define(undefined, {
       alertError: chalk.red,
       scrape: chalk.cyan,
       screen: chalk.magenta,
-      step: chalk.magenta
+      step: chalk.magenta,
     },
-    quiet: true
+    quiet: true,
   },
 
-  quiet: true
+  quiet: true,
 });

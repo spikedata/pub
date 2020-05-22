@@ -1,14 +1,14 @@
 exports.SortOrder = {
   ASC: "ASC",
-  DESC: "DESC"
+  DESC: "DESC",
 };
 
-const isNumber = value => typeof value === "number" && value === value && Number.isFinite(value);
+const isNumber = (value) => typeof value === "number" && value === value && Number.isFinite(value);
 
 // arrayOfObjects = all elements are same object shape
 // sort = key on object to sort by
 // sortOrder = ASC or DESC
-exports.fuzzySort = function(arrayOfObjects, sort, sortOrder) {
+exports.fuzzySort = function (arrayOfObjects, sort, sortOrder) {
   return arrayOfObjects.sort((a, b) => {
     a = a[sort];
     b = b[sort];

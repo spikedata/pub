@@ -4,14 +4,14 @@ const path = require("path");
 const userInput = require("./lib/userInput");
 
 function getConfigPath() {
-  let home = os.homedir();
-  let dir = path.join(home, ".spike");
-  let configPath = path.join(dir, "config.json");
+  const home = os.homedir();
+  const dir = path.join(home, ".spike");
+  const configPath = path.join(dir, "config.json");
   return { dir, configPath };
 }
 
-exports.read = async function() {
-  let cp = getConfigPath();
+exports.read = async function () {
+  const cp = getConfigPath();
   let apiKey;
   let userKey;
   if (!fs.existsSync(cp.configPath)) {
@@ -23,8 +23,8 @@ exports.read = async function() {
   return { apiKey, userKey };
 };
 
-exports.write = async function() {
-  let cp = getConfigPath();
+exports.write = async function () {
+  const cp = getConfigPath();
 
   // first run check
   if (!fs.existsSync(cp.configPath)) {
@@ -54,7 +54,7 @@ exports.write = async function() {
     }
   }
 
-  let settings = { apiKey, userKey };
+  const settings = { apiKey, userKey };
   fs.writeFileSync(cp.configPath, JSON.stringify(settings, null, 2), "utf8");
   console.log("wrote config file:", cp.configPath);
   return settings;

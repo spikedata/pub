@@ -23,16 +23,16 @@ async function initSelf(spikeConfigFile) {
 let _initted = false;
 let _config;
 
-exports.config = function() {
+exports.config = function () {
   return _config;
 };
 
-exports.init = async function(
+exports.init = async function (
   {
     singletons = defaultConfig.singletons,
     log: logSettings,
     cliLog: cliLogSettings,
-    quiet
+    quiet,
   } = defaultConfig, // config
   args
 ) {
@@ -44,24 +44,24 @@ exports.init = async function(
 
   // initGlobals, initDeps, initSelf, fixConfig, shutdown
   try {
-    let { logger, cliLogger } = singletons;
+    const { logger, cliLogger } = singletons;
     await initGlobals(logSettings, logger, cliLogSettings, cliLogger);
     if (args.subcommand === "configure") {
       return true; // don't SpikeConfig.read() otherwise we will setup the config file twice
     }
-    let spikeConfigFile = await SpikeConfig.read();
+    const spikeConfigFile = await SpikeConfig.read();
     await initDeps();
     await initSelf(spikeConfigFile);
     _initted = true;
     return true;
   } catch (err) {
-    let logger = global.log ? global.log.fatal : console.error;
+    const logger = global.log ? global.log.fatal : console.error;
     logger("init error", err);
     throw err;
   }
 };
 
-exports.shutdown = async function() {
+exports.shutdown = async function () {
   _initted = false;
   if (!_config.quiet) {
     if (global.log) {

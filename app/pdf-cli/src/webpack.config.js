@@ -1,4 +1,4 @@
-﻿const path = require("path")
+﻿const path = require("path");
 
 module.exports = {
   target: "node",
@@ -15,4 +15,4 @@ module.exports = {
   module: {
     rules: [{ test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }],
   },
-}
+};

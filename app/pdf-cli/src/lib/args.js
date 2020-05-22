@@ -1,12 +1,12 @@
-const fs = require("fs")
-const ArgumentParser = require("argparse").ArgumentParser
+const fs = require("fs");
+const ArgumentParser = require("argparse").ArgumentParser;
 
-exports.bool = function(s) {
-  let v = s.toLowerCase()
-  if (["yes", "true", "t", "y", "1"].includes(v)) return true
-  else if (["no", "false", "f", "n", "0"].includes(v)) return false
-  else throw "invalid bool"
-}
+exports.bool = function (s) {
+  const v = s.toLowerCase();
+  if (["yes", "true", "t", "y", "1"].includes(v)) return true;
+  else if (["no", "false", "f", "n", "0"].includes(v)) return false;
+  else throw "invalid bool";
+};
 
 /*
 NOTES: on dates
@@ -27,11 +27,11 @@ Means that args like `--from 2019-06-26` will create:
 // - utcToday (2019-06-26T00:00:00.000Z = 2019-06-26T02:00:00.000+02:00)
 // - not localToday (2019-06-25T22:00:00.000Z = 2019-06-26T00:00:00.000+02:00)
 // see NOTES: on dates
-exports.dateTypeUtc = function(s) {
-  let date = new Date(s)
-  if (!date) throw "invalid date"
-  return date
-}
+exports.dateTypeUtc = function (s) {
+  const date = new Date(s);
+  if (!date) throw "invalid date";
+  return date;
+};
 
 // assumes date is local. TZ should not be specified.
 // useful for comparing local dates without conversion to mysql dates
@@ -40,19 +40,19 @@ exports.dateTypeUtc = function(s) {
 // - not utcToday (2019-06-26T00:00:00.000Z = 2019-06-26T02:00:00.000+02:00)
 // i.e. from sqlDate > 2019-06-26 excluding sqlDates 2019-06-25T22:00 -> 23:59
 // see NOTES: on dates
-exports.dateTypeLocal = function(s) {
-  let date = new Date(s)
-  if (!date) throw "invalid date"
-  date = dateExt.addTzOffset(date)
-  return date
-}
+exports.dateTypeLocal = function (s) {
+  let date = new Date(s);
+  if (!date) throw "invalid date";
+  date = dateExt.addTzOffset(date);
+  return date;
+};
 
-exports.filePath = function(s) {
+exports.filePath = function (s) {
   if (!fs.existsSync(s)) {
-    throw "invalid path"
+    throw "invalid path";
   }
-  return s
-}
+  return s;
+};
 
 //#region arg parser
 
@@ -112,44 +112,44 @@ example command-line:
   node tool.js --config prod folder --folder /tmp
 */
 function buildCommandLineArgParser(config) {
-  let parser = new ArgumentParser(config.argParserDetails)
+  const parser = new ArgumentParser(config.argParserDetails);
 
   // root args
   // NOTE: these come before the subcommand name on the commandline e.g. node tool --config prod subcommandX --xArg 1
   if (config.args) {
-    for (let a of Object.keys(config.args)) {
-      parser.addArgument(["--" + a], config.args[a])
+    for (const a of Object.keys(config.args)) {
+      parser.addArgument(["--" + a], config.args[a]);
     }
   }
 
   // subcommand args
   if (config.subcommands) {
-    let subparsers = parser.addSubparsers({
+    const subparsers = parser.addSubparsers({
       title: "subcommands",
       dest: "subcommand", // this is the argument which you can check in order to tell what subcommand the user specified on the commandline
-    })
+    });
 
-    for (let sc of Object.keys(config.subcommands)) {
-      let subcommandConfig = config.subcommands[sc]
-      let sub = subparsers.addParser(sc, subcommandConfig.command)
-      let a
+    for (const sc of Object.keys(config.subcommands)) {
+      const subcommandConfig = config.subcommands[sc];
+      const sub = subparsers.addParser(sc, subcommandConfig.command);
+      let a;
       for (a of Object.keys(subcommandConfig.args)) {
-        sub.addArgument(["--" + a], subcommandConfig.args[a])
+        sub.addArgument(["--" + a], subcommandConfig.args[a]);
       }
       if (config.sharedArgs) {
         for (a of Object.keys(config.sharedArgs)) {
-          sub.addArgument(["--" + a], config.sharedArgs[a])
+          sub.addArgument(["--" + a], config.sharedArgs[a]);
         }
       }
     }
   }
-  return parser
+  return parser;
 }
 
-exports.setCommandLineArgs = function(config) {
-  let parser = buildCommandLineArgParser(config)
-  let args = parser.parseArgs()
-  return args
-}
+exports.setCommandLineArgs = function (config) {
+  const parser = buildCommandLineArgParser(config);
+  const args = parser.parseArgs();
+  return args;
+};
 
 //#endregion

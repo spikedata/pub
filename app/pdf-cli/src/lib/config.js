@@ -1,5 +1,5 @@
-const Interface = require("./interface")
-const objectUtil = require("./object")
+const Interface = require("./interface");
+const objectUtil = require("./object");
 
 /*
 Motivation:
@@ -59,47 +59,41 @@ module.exports = {
     */
 
     if (!base) {
-      return overrides
+      return overrides;
     }
 
     // 1. check .singletons
     if (overrides.singletons) {
-      let singletons = Object.keys(overrides.singletons)
-      for (let singletonName of singletons) {
-        let s = overrides.singletons[singletonName]
-        let singletonInterface =
-          s.interface || base.singletons[singletonName].interface
+      const singletons = Object.keys(overrides.singletons);
+      for (const singletonName of singletons) {
+        const s = overrides.singletons[singletonName];
+        const singletonInterface = s.interface || base.singletons[singletonName].interface;
 
         // 1.1 overrides.singletons - each implementation must implement the interface fully
-        Interface.check(
-          singletonName,
-          singletonInterface,
-          s.implementationName,
-          s.implementation
-        )
+        Interface.check(singletonName, singletonInterface, s.implementationName, s.implementation);
       }
     }
 
     // 2. create config
     // 2.1 remove .singletons
-    let overridesSingletons
+    let overridesSingletons;
     if (overrides.singletons) {
-      overridesSingletons = overrides.singletons
-      delete overrides.singletons
+      overridesSingletons = overrides.singletons;
+      delete overrides.singletons;
     } else {
-      overridesSingletons = {}
+      overridesSingletons = {};
     }
 
     // 2.2 merge all config data
-    overrides = objectUtil.mergeObjectsClone(base, overrides)
+    overrides = objectUtil.mergeObjectsClone(base, overrides);
 
     // 2.3 keep any override singletons but add missing singletons from base
     if (base.singletons) {
-      objectUtil.addMissingMutate(overridesSingletons, base.singletons)
+      objectUtil.addMissingMutate(overridesSingletons, base.singletons);
     }
-    overrides.singletons = overridesSingletons
+    overrides.singletons = overridesSingletons;
 
     // 3. return config
-    return overrides
+    return overrides;
   },
-}
+};
