@@ -65,9 +65,9 @@ exports.shutdown = async function () {
   _initted = false;
   if (!_config.quiet) {
     if (global.log) {
-      log.info("spike-pdf-tool shutdown");
+      log.info("spike-pdf-cli shutdown");
     } else {
-      console.log("spike-pdf-tool shutdown");
+      console.log("spike-pdf-cli shutdown");
     }
   }
   if (global.log && log.shutdown) {

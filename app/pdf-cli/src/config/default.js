@@ -3,7 +3,7 @@ const Config = require("../lib/config");
 const basicColoredLogger = require("../lib/basicColoredLogger");
 const basicColoredLoggerSimple = require("../lib/basicColoredLoggerSimple");
 
-const AppLogName = "pdf-tool";
+const AppLogName = "pdf-cli";
 
 module.exports = Config.define(undefined, {
   singletons: {

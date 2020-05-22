@@ -27,8 +27,8 @@
     "publish": "./scripts/publish.sh"
   },
   "bin": {
-    "spike-pdf-tool": "dist/cli.js",
-    "spike-pdf-tool-update": "scripts/update.bat"
+    "spike-pdf-cli": "dist/cli.js",
+    "spike-pdf-cli-update": "scripts/update.bat"
   },
   "files": [
     "dist/",
