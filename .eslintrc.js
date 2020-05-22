@@ -30,6 +30,7 @@ module.exports = {
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/ban-ts-ignore": "off",
     "@typescript-eslint/camelcase": "off",
+    "@typescript-eslint/no-empty-function": "off",
   },
   globals: {
     log: "readonly",
