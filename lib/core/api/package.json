@@ -27,7 +27,6 @@
     "statements"
   ],
   "scripts": {
-    "describe": "npm-scripts-info",
     "build": "run-s clean && run-p build:m* && run-s build:rollup",
     "build:main": "tsc -p tsconfig.json",
     "build:module": "../../../scripts/tsc/build-module.sh $(pwd)",
