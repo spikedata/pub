@@ -1,6 +1,6 @@
 {
   "name": "@spike/global",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "global.log + SPIKE_DEBUG + other globals used by spike repos",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
