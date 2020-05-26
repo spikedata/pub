@@ -27,5 +27,5 @@ printf "${YELLOW}--------------------------------------------------\npdf-cli-tes
 
 runlog cd $BASEDIR
 runlog $PDF_CLI_PROCESS_ALL
-runlog find . -name \*.json -not -path "*settings*" -exec node ./replaceRequestId.js 00000000-0000-4000-a000-000000000001 {} \;
+runlog find . -name \*.json -not -path "*settings*" -exec node ./replaceRequestId.js 00000000-0000-4000-a000-000000000001 {} \\\; # note: escape \ and ; when used via runlog
 runlog $GIT_CHECK_CHANGES
