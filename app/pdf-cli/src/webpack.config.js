@@ -6,7 +6,7 @@ module.exports = {
     extensions: [".js"],
   },
   entry: {
-    app: [path.join(__dirname, "/run")],
+    run: [path.join(__dirname, "/run")],
   },
   output: {
     path: path.join(__dirname, "..", "dist"),
