@@ -23,8 +23,9 @@ runlog() {
   eval $@
 }
 
-printf "${YELLOW}--------------------------------------------------\pdf-cli-test\n--------------------------------------------------\n${NC}"
+printf "${YELLOW}--------------------------------------------------\npdf-cli-test\n--------------------------------------------------\n${NC}"
 
 runlog cd $BASEDIR
 runlog $PDF_CLI_PROCESS_ALL
+runlog find . -name \*.json -not -path "*settings*" -exec node ./replaceRequestId.js 00000000-0000-4000-a000-000000000001 {} \;
 runlog $GIT_CHECK_CHANGES
