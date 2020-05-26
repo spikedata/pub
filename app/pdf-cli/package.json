@@ -25,8 +25,8 @@
     "fix:prettier": "prettier \"{src,test}/**/*.{js,cjs,mjs,ts}\" --write",
     "fix:lint": "eslint \"{src,test}/**/*.{js,cjs,mjs,ts}\" --quiet --fix",
     "clean": "trash dist",
-    "pre-publish": "run-s build",
-    "test": "echo there is no test"
+    "pre-publish": "run-s build test",
+    "test": "./test/pdf-cli-test.sh"
   },
   "bin": {
     "spike-pdf-cli": "dist/cli.js",

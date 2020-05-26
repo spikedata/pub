@@ -16,8 +16,23 @@ async function initSelf(spikeConfigFile) {
   _config.userKey = spikeConfigFile.userKey;
 }
 
+exports.ErrorCode = {
+  Success: 0,
+  Exception: 1,
+  ProcessPdfFailed: 2, // one or more pdfs failed
+};
+
 let _initted = false;
+let _errorCode = exports.ErrorCode.Success;
 let _config;
+
+exports.setErrorCode = function (e) {
+  _errorCode = e;
+};
+
+exports.getErrorCode = function () {
+  return _errorCode;
+};
 
 exports.config = function () {
   return _config;

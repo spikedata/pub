@@ -3,6 +3,16 @@ const fs = require("fs");
 const dateExt = require("./dateExt");
 const Sort = require("./sort");
 
+exports.objectArrayToCsvHeaders = function (rows) {
+  // NOTE: union cols from all rows. Using first row cols will exclude missing cols e.g. row[0].amount = undefined
+  let cols = [];
+  rows.forEach(function (t) {
+    const currentCols = Object.keys(t);
+    cols = [...new Set(cols.concat(currentCols))]; // merge unique
+  });
+  return cols;
+};
+
 exports.objectArrayToCsvRows = function (
   rows,
   cols = undefined,
@@ -11,12 +21,7 @@ exports.objectArrayToCsvRows = function (
 ) {
   // col headers
   if (!cols) {
-    // NOTE: union cols from all rows. Using first row cols will exclude missing cols e.g. row[0].amount = undefined
-    cols = [];
-    rows.forEach(function (t) {
-      const currentCols = Object.keys(t);
-      cols = [...new Set(cols.concat(currentCols))]; // merge unique
-    });
+    cols = exports.objectArrayToCsvHeaders(rows);
   }
 
   const csvRows = [];

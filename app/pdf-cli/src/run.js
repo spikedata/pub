@@ -4,7 +4,7 @@ const Async = require("async");
 const minimatch = require("minimatch");
 const Duration = require("duration");
 const spikeApi = require("@spike/api");
-const appInit = require("./init");
+const App = require("./App");
 const SpikeConfig = require("./spikeConfig");
 const Args = require("./lib/args");
 const Csv = require("./lib/csv");
@@ -113,6 +113,11 @@ const _CommandLineArgs = {
       action: "storeTrue",
       defaultValue: false,
       help: "don't print library logs",
+    },
+    test: {
+      action: "storeTrue",
+      defaultValue: false,
+      help: "don't use this flag, it's used internally for unit tests",
     },
     writeOutputCsv: {
       type: bool,
@@ -270,15 +275,17 @@ async function run() {
     const config = Config[args.config];
     fixArgsAndConfig(args, config);
     AppConfig = config;
-    await appInit.init(config, args);
+    await App.init(config, args);
 
     // implement
     await implementation(args);
   } catch (ex) {
+    App.setErrorCode(App.ErrorCode.Exception);
     output.red("top-level exception", ex);
   } finally {
-    await appInit.shutdown();
+    await App.shutdown();
   }
+  process.exit(App.getErrorCode());
 }
 
 //#endregion
@@ -559,7 +566,14 @@ function writeIndex(args, results, prevIndex) {
     results = Object.values(prevIndex);
   }
 
-  Csv.writeCsv(args.index, results, undefined, false, true, "file");
+  if (args.test) {
+    let headers = Csv.objectArrayToCsvHeaders(results);
+    const omitColumns = ["requestTime", "responseTime", "duration", "requestId"];
+    headers = headers.filter((x) => !omitColumns.includes(x));
+    Csv.writeCsv(args.index, results, headers, false, true, "file");
+  } else {
+    Csv.writeCsv(args.index, results, undefined, false, true, "file");
+  }
   output.white("\nWrote: " + args.index);
 }
 
@@ -577,6 +591,7 @@ function writeSummary(numFound, results, start, end) {
   output.white(`Total processed: ${numProcessed}`);
   output.white(`Time taken: ${new Duration(start, end).toString()}`);
 
+  let ok = true;
   // API success/fails
   output.white("Processing results:");
   let count;
@@ -587,12 +602,17 @@ function writeSummary(numFound, results, start, end) {
   count = results.filter((x) => x.type == spikeApi.enums.TYPES.ERROR).length;
   if (count > 0) {
     output.red(`- fails: ${count} / ${numProcessed}`);
+    ok = false;
   }
 
   // Tool exceptions
   count = results.filter((x) => x.summaryException).length;
   if (count > 0) {
     output.red(`Tool errors: ${count}`);
+    ok = false;
+  }
+  if (!ok) {
+    App.setErrorCode(App.ErrorCode.ProcessPdfFailed);
   }
 }
 
@@ -686,7 +706,7 @@ async function processPdf({
   quiet,
 }) {
   const requestTime = new Date();
-  const { apiKey, userKey } = appInit.config();
+  const { apiKey, userKey } = App.config();
   const result = await requestPdf(apiKey, userKey, filePath, password);
   const responseTime = new Date();
   // console.log("JSON", JSON.stringify(response, null, 2));
@@ -758,7 +778,7 @@ function createSummarySkipped(folder, filePath, password) {
 
 async function processSinglePdf({ input, password, writeOutputJson, writeOutputCsv, quiet }) {
   const requestTime = new Date();
-  const { apiKey, userKey } = appInit.config();
+  const { apiKey, userKey } = App.config();
   const result = await requestPdf(apiKey, userKey, input, password);
   const responseTime = new Date();
   // console.log("JSON", JSON.stringify(response, null, 2));
