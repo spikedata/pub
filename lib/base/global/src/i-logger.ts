@@ -46,6 +46,7 @@ export interface ILogger extends ISingleton {
   config: ILoggerConfig;
   inputs?: ILoggerInputs;
   initialized: boolean;
+  isCli: boolean;
   init(config: ILoggerConfig, inputs?: ILoggerInputs): Promise<void>;
   shutdown(): Promise<void>;
 
