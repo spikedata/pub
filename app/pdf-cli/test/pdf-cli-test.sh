@@ -4,7 +4,7 @@ SPIKE_ROOT=/spike/v8 # hack
 SPIKE_ROOT_PRIV=$SPIKE_ROOT/priv
 SPIKE_ROOT_PUB=$SPIKE_ROOT/pub
 PDF_CLI_PROCESS_ALL=$SPIKE_ROOT_PUB/app/pdf-cli/test/scripts/process-all-test.sh
-GIT_CHECK_CHANGES=$SPIKE_ROOT_PRIV/env/spike-scripts/git/git-check-error-if-changes.sh
+GIT_CHECK_CHANGES=$SPIKE_ROOT_PRIV/scripts/git/git-check-error-if-changes.sh
 
 FULLSCRIPTPATH=$(readlink --canonicalize $0) # full path, in case ./script.sh used
 BASEDIR=$(dirname $FULLSCRIPTPATH)
