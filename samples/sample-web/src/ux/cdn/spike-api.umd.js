@@ -15428,6 +15428,10 @@
 	          items: {
 	            type: "string"
 	          }
+	        },
+	        statementBalance: {
+	          required: false,
+	          type: "number"
 	        }
 	      }
 	    },

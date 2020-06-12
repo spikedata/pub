@@ -119,6 +119,7 @@ export const validate = {
           type: "array",
           items: { type: "string" },
         },
+        statementBalance: { required: false, type: "number" },
       },
     },
     breakdown: {
