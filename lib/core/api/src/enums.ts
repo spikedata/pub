@@ -175,6 +175,7 @@ export const PdfParser = {
   creditCardBreakdown: ["ABSA_CREDITCARD_EMAIL_0", "NEDBANK_CREDITCARD"],
   creditCardBreakdownMultiUser: ["STANDARDBANK_CREDITCARD"],
   creditCardSimple: [
+    "CAPITEC_CREDITCARD_0",
     "DISCOVERY_0",
     "DISCOVERY_CREDITCARD_ALL_0",
     "FNB_CREDITCARD_ALL_0",
