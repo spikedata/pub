@@ -1,6 +1,7 @@
 import "./global";
 import * as config from "./config/static";
 // api
+import * as types from "./shape";
 import * as shapes from "./shapes";
 import * as helpers from "./helpers";
 import * as enums from "./enums";
@@ -57,6 +58,7 @@ export {
   config,
   // api
   shape,
+  types,
   getShape,
   overrideShapes,
   common,
