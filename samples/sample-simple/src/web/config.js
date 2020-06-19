@@ -10,5 +10,5 @@ module.exports = {
   USERKEY,
   NUM_DAYS,
   NUM_STATEMENTS,
-  SAVE_FOLDER
+  SAVE_FOLDER,
 };

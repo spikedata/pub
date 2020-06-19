@@ -8,8 +8,7 @@ const factory: GwClientErrorFactory = {
   noData: true,
   blame: enums.BLAME.SPIKE,
   noSessionId: true, // shapeExplorer
-  message:
-    "we successfully extract the data from the csv however it did not conform to the expected output schema",
+  message: "we successfully extract the data from the csv however it did not conform to the expected output schema",
   create: undefined,
 
   // noData

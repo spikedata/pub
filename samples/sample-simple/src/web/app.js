@@ -6,7 +6,7 @@ let T = require("./testAccounts");
 //  - npm run start:web -- ned
 //  - node ./src/web/app.js ned
 if (process.argv.length === 3) {
-  let key = process.argv[2];
+  const key = process.argv[2];
   if (!T[key]) {
     console.error("site not found:", key);
     process.exit(-1);

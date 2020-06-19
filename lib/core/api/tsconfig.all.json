@@ -1,0 +1,10 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "build/main",
+    "typeRoots": ["node_modules/@types", "src/types"]
+  },
+  "include": ["src/**/*.ts", "src/**/*.js", "test/**/*.ts", "test/**/*.js", "tools/**/*.ts", "tools/**/*.js"],
+  "exclude": ["node_modules/**"]
+}

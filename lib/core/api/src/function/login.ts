@@ -9,11 +9,7 @@ export const shapes = {
   inputs: "login",
   outputs: {
     success: "login/success",
-    interim: [
-      "login/interim-input-abs-pass",
-      "login/interim-input-std-otp",
-      "login/interim-wait-cap-2fa",
-    ],
+    interim: ["login/interim-input-abs-pass", "login/interim-input-std-otp", "login/interim-wait-cap-2fa"],
     error: [
       // general & web
       "error/common/access/exceeded-max-concurrent-requests",

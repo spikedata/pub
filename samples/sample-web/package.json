@@ -13,8 +13,9 @@
     "build": "./build-cdn.sh",
     "start": "node src/server/server.js",
     "fix": "run-s fix:*",
-    "fix:lint": "eslint .",
-    "fix:format": "prettier --write 'src/**/*.{js,mjs,jsx,json,css,md}'",
+    "fix:prettier": "prettier \"{src,test,tools}/**/*.{js,cjs,mjs,ts}\" --write",
+    "fix:lint": "eslint \"{src,test,tools}/**/*.{js,cjs,mjs,ts}\" --quiet --fix",
+    "diff:fix": "run-s fix:lint && prettier \"{src,test,tools}/**/*.{js,cjs,mjs,ts}\" --list-different",
     "test": "echo there is no test"
   },
   "dependencies": {

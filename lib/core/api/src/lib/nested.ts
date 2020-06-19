@@ -20,9 +20,7 @@ export const resolve = function (path, arrayOfNestedShapes) {
     } else {
       // check valid nestable shape
       if (Core.isFunction(child.validate)) {
-        log.fatal(
-          `${path}: bad nested deps - child has custom function .validate instead of a schema`
-        );
+        log.fatal(`${path}: bad nested deps - child has custom function .validate instead of a schema`);
         ok = false;
       }
       if (!Core.isObject(child.validate)) {

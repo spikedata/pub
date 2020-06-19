@@ -18,10 +18,7 @@ export const sanitize = function (sanitizer, data) {
     if (Array.isArray(sanitizer)) {
       // sanitize each element
       if (sanitizer.length !== 1) {
-        throw new Error(
-          "invalid each-element sanitizer - must be single element array: " +
-            JSON.stringify(sanitizer)
-        );
+        throw new Error("invalid each-element sanitizer - must be single element array: " + JSON.stringify(sanitizer));
       }
       const arrayClone = [];
       for (const d of data) {

@@ -3,10 +3,8 @@ import { GwClientErrorFactory } from "../../../shape";
 
 const Types = {
   "scan-rule-auto": "has been scanned - meta data matched a known scanner - like Canon, Ricoh", //meta-rule
-  "broken-utf16-auto":
-    "the pdf has been modified and re-saved with utf16 encoding - we don't support this encoding", // detect-function
-  "broken-encoding-auto":
-    "the pdf has been modified and re-saved with an unknown encoding - the text is unreadable", // detect-function
+  "broken-utf16-auto": "the pdf has been modified and re-saved with utf16 encoding - we don't support this encoding", // detect-function
+  "broken-encoding-auto": "the pdf has been modified and re-saved with an unknown encoding - the text is unreadable", // detect-function
   "junk-rule-auto":
     "this matches a known pdf document which we see frequently and don't support - like Game Credit Statements, CIPC documents, IDs, etc...", // text-rule
   "new-todo-rule-auto":

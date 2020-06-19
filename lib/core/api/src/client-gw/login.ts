@@ -93,8 +93,7 @@ const validate = function (data) {
   } else {
     switch (data.site) {
       case "ABS.0": {
-        if (!data.user)
-          validationErrors.push("missing required input: user = Access account number");
+        if (!data.user) validationErrors.push("missing required input: user = Access account number");
         // NOTE: .pass is provided in /login-interim-input
         // if (data.pass)
         //   validationErrors.push(

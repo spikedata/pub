@@ -8,6 +8,7 @@
     "samples/*"
   ],
   "scripts": {
+    "fix": "./scripts/workspace/fix-all.sh",
     "build": "./scripts/workspace/build-all.sh",
     "test": "./scripts/workspace/test-all.sh",
     "publish": "./scripts/workspace/publish-all.sh"

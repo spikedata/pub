@@ -11,28 +11,25 @@ const _nested = {
 };
 
 // Overview shared fields with credit-card-simple specifics
-const creditCardBreakdownMultiUser = objectUtil.mergeObjectsClone(
-  _nested["credit-card-breakdown"],
-  {
-    validate: {
-      properties: {
-        parser: {
-          enum: enums.PdfParser.creditCardBreakdownMultiUser, // different parsers to "pdf/success/credit-card-breakdown"
-        },
+const creditCardBreakdownMultiUser = objectUtil.mergeObjectsClone(_nested["credit-card-breakdown"], {
+  validate: {
+    properties: {
+      parser: {
+        enum: enums.PdfParser.creditCardBreakdownMultiUser, // different parsers to "pdf/success/credit-card-breakdown"
       },
     },
+  },
 
-    // NOTE: gw-client/pdf/success/credit-card-breakdown.js has 2 examples = { valid, invalid }
-    examples: {
-      valid: {
-        parser: enums.PdfParser.creditCardBreakdownMultiUser[0],
-      },
-      invalid: {
-        parser: enums.PdfParser.creditCardBreakdownMultiUser[0],
-      },
+  // NOTE: gw-client/pdf/success/credit-card-breakdown.js has 2 examples = { valid, invalid }
+  examples: {
+    valid: {
+      parser: enums.PdfParser.creditCardBreakdownMultiUser[0],
     },
-  }
-);
+    invalid: {
+      parser: enums.PdfParser.creditCardBreakdownMultiUser[0],
+    },
+  },
+});
 
 export const code = "pdf/success/credit-card-breakdown-multi-user";
 export const type = enums.TYPES.SUCCESS;

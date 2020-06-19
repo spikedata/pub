@@ -83,12 +83,7 @@ function marshallOrPassThrough(lambdaGwShape, lambdaGwCode, lambdaGwInstance) {
     // session is over - don't bother to send back to client
   }
   const wrapper = API.response;
-  const gwClientInstance = wrapper.marshall(
-    uuid.testUuid(),
-    sessionId,
-    lambdaGwCode,
-    lambdaGwInstance
-  );
+  const gwClientInstance = wrapper.marshall(uuid.testUuid(), sessionId, lambdaGwCode, lambdaGwInstance);
   wrapper.validate(gwClientInstance); // throws
   return gwClientInstance;
 }

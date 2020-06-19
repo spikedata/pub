@@ -5,21 +5,18 @@ async function run({ APIKEY, USERKEY, FILE }) {
   try {
     // request
     console.log(`requesting ${spikeApi.config.url.csv} ...`);
-    let spikeResponse = await spikeApi.csv(APIKEY, USERKEY, FILE);
+    const spikeResponse = await spikeApi.csv(APIKEY, USERKEY, FILE);
 
     // process response
     if (spikeResponse.type === spikeApi.enums.TYPES.SUCCESS) {
       console.log("JSON", JSON.stringify(spikeResponse, null, 2));
       console.log("SUCCESS");
     } else {
-      console.error(
-        "ERROR:",
-        spikeApi.enums.TYPES.toString(spikeResponse.type) + ":" + spikeResponse.code
-      );
+      console.error("ERROR:", spikeApi.enums.TYPES.toString(spikeResponse.type) + ":" + spikeResponse.code);
     }
   } catch (e) {
     if (e instanceof spikeApi.PdfTooLargeError) {
-      console.error(`EXCEPTION: the csv is too large`);
+      console.error("EXCEPTION: the csv is too large");
     } else if (e instanceof spikeApi.InputValidationError) {
       console.error("EXCEPTION: invalid inputs:\n ", e.validationErrors.join("\n "));
     } else {

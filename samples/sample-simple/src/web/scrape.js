@@ -23,25 +23,14 @@ module.exports = async function (
   SAVE_FOLDER
 ) {
   let loginResponse;
-  let autoClose = false;
+  const autoClose = false;
   try {
     let sanitized;
 
     // login
     console.log(chalk.green(`${spikeApi.config.url.login} ...`));
-    loginResponse = await spikeApi.login(
-      APIKEY,
-      USERKEY,
-      SITE,
-      USER,
-      PIN,
-      PASS,
-      USERNUM
-    );
-    if (
-      loginResponse.type !== spikeApi.enums.TYPES.SUCCESS &&
-      loginResponse.type !== spikeApi.enums.TYPES.INTERIM
-    ) {
+    loginResponse = await spikeApi.login(APIKEY, USERKEY, SITE, USER, PIN, PASS, USERNUM);
+    if (loginResponse.type !== spikeApi.enums.TYPES.SUCCESS && loginResponse.type !== spikeApi.enums.TYPES.INTERIM) {
       return fail("/login failed: " + loginResponse.code);
     }
     sanitized = spikeApi.sanitize(loginResponse);
@@ -51,13 +40,7 @@ module.exports = async function (
     if (loginResponse.type === spikeApi.enums.TYPES.INTERIM) {
       switch (loginResponse.code) {
         case "login/interim-input-abs-pass": {
-          await loginInterimAbsPass(
-            APIKEY,
-            USERKEY,
-            PASS,
-            loginResponse.sessionId,
-            loginResponse.data
-          );
+          await loginInterimAbsPass(APIKEY, USERKEY, PASS, loginResponse.sessionId, loginResponse.data);
           break;
         }
         case "login/interim-input-std-otp": {
@@ -76,12 +59,7 @@ module.exports = async function (
 
     // accounts
     console.log(chalk.green(`${spikeApi.config.url.accounts} ...`));
-    let accountsResponse = await spikeApi.accounts(
-      APIKEY,
-      USERKEY,
-      loginResponse.sessionId,
-      false
-    );
+    const accountsResponse = await spikeApi.accounts(APIKEY, USERKEY, loginResponse.sessionId, false);
     if (accountsResponse.type !== spikeApi.enums.TYPES.SUCCESS) {
       return fail("/accounts failed: " + accountsResponse.code);
     }
@@ -90,7 +68,7 @@ module.exports = async function (
 
     // estatement
     console.log(chalk.green(`${spikeApi.config.url.estatement} ...`));
-    let estatementResponse = await spikeApi.estatement(
+    const estatementResponse = await spikeApi.estatement(
       APIKEY,
       USERKEY,
       loginResponse.sessionId,
@@ -109,7 +87,7 @@ module.exports = async function (
 
     // transactions
     console.log(chalk.green(`${spikeApi.config.url.transactions} ...`));
-    let transactionsResponse = await spikeApi.transactions(
+    const transactionsResponse = await spikeApi.transactions(
       APIKEY,
       USERKEY,
       loginResponse.sessionId,
@@ -126,7 +104,7 @@ module.exports = async function (
     // statements
     if (spikeApi.isSupported(SITE, spikeApi.enums.FN.statements)) {
       console.log(chalk.green(`${spikeApi.config.url.statements} ...`));
-      let statementsResponse = await spikeApi.statements(
+      const statementsResponse = await spikeApi.statements(
         APIKEY,
         USERKEY,
         loginResponse.sessionId,
@@ -145,10 +123,7 @@ module.exports = async function (
     }
   } catch (e) {
     if (e instanceof spikeApi.InputValidationError) {
-      console.error(
-        "EXCEPTION: invalid inputs:\n ",
-        e.validationErrors.join("\n ")
-      );
+      console.error("EXCEPTION: invalid inputs:\n ", e.validationErrors.join("\n "));
     } else {
       if (!e.response) {
         // net connection error (e.g. down, timeout) or > axios maxBodyLength limit
@@ -157,11 +132,7 @@ module.exports = async function (
       } else {
         // http status error (e.g. 500 internal server error, 413 too big)
         // e : AxiosResponse
-        console.error(
-          "EXCEPTION: http status error:",
-          e.response.status,
-          e.response.statusText
-        );
+        console.error("EXCEPTION: http status error:", e.response.status, e.response.statusText);
       }
     }
   } finally {
@@ -170,117 +141,72 @@ module.exports = async function (
     //  and you can skip manual /close below
     if (loginResponse && !autoClose) {
       console.log(chalk.green(`${spikeApi.config.url.close} ...`));
-      let closeResponse = await spikeApi.close(
-        APIKEY,
-        USERKEY,
-        loginResponse.sessionId
-      );
+      const closeResponse = await spikeApi.close(APIKEY, USERKEY, loginResponse.sessionId);
       if (closeResponse.type !== spikeApi.enums.TYPES.SUCCESS) {
         // eslint-disable-next-line no-unsafe-finally
         return fail("/close failed: " + loginResponse.code);
       }
-      let sanitized = spikeApi.sanitize(closeResponse);
+      const sanitized = spikeApi.sanitize(closeResponse);
       console.log("/close success", JSON.stringify(sanitized, null, 2));
     }
     console.log(chalk.green("SUCCESS"));
   }
 };
 
-async function loginInterimAbsPass(
-  APIKEY,
-  USERKEY,
-  PASS,
-  sessionId,
-  requiredChars
-) {
+async function loginInterimAbsPass(APIKEY, USERKEY, PASS, sessionId, requiredChars) {
   // validate (prev /login response { data })
   if (!Array.isArray(requiredChars) || requiredChars.length !== 3) {
     fail("Expecting array of 3 absa pass chars but received " + requiredChars);
   }
 
   // inputs
-  let data = [
-    PASS[requiredChars[0]],
-    PASS[requiredChars[1]],
-    PASS[requiredChars[2]],
-  ];
+  const data = [PASS[requiredChars[0]], PASS[requiredChars[1]], PASS[requiredChars[2]]];
 
   // request
-  console.log(
-    chalk.green(`${spikeApi.config.url["login-interim-input"]} (abs) ...`)
-  );
-  let response = await spikeApi.loginInterimInputAbsPass(
-    APIKEY,
-    USERKEY,
-    sessionId,
-    false,
-    data
-  );
+  console.log(chalk.green(`${spikeApi.config.url["login-interim-input"]} (abs) ...`));
+  const response = await spikeApi.loginInterimInputAbsPass(APIKEY, USERKEY, sessionId, false, data);
   if (response.type !== spikeApi.enums.TYPES.SUCCESS) {
     return fail("/login-interim-input (abs) failed: " + response.code);
   }
-  let sanitized = spikeApi.sanitize(response);
-  console.log(
-    "/login-interim-input (abs) success",
-    JSON.stringify(sanitized, null, 2)
-  );
+  const sanitized = spikeApi.sanitize(response);
+  console.log("/login-interim-input (abs) success", JSON.stringify(sanitized, null, 2));
 }
 
 async function loginInterimStdOtp(APIKEY, USERKEY, sessionId) {
   // inputs
-  let data = await uxInputOtp();
+  const data = await uxInputOtp();
 
   // request
-  console.log(
-    chalk.green(`${spikeApi.config.url["login-interim-input"]} (std) ...`)
-  );
-  let response = await spikeApi.loginInterimInputStdOtp(
-    APIKEY,
-    USERKEY,
-    sessionId,
-    false,
-    data
-  );
+  console.log(chalk.green(`${spikeApi.config.url["login-interim-input"]} (std) ...`));
+  const response = await spikeApi.loginInterimInputStdOtp(APIKEY, USERKEY, sessionId, false, data);
   if (response.type !== spikeApi.enums.TYPES.SUCCESS) {
     return fail("/login-interim-input (std) failed: " + response.code);
   }
-  let sanitized = spikeApi.sanitize(response);
-  console.log(
-    "/login-interim-input (std) success",
-    JSON.stringify(sanitized, null, 2)
-  );
+  const sanitized = spikeApi.sanitize(response);
+  console.log("/login-interim-input (std) success", JSON.stringify(sanitized, null, 2));
 }
 
 async function uxInputOtp() {
   console.log(chalk.green("USER INPUT REQUIRED"));
-  let otp = await read("Enter OTP: ");
+  const otp = await read("Enter OTP: ");
   return otp;
 }
 
 async function loginInterimCapWait(APIKEY, USERKEY, sessionId) {
   // inputs
   await read(
+    // eslint-disable-next-line quotes
     'Awaiting authorization from you. Please open the Capitec app and click "Yes" to "I want to to sign in to Remote Banking". Then push enter to continue ...'
   );
 
   // request
-  console.log(
-    chalk.green(`${spikeApi.config.url["login-interim-wait"]} (cap) ...`)
-  );
-  let response = await spikeApi.loginInterimWait(
-    APIKEY,
-    USERKEY,
-    sessionId,
-    false
-  );
+  console.log(chalk.green(`${spikeApi.config.url["login-interim-wait"]} (cap) ...`));
+  const response = await spikeApi.loginInterimWait(APIKEY, USERKEY, sessionId, false);
   if (response.type !== spikeApi.enums.TYPES.SUCCESS) {
     return fail("/login-interim-wait (cap) failed: " + response.code);
   }
-  let sanitized = spikeApi.sanitize(response);
-  console.log(
-    "/login-interim-wait (cap) success",
-    JSON.stringify(sanitized, null, 2)
-  );
+  const sanitized = spikeApi.sanitize(response);
+  console.log("/login-interim-wait (cap) success", JSON.stringify(sanitized, null, 2));
 }
 
 async function read(message) {
@@ -301,10 +227,10 @@ function save(response, folder) {
   if (response.code !== "file/success") {
     throw new Error("expected file/success");
   }
-  let file = response.data.file;
+  const file = response.data.file;
   let buffer = response.data.buffer;
   fs.mkdirSync(folder, { recursive: true });
-  let p = path.join(folder, file);
+  const p = path.join(folder, file);
   buffer = Buffer.from(buffer, "base64");
   fs.writeFileSync(p, buffer);
   console.log("file saved to:", p);

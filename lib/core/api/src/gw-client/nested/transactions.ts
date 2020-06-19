@@ -21,9 +21,5 @@ export const nestedShapes = shapes;
 export const nestedSchemas = schemas;
 
 export const examples = {
-  default: [
-    _nested.transaction.examples[1],
-    _nested.transaction.examples[2],
-    _nested.transaction.examples[3],
-  ],
+  default: [_nested.transaction.examples[1], _nested.transaction.examples[2], _nested.transaction.examples[3]],
 };

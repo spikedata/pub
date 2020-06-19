@@ -2,19 +2,12 @@ const chalk = require("chalk");
 const scrape = require("./scrape");
 
 function printHeader(site) {
-  console.log(
-    chalk.greenBright("---------------------------------------------------")
-  );
+  console.log(chalk.greenBright("---------------------------------------------------"));
   console.log(chalk.greenBright(site));
-  console.log(
-    chalk.greenBright("---------------------------------------------------")
-  );
+  console.log(chalk.greenBright("---------------------------------------------------"));
 }
 
-module.exports = async function(
-  T,
-  { APIKEY, USERKEY, NUM_DAYS, NUM_STATEMENTS, SAVE_FOLDER }
-) {
+module.exports = async function (T, { APIKEY, USERKEY, NUM_DAYS, NUM_STATEMENTS, SAVE_FOLDER }) {
   if (T.abs) {
     printHeader("ABS.0");
     await scrape(

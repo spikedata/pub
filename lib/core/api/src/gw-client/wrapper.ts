@@ -7,9 +7,7 @@ import * as uuid from "../lib/uuid";
 // const Shapes = require("../shapes");
 import AccountsSuccess, { Examples as AccountsSuccessExamples } from "./accounts/success";
 import ErrorCommonDevInvalidInputs from "./error/common/dev/invalid-inputs";
-import LoginInterimInputAbsPass, {
-  Examples as LoginInterimInputAbsPassExamples,
-} from "./login/interim-input-abs-pass";
+import LoginInterimInputAbsPass, { Examples as LoginInterimInputAbsPassExamples } from "./login/interim-input-abs-pass";
 
 const Shapes = {
   "gw-client/accounts/success": AccountsSuccess,
@@ -54,8 +52,7 @@ export default abstract class Wrapper {
       uuid.testUuid(),
       Shapes["gw-client/login/interim-input-abs-pass"].code,
       Shapes["gw-client/login/interim-input-abs-pass"].type,
-      (Shapes["gw-client/login/interim-input-abs-pass"]
-        .examples as LoginInterimInputAbsPassExamples).default
+      (Shapes["gw-client/login/interim-input-abs-pass"].examples as LoginInterimInputAbsPassExamples).default
     ),
     "gw-client/wrapper[gw-client/error/common/dev/invalid-inputs]": Wrapper.createError(
       uuid.testUuid(),
@@ -109,20 +106,9 @@ export default abstract class Wrapper {
   //  .data = marshall or passThrough (from lambda-gw => gw-client)
   //  input* were created on lambda - see lambda-gw/*chan/wrapper.createResponse
   public static marshall = function (requestId, sessionId = undefined, inputCode, inputData) {
-    const { outputShape, outputCode, outputData } = common.marshall(
-      undefined,
-      Wrapper,
-      inputCode,
-      inputData
-    );
+    const { outputShape, outputCode, outputData } = common.marshall(undefined, Wrapper, inputCode, inputData);
     // create instance which matches wrapperSchema
-    const wrappedInstance = Wrapper.create(
-      requestId,
-      sessionId,
-      outputCode,
-      outputShape.type,
-      outputData
-    );
+    const wrappedInstance = Wrapper.create(requestId, sessionId, outputCode, outputShape.type, outputData);
     const errors = Schema.validate(Wrapper.code, Wrapper.validate, wrappedInstance);
     if (errors) {
       throw new InputValidationError(errors);

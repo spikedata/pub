@@ -14,7 +14,7 @@ const _pass = undefined; // change this if you have a password protected pdf
     try {
       // request
       console.log(`requesting ${location.origin}/pdf ...`);
-      let proxyResponse = await SpikeApiProxy.pdf(fileName, pass, buffer);
+      const proxyResponse = await SpikeApiProxy.pdf(fileName, pass, buffer);
 
       // process response
       if (proxyResponse.serverToSpikeError) {
@@ -26,7 +26,7 @@ const _pass = undefined; // change this if you have a password protected pdf
       }
     } catch (e) {
       if (e instanceof SpikeApi.PdfTooLargeError) {
-        return `EXCEPTION: the pdf is too large`;
+        return "EXCEPTION: the pdf is too large";
       } else if (e instanceof SpikeApi.InputValidationError || e.validationErrors) {
         return `EXCEPTION: invalid inputs:\n ${e.validationErrors.join("\n ")}`;
       } else if (e.serverToSpikeError) {
@@ -35,7 +35,7 @@ const _pass = undefined; // change this if you have a password protected pdf
         if (!e.response) {
           // net connection error (e.g. down, timeout) or > axios maxBodyLength limit
           // e : AxiosResponse
-          return `EXCEPTION: net connection error`;
+          return "EXCEPTION: net connection error";
         } else {
           // http status error (e.g. 500 internal server error, 413 too big)
           // e : AxiosResponse
@@ -120,9 +120,9 @@ const _pass = undefined; // change this if you have a password protected pdf
 
   function readFile(i, file) {
     return new Promise((resolve) => {
-      let reader = new FileReader();
+      const reader = new FileReader();
       reader.onloadend = async function (event) {
-        let base64Txt = event.target.result.replace(/^data:application\/pdf;base64,/, "");
+        const base64Txt = event.target.result.replace(/^data:application\/pdf;base64,/, "");
         await uploadPdf(i, file, base64Txt);
         resolve(); // don't bother with reject() - errors already handled by uploadPdf()
       };
@@ -133,12 +133,12 @@ const _pass = undefined; // change this if you have a password protected pdf
   async function uploadPdf(i, file, base64Txt) {
     console.log(`${i} ${file.name}`);
     output(`sending ${file.name}: POST ${location.origin}/pdf ...`);
-    let res = await pdf(file.name, _pass, base64Txt);
+    const res = await pdf(file.name, _pass, base64Txt);
     output(res);
   }
 
   function output(val) {
-    let el = document.getElementById("json-output");
+    const el = document.getElementById("json-output");
     el.innerText = val ? JSON.stringify(val, null, 2) : "";
   }
 

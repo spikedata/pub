@@ -2,8 +2,7 @@ export const url = "/login-interim-input";
 export const swagger = {
   tags: ["Web"],
   method: "post",
-  summary:
-    "2nd step in a 2-step login process where user input is required - e.g. STD OTP & ABS pass",
+  summary: "2nd step in a 2-step login process where user input is required - e.g. STD OTP & ABS pass",
   operationId: "login",
 };
 export const shapes = {

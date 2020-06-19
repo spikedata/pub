@@ -15,6 +15,10 @@
     "start:csv": "node ./src/csv/app.js",
     "start:web": "node ./src/web/app.js",
     "build": "echo there is no build",
+    "fix": "run-s fix:*",
+    "fix:prettier": "prettier \"{src,test,tools}/**/*.{js,cjs,mjs,ts}\" --write",
+    "fix:lint": "eslint \"{src,test,tools}/**/*.{js,cjs,mjs,ts}\" --quiet --fix",
+    "diff:fix": "run-s fix:lint && prettier \"{src,test,tools}/**/*.{js,cjs,mjs,ts}\" --list-different",
     "test": "echo there is no test"
   },
   "dependencies": {

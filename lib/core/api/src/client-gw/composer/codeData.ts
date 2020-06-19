@@ -28,13 +28,7 @@ export const composedSchema = {
   },
 };
 
-export const compose = function (
-  sessionIdRequired,
-  finalRequired,
-  codeRequired,
-  dataSchema,
-  additionalSchema
-) {
+export const compose = function (sessionIdRequired, finalRequired, codeRequired, dataSchema, additionalSchema) {
   // same as basic
   let composedSchemaLocal;
   if (additionalSchema) {

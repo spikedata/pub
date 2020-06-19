@@ -41,8 +41,8 @@
   }
 
   function onDrop(e) {
-    let dt = e.dataTransfer;
-    let files = dt.files;
+    const dt = e.dataTransfer;
+    const files = dt.files;
     this.callback(files);
   }
 

@@ -12,5 +12,5 @@ module.exports = {
   APIKEY,
   USERKEY,
   FILE,
-  PASS
+  PASS,
 };
