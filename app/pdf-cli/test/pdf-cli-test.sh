@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-SPIKE_ROOT=/spike/v8 # hack
 SPIKE_ROOT_PRIV=$SPIKE_ROOT/priv
 SPIKE_ROOT_PUB=$SPIKE_ROOT/pub
 PDF_CLI_PROCESS_ALL=$SPIKE_ROOT_PUB/app/pdf-cli/test/scripts/process-all-test.sh

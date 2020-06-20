@@ -1,7 +1,6 @@
 #!/bin/bash
 
-SPIKE_ROOT=/spike/v8/pub # HACK
-PACKAGESTXT=$SPIKE_ROOT/scripts/packages.txt
+PACKAGESTXT=$SPIKE_ROOT/pub/scripts/packages.txt
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
