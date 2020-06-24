@@ -5,6 +5,7 @@ import InputValidationError from "../lib/inputValidationError";
 import PdfTooLargeError from "../lib/pdfTooLargeError";
 import * as Schema from "../lib/schema";
 import { ClientGwShapeFactory } from "../shape";
+import { PdfRequest } from "../requestTypes";
 
 const code = "pdf";
 const type = enums.TYPES.INPUTS;
@@ -14,7 +15,7 @@ const sessionBased = false;
 
 //#region examples
 
-const examples = {
+const examples: Record<string, PdfRequest> = {
   default: {
     file: "absa.pdf",
     buffer: "JVBER...",

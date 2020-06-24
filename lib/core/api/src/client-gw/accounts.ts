@@ -4,6 +4,7 @@ import * as Schema from "../lib/schema";
 import * as uuid from "../lib/uuid";
 import * as composerBasic from "./composer/basic";
 import { ClientGwComposedShapeFactory } from "../shape";
+// import { AccountsRequest } from "../requestTypes";
 
 const Accounts: ClientGwComposedShapeFactory = {
   code: "accounts",

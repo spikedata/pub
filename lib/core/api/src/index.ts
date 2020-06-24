@@ -1,6 +1,7 @@
 import "./global";
 import * as config from "./config/static";
 // api
+import * as requestTypes from "./requestTypes";
 import * as types from "./shape";
 import * as shapes from "./shapes";
 import * as helpers from "./helpers";
@@ -57,6 +58,7 @@ const lib = {
 export {
   config,
   // api
+  requestTypes,
   shape,
   types,
   getShape,
