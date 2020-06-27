@@ -30,6 +30,6 @@ export function changeServer(server) {
   url.close = server + FN["close"].url;
 
   // pdf
-  url.pdf = _server + FN["pdf"].url;
-  url.csv = _server + FN["csv"].url;
+  url.pdf = server + FN["pdf"].url;
+  url.csv = server + FN["csv"].url;
 }

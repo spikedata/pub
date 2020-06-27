@@ -9,7 +9,7 @@ export const swagger = {
 export const shapes = {
   inputs: "csv",
   outputs: {
-    // keep in sync with $/spike-db/src/lib/pdfReviewSystem.js: codeToParseResultState - see $/spike-csv/test/spikeApiEnums.js
+    // keep in sync with $/spike-db/src/lib/pdfReviewSystem.js: codeToParseResultState
     success: ["csv/success/bank-statement"],
     error: [
       // general

@@ -135,6 +135,7 @@ export const PdfType = Enum.createEnum("PdfType", {
 });
 
 // Documents expected values - not an enum
+// keep in sync with $/priv/lib/core/pdf/src/parsers/index.ts
 // see $/spike-pdf/tools/docs/add-new-parser.md
 export const PdfParser = {
   bankStatementsNormal: [
@@ -204,9 +205,9 @@ export const PdfParserAll = Object.keys(PdfParser).reduce((arr, k) => {
 //#region csv
 
 // Documents expected values - not an enum
-// see $/spike-csv/tools/doc.js
+// keep in sync with $/priv/lib/core/csv/src/parsers/index.ts
 export const CsvParser = {
-  bankStatements: ["ABS1", "CAP1", "CAP2", "FNB1", "INV1", "NED1", "NED2"],
+  bankStatements: ["ABS1", "CAP1", "CAP2", "FNB1", "INV1", "NED1", "NED2", "STD1"],
 };
 
 export const CsvParserAll = Object.keys(CsvParser).reduce((arr, k) => {
