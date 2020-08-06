@@ -95,7 +95,7 @@ const factory: GwClientShapeFactory = {
   passThrough,
   type,
   examples,
-  create: undefined, // spike-pdf doesn't call .create() atm
+  create,
   validate,
   sanitize,
   noSessionId,
