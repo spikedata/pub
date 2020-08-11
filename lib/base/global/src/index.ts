@@ -8,6 +8,7 @@ import {
   ILoggerSettings,
   ILoggerInputs,
   ILogger,
+  AdditionalLoggerCapabilities,
 } from "./i-logger";
 import { ISingleton, ISingletonConfig, ISingletonInputs } from "./i-singleton";
 import { RecursivePartial } from "./RecursivePartial";
@@ -22,6 +23,7 @@ export {
   ILoggerSettings,
   ILoggerInputs,
   ILogger,
+  AdditionalLoggerCapabilities,
   // i-singleton
   ISingleton,
   ISingletonConfig,

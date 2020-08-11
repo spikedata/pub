@@ -41,12 +41,21 @@ export interface ILoggerConfig {
 }
 export type ILoggerSettings = RecursivePartial<ILoggerConfig>;
 export type ILoggerInputs = ISingletonInputs;
+export enum AdditionalLoggerCapabilities {
+  none = 0,
+  callback = 1 << 0,
+  cloudwatch = 1 << 1,
+  colored = 1 << 2,
+  cls = 1 << 3,
+  id = 1 << 4,
+  slack = 1 << 5,
+}
 
 export interface ILogger extends ISingleton {
   config: ILoggerConfig;
   inputs?: ILoggerInputs;
   initialized: boolean;
-  isCls: boolean;
+  caps: AdditionalLoggerCapabilities;
   init(config: ILoggerConfig, inputs?: ILoggerInputs): Promise<void>;
   update(state: any);
   shutdown(): Promise<void>;
