@@ -13,7 +13,7 @@ PACKAGES=`grep -v ^\# "$PACKAGESTXT" | tr -s '\n' ' '`
 
 for i in $PACKAGES
 do
-  DIR=${SPIKE_ROOT}/${i}
+  DIR=${SPIKE_ROOT}/pub/${i}
   if [ ! -d "$DIR" ]; then
     printf "${RED}------------------------------------------\n${DIR}${NC} : missing\n"
     continue
