@@ -26,6 +26,7 @@ import gwClientErrorCommonDevSentAnotherRequestAfterFinalResponse from "./gw-cli
 import gwClientErrorCommonException from "./gw-client/error/common/exception";
 import gwClientErrorCommonSessionInUse from "./gw-client/error/common/session-in-use";
 import gwClientErrorCommonSessionTimedOut from "./gw-client/error/common/session-timed-out";
+import gwClientErrorFnbMaxReLoginsFailed from "./gw-client/error/fnb/max-re-logins-failed";
 import gwClientErrorFnbOnlineBankingLegalDocumentation from "./gw-client/error/fnb/online-banking-legal-documentation";
 import gwClientErrorFnbStatementsDisabled from "./gw-client/error/fnb/statements-disabled";
 import gwClientErrorSiteAbsLoggedOff from "./gw-client/error/site/abs/logged-off";
@@ -109,6 +110,7 @@ export const shape = {
   "gw-client/error/common/exception": gwClientErrorCommonException,
   "gw-client/error/common/session-in-use": gwClientErrorCommonSessionInUse,
   "gw-client/error/common/session-timed-out": gwClientErrorCommonSessionTimedOut,
+  "gw-client/error/fnb/max-re-logins-failed": gwClientErrorFnbMaxReLoginsFailed,
   "gw-client/error/fnb/online-banking-legal-documentation": gwClientErrorFnbOnlineBankingLegalDocumentation,
   "gw-client/error/fnb/statements-disabled": gwClientErrorFnbStatementsDisabled,
   "gw-client/error/site/abs/logged-off": gwClientErrorSiteAbsLoggedOff,

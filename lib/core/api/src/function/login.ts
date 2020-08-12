@@ -17,6 +17,7 @@ export const shapes = {
       "error/common/dev/authorization",
       "error/common/dev/invalid-inputs",
       "error/common/exception",
+      "error/fnb/max-re-logins-failed",
       "error/fnb/online-banking-legal-documentation",
       "error/site/bank-blocked",
       "error/site/captcha",

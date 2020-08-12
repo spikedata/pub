@@ -18,6 +18,7 @@ export const shapes = {
       "error/common/exception",
       "error/common/session-in-use",
       "error/common/session-timed-out",
+      "error/fnb/statements-disabled",
       "error/site/bank-blocked",
       "error/site/input-validation-failed",
       "error/site/internal",
