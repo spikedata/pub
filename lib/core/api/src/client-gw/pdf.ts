@@ -73,8 +73,10 @@ const validate = function (data) {
   }
   if (!data.buffer) {
     validationErrors.push("missing required input: buffer");
-  } else if (!isBase64EncodedPdf(data.buffer)) {
-    validationErrors.push("invalid buffer: either not a PDF or not base64 encoded");
+  } else {
+    if (!isBase64EncodedPdf(data.buffer)) {
+      validationErrors.push("invalid buffer: either not a PDF or not base64 encoded");
+    }
   }
   return validationErrors.length === 0 ? undefined : validationErrors;
 };
