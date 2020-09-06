@@ -20,7 +20,7 @@ cd /spike/v8/pub/lib/core/api
 yarn link
 cd /spike/v8/pub/lib/base/global
 yarn link
-cd ../priv
+cd /spike/v8/priv
 yarn link @spike/api
 yarn link @spike/global
 # check symlinks:
