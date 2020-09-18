@@ -37,6 +37,11 @@ export const validate = {
       required: true,
       type: "boolean",
     },
+    authenticity: {
+      required: true,
+      type: "string",
+      enum: enums.AllAuthenticity,
+    },
     breaks: {
       required: false,
       $ref: _nested.breaks.validate.id,
@@ -59,6 +64,7 @@ export const examples = {
     statement: _nested["statement-info"].examples.default,
     transactions: _nested.transactions.examples.default,
     valid: true,
+    authenticity: enums.Authenticity.original,
   },
   successWithBreaks: {
     parser: "FNB_RETAIL_ALL_0",
@@ -66,6 +72,7 @@ export const examples = {
     transactions: _nested.transactions.examples.default,
     breaks: _nested.breaks.examples.default,
     valid: false,
+    authenticity: enums.Authenticity.original,
   },
 };
 

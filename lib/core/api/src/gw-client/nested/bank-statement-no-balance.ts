@@ -36,6 +36,11 @@ export const validate = {
       required: true,
       type: "boolean",
     },
+    authenticity: {
+      required: true,
+      type: "string",
+      enum: enums.AllAuthenticity,
+    },
   },
 };
 
@@ -50,6 +55,7 @@ export const examples = {
     statement: _nested["statement-info"].examples.default,
     transactions: _nested["transactions-no-balance"].examples.default,
     valid: true,
+    authenticity: enums.Authenticity.original,
   },
 };
 

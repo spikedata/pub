@@ -40,6 +40,7 @@ export const examples = {
       },
     ],
     valid: true,
+    authenticity: enums.Authenticity.original,
   },
 
   invalid: {
@@ -73,6 +74,7 @@ export const examples = {
       },
     ],
     valid: false,
+    authenticity: enums.Authenticity.writer,
     breaks: [
       {
         category: "Transactions",
@@ -154,6 +156,11 @@ export const validate = {
       },
     },
     valid: { required: true, type: "boolean" },
+    authenticity: {
+      required: true,
+      type: "string",
+      enum: enums.AllAuthenticity,
+    },
     breaks: {
       type: "array",
       items: {

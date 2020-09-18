@@ -201,6 +201,22 @@ export const PdfParserAll = Object.keys(PdfParser).reduce((arr, k) => {
 }, []);
 // console.log(PdfParserAll);
 
+// keep in sync with /spike/v8/priv/lib/core/db/src/lib/pdfReviewSystem.ts : MetaDataState
+export enum Authenticity {
+  unknown = "unknown", // e.g. pdf/fail/password-incorrect = can't access .meta - see /spike/v8/priv/lib/core/pdf/src/libShapes.ts : pdf.js fail
+  multiple = "multiple", // matched multiple rules - this is an error with our rules which we must correct (will stay as a pending error until fixed)
+  original = "original",
+  library = "library", // library which is not in use by an original pdf pipeline atm (i.e. probably an original pipeline but for a pdf which is not part of our statement library)
+  reader = "reader",
+  browser = "browser", // similar threat level to reader = pdf software commonly found in a browser (doesn't indicate tampering)
+  printToPdf = "printToPdf", // could have used a writer then print-to-pdf. overlaps with browser though - most nedbank statements are Microsoft:PrintToPDF
+  writer = "writer",
+  scan = "scan",
+  unmatched = "unmatched", // manual review pending
+  blank = "blank", // means that all the meta.info fields are blank
+}
+export const AllAuthenticity = Object.keys(Authenticity);
+
 //#endregion
 
 //#region csv

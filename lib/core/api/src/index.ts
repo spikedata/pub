@@ -2,6 +2,7 @@ import "./global";
 import * as config from "./config/static";
 // api
 import * as requestTypes from "./requestTypes";
+import * as responseTypes from "./responseTypes";
 import * as types from "./shape";
 import * as shapes from "./shapes";
 import * as helpers from "./helpers";
@@ -59,6 +60,7 @@ export {
   config,
   // api
   requestTypes,
+  responseTypes,
   shape,
   types,
   getShape,
