@@ -10,6 +10,7 @@ cd /spike/v8
 git clone https://github.com/spikedata/spike-public.git pub
 cd pub
 yarn install # install all sub-package deps, de-dups into ./node_modules, sets up symlinks to internal pkgs
+source /spike/v8/priv/scripts/spikeenv.sh
 ./scripts/workspace/build-all.sh # will build in correct sequence
 ```
 
