@@ -594,6 +594,10 @@
 	    code: "NED",
 	    name: "Nedbank"
 	  },
+	  MRC: {
+	    code: "MRC",
+	    name: "Mercantile Bank"
+	  },
 	  RMB: {
 	    code: "RMB",
 	    name: "RMB"

@@ -80,6 +80,7 @@ export const Bank = {
   FNB: { code: "FNB", name: "FNB" },
   INV: { code: "INV", name: "Investec" },
   NED: { code: "NED", name: "Nedbank" },
+  MRC: { code: "MRC", name: "Mercantile Bank" },
   RMB: { code: "RMB", name: "RMB" },
   SAS: { code: "SAS", name: "Safin" },
   STD: { code: "STD", name: "Standard Bank" },
