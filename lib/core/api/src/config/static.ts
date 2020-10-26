@@ -31,6 +31,6 @@ export function changeServer({ webSession, lambdaPdf, lambdaCsv }) {
   url.close = webSession + FN["close"].url;
 
   // pdf
-  url.pdf = lambdaPdf + FN["pdf"].url;
-  url.csv = lambdaCsv + FN["csv"].url;
+  url.pdf = lambdaPdf; // + FN["pdf"].url;
+  url.csv = lambdaCsv; // + FN["csv"].url;
 }
