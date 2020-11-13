@@ -8,20 +8,20 @@ import * as uuid from "../lib/uuid";
 import AccountsSuccess, { Examples as AccountsSuccessExamples } from "./accounts/success";
 import ErrorCommonDevInvalidInputs from "./error/common/dev/invalid-inputs";
 import LoginInterimInputAbsPass, { Examples as LoginInterimInputAbsPassExamples } from "./login/interim-input-abs-pass";
+import { StandardResponse } from "../responseTypes";
 
 const Shapes = {
   "gw-client/accounts/success": AccountsSuccess,
   "gw-client/login/interim-input-abs-pass": LoginInterimInputAbsPass,
   "gw-client/error/common/dev/invalid-inputs": ErrorCommonDevInvalidInputs,
 };
-
 export default abstract class Wrapper {
   public static code = "gw-client/wrapper"; // specified by wrapped.data. This .code is only used as wrapperCode in common.validateWrapped
   public static type = Enums.TYPES.NOTSET; // specified by wrapped.data
 
   //#region create
 
-  public static create = function (requestId, sessionId, code, type, data?) {
+  public static create = function (requestId, sessionId, code, type, data?): StandardResponse {
     return {
       requestId,
       sessionId,

@@ -1,11 +1,29 @@
 import * as Enums from "./enums";
+import { ShapeInstance } from "./shape";
+import { getShape } from "./shapes";
 
 export interface StandardResponse {
   sessionId?: string; // uuid
   requestId: string; // uuid
   code: string;
   type: number; // enums : TYPES
-  // data?: ShapeInstance;
+  data?: ShapeInstance;
+}
+
+export function getResponseTypeString(response: StandardResponse): string {
+  return Enums.TYPES.validValue(response.type) && Enums.TYPES.toString(response.type);
+}
+
+export function getResponseBlameString(response: StandardResponse): string {
+  let responseBlame;
+  const shape = getShape(response.code);
+  if (shape) {
+    responseBlame = Enums.BLAME.validValue(shape.blame) && Enums.BLAME.toString(shape.blame);
+  } else {
+    log.fatal("getResponseBlameString = unknown result.code:", response.code);
+    responseBlame = Enums.BLAME.toString(Enums.BLAME.SPIKE);
+  }
+  return responseBlame;
 }
 
 export interface ErrorResponse extends StandardResponse {
