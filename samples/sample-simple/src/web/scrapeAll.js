@@ -7,12 +7,11 @@ function printHeader(site) {
   console.log(chalk.greenBright("---------------------------------------------------"));
 }
 
-module.exports = async function (T, { APIKEY, USERKEY, NUM_DAYS, NUM_STATEMENTS, SAVE_FOLDER }) {
+module.exports = async function (T, { TOKEN, NUM_DAYS, NUM_STATEMENTS, SAVE_FOLDER }) {
   if (T.abs) {
     printHeader("ABS.0");
     await scrape(
-      APIKEY,
-      USERKEY,
+      TOKEN,
       "ABS.0",
       T.abs.user,
       T.abs.pin,
@@ -28,8 +27,7 @@ module.exports = async function (T, { APIKEY, USERKEY, NUM_DAYS, NUM_STATEMENTS,
   if (T.cap) {
     printHeader("CAP.0");
     await scrape(
-      APIKEY,
-      USERKEY,
+      TOKEN,
       "CAP.0",
       T.cap.user,
       T.cap.pin,
@@ -45,8 +43,7 @@ module.exports = async function (T, { APIKEY, USERKEY, NUM_DAYS, NUM_STATEMENTS,
   if (T.fnb) {
     printHeader("FNB.0");
     await scrape(
-      APIKEY,
-      USERKEY,
+      TOKEN,
       "FNB.0",
       T.fnb.user,
       T.fnb.pin,
@@ -62,8 +59,7 @@ module.exports = async function (T, { APIKEY, USERKEY, NUM_DAYS, NUM_STATEMENTS,
   if (T.ned) {
     printHeader("NED.0");
     await scrape(
-      APIKEY,
-      USERKEY,
+      TOKEN,
       "NED.0",
       T.ned.user,
       T.ned.pin,
@@ -79,8 +75,7 @@ module.exports = async function (T, { APIKEY, USERKEY, NUM_DAYS, NUM_STATEMENTS,
   if (T.rmb) {
     printHeader("RMB.0");
     await scrape(
-      APIKEY,
-      USERKEY,
+      TOKEN,
       "RMB.0",
       T.rmb.user,
       T.rmb.pin,
@@ -96,8 +91,7 @@ module.exports = async function (T, { APIKEY, USERKEY, NUM_DAYS, NUM_STATEMENTS,
   if (T.std) {
     printHeader("STD.2018-01");
     await scrape(
-      APIKEY,
-      USERKEY,
+      TOKEN,
       "STD.2018-01",
       T.std.user,
       T.std.pin,

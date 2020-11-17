@@ -151,8 +151,7 @@ const _CommandLineArgs = {
         writeIndex: {
           type: bool,
           defaultValue: true,
-          help:
-            "write results to index.csv file - useful to switch it off if changing identify() functions",
+          help: "write results to index.csv file - useful to switch it off if changing identify() functions",
         },
         index: {
           type: rawPathType,
@@ -668,9 +667,9 @@ function shorten(filePath, folder) {
   return filePath;
 }
 
-async function requestPdf(apikey, userkey, pdfPath, pass) {
+async function requestPdf(TOKEN, pdfPath, pass) {
   try {
-    return await spikeApi.pdf(apikey, userkey, pdfPath, pass);
+    return await spikeApi.pdf(TOKEN, pdfPath, pass);
   } catch (e) {
     if (e instanceof spikeApi.PdfTooLargeError) {
       console.error("EXCEPTION: the pdf is too large:", pdfPath);
@@ -684,30 +683,17 @@ async function requestPdf(apikey, userkey, pdfPath, pass) {
       } else {
         // http status error (e.g. 500 internal server error, 413 too big)
         // e : AxiosResponse
-        console.error(
-          "EXCEPTION: http status error:",
-          pdfPath + ":",
-          e.response.status,
-          e.response.statusText
-        );
+        console.error("EXCEPTION: http status error:", pdfPath + ":", e.response.status, e.response.statusText);
       }
     }
     return undefined;
   }
 }
 
-async function processPdf({
-  folder,
-  filePath,
-  shortFilePath,
-  password,
-  writeOutputJson,
-  writeOutputCsv,
-  quiet,
-}) {
+async function processPdf({ folder, filePath, shortFilePath, password, writeOutputJson, writeOutputCsv, quiet }) {
   const requestTime = new Date();
-  const { apiKey, userKey } = App.config();
-  const result = await requestPdf(apiKey, userKey, filePath, password);
+  const { token } = App.config();
+  const result = await requestPdf(token, filePath, password);
   const responseTime = new Date();
   // console.log("JSON", JSON.stringify(response, null, 2));
 
@@ -778,8 +764,8 @@ function createSummarySkipped(folder, filePath, password) {
 
 async function processSinglePdf({ input, password, writeOutputJson, writeOutputCsv, quiet }) {
   const requestTime = new Date();
-  const { apiKey, userKey } = App.config();
-  const result = await requestPdf(apiKey, userKey, input, password);
+  const { token } = App.config();
+  const result = await requestPdf(token, input, password);
   const responseTime = new Date();
   // console.log("JSON", JSON.stringify(response, null, 2));
 

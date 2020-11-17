@@ -4,8 +4,7 @@ const _pass = undefined; // change this if you have a password protected pdf
 
 (() => {
   // TODO: inputs
-  const APIKEY = "00000000-0000-4000-a000-000000000001";
-  const USERKEY = "00000000-0000-4000-a000-000000000002";
+  const TOKEN = "... TODO ...";
   const _MOCK = false;
 
   //#region SpikeApi call + mock
@@ -16,7 +15,7 @@ const _pass = undefined; // change this if you have a password protected pdf
     try {
       // request
       console.log(`requesting ${SpikeApi.config.url.pdf} ...`);
-      const spikeResponse = await SpikeApi.pdf(APIKEY, USERKEY, fileName, pass, buffer);
+      const spikeResponse = await SpikeApi.pdf(TOKEN, fileName, pass, buffer);
 
       // process response
       if (spikeResponse.type === SpikeApi.enums.TYPES.SUCCESS) {

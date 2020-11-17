@@ -1,17 +1,17 @@
 const SpikeApi = require("@spike/api");
-const { APIKEY, USERKEY } = require("../config");
+const { TOKEN } = require("../config");
 
 module.exports = async (req, res) => {
   const { file, pass, buffer } = req.body; // body = SpikeApi.shape["client-gw/pdf"]
-  const proxyResponse = await pdfProxy(APIKEY, USERKEY, file, pass, buffer);
+  const proxyResponse = await pdfProxy(TOKEN, file, pass, buffer);
   return res.json(proxyResponse);
 };
 
-async function pdfProxy(APIKEY, USERKEY, fileName, pass, buffer) {
+async function pdfProxy(TOKEN, fileName, pass, buffer) {
   try {
     // request
     console.log(`requesting ${SpikeApi.config.url.pdf} ...`);
-    const spikeResponse = await SpikeApi.pdf(APIKEY, USERKEY, fileName, pass, buffer);
+    const spikeResponse = await SpikeApi.pdf(TOKEN, fileName, pass, buffer);
 
     // response
     if (spikeResponse.type === SpikeApi.enums.TYPES.SUCCESS) {

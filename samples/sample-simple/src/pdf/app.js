@@ -1,11 +1,11 @@
 const config = require("./config");
 const spikeApi = require("@spike/api");
 
-async function run({ APIKEY, USERKEY, FILE, PASS }) {
+async function run({ TOKEN, FILE, PASS }) {
   try {
     // request
     console.log(`requesting ${spikeApi.config.url.pdf} ...`);
-    const spikeResponse = await spikeApi.pdf(APIKEY, USERKEY, FILE, PASS);
+    const spikeResponse = await spikeApi.pdf(TOKEN, FILE, PASS);
 
     // process response
     if (spikeResponse.type === spikeApi.enums.TYPES.SUCCESS) {

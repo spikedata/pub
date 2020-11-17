@@ -275,13 +275,15 @@
 	  check
 	};
 
-	const _server = "https://api-v6.spikedata.co.za";
+	const _server = "https://api.spikedata.co.za";
 	const url$a = {
-	  // web
+	  // web-session
 	  accounts: _server + FN["accounts"].url,
 	  estatement: _server + FN["estatement"].url,
 	  login: _server + FN["login"].url,
 	  "login-interim-input": _server + FN["login-interim-input"].url,
+	  "login-interim-input-abs-pass": _server + "/login-interim-input-abs-pass",
+	  "login-interim-input-std-otp": _server + "/login-interim-input-std-otp",
 	  "login-interim-wait": _server + FN["login-interim-wait"].url,
 	  statements: _server + FN["statements"].url,
 	  transactions: _server + FN["transactions"].url,
@@ -289,20 +291,30 @@
 	  // pdf
 	  pdf: _server + FN["pdf"].url,
 	  csv: _server + FN["csv"].url
-	};
-	function changeServer(server) {
-	  // web
-	  url$a.accounts = server + FN["accounts"].url;
-	  url$a.estatement = server + FN["estatement"].url;
-	  url$a.login = server + FN["login"].url;
-	  url$a["login-interim-input"] = server + FN["login-interim-input"].url;
-	  url$a["login-interim-wait"] = server + FN["login-interim-wait"].url;
-	  url$a.statements = server + FN["statements"].url;
-	  url$a.transactions = server + FN["transactions"].url;
-	  url$a.close = server + FN["close"].url; // pdf
+	}; // this function is forr internal use
 
-	  url$a.pdf = server + FN["pdf"].url;
-	  url$a.csv = server + FN["csv"].url;
+	function changeServer({
+	  lambdaWebSession,
+	  lambdaPdf,
+	  lambdaCsv
+	}) {
+	  // web-session
+	  url$a.accounts = lambdaWebSession + FN["accounts"].url;
+	  url$a.estatement = lambdaWebSession + FN["estatement"].url;
+	  url$a.login = lambdaWebSession + FN["login"].url;
+	  url$a["login-interim-input"] = lambdaWebSession + FN["login-interim-input"].url;
+	  url$a["login-interim-input-abs-pass"] = lambdaWebSession + "/login-interim-input-abs-pass"; // HACK:api
+
+	  url$a["login-interim-input-std-otp"] = lambdaWebSession + "/login-interim-input-std-otp"; // HACK:api
+
+	  url$a["login-interim-wait"] = lambdaWebSession + FN["login-interim-wait"].url;
+	  url$a.statements = lambdaWebSession + FN["statements"].url;
+	  url$a.transactions = lambdaWebSession + FN["transactions"].url;
+	  url$a.close = lambdaWebSession + FN["close"].url; // pdf
+
+	  url$a.pdf = lambdaPdf; // + FN["pdf"].url;
+
+	  url$a.csv = lambdaCsv; // + FN["csv"].url;
 	}
 
 	var _static = /*#__PURE__*/Object.freeze({
@@ -316,110 +328,6 @@
 	var requestTypes = /*#__PURE__*/Object.freeze({
 		__proto__: null
 	});
-
-	//#endregion
-	//#region csv
-
-	/* TODO *
-
-	export interface CsvResponse extends StandardResponse {
-	  data: x | y;
-	}
-
-	/* */
-	//#endregion
-	//#region web
-
-	/* TODO *
-
-	export type AccountsResponse = {
-	  sessionId: string;
-	  final?: boolean;
-	};
-
-	export type CloseResponse = {
-	  sessionId: string;
-	  final?: boolean;
-	};
-
-	export type EstatementResponse = {
-	  sessionId: string;
-	  final?: boolean;
-	  accountNumber: string;
-	  numDays: number;
-	};
-
-	export type LoginResponse = {
-	  site: string;
-	  user: string;
-	  pin: string;
-	  usernum: string;
-	  pass: string;
-	};
-
-	export type LoginInterimInputAbsaPassResponse = {
-	  sessionId: string;
-	  final?: boolean;
-	  code: string;
-	  data: string[];
-	};
-
-	export type LoginInterimInputStdOtpResponse = {
-	  sessionId: string;
-	  final?: boolean;
-	  code: string;
-	  data: string; // note: not number = will remove leading zeros
-	};
-
-	export type LoginInterimWaitResponse = {
-	  sessionId: string;
-	  final?: boolean;
-	};
-
-	export type StatementsResponse = {
-	  sessionId: string;
-	  final?: boolean;
-	  accountNumber: string;
-	  numStatements: number;
-	};
-
-	export type TransactionsResponse = {
-	  sessionId: string;
-	  final?: boolean;
-	  accountNumber: string;
-	  numDays: number;
-	};
-
-	/* */
-	//#endregion
-
-	var responseTypes = /*#__PURE__*/Object.freeze({
-		__proto__: null
-	});
-
-	const createUnused = () => {
-	  throw new Error("create() is unused");
-	};
-
-	var shape = /*#__PURE__*/Object.freeze({
-		__proto__: null,
-		createUnused: createUnused
-	});
-
-	// see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
-	class ShapeNotFoundError extends Error {
-	  constructor(code) {
-	    super("Shape code does not exist: " + code); // Maintains proper stack trace for where our error was thrown (only available on V8)
-
-	    if (Error.captureStackTrace) {
-	      Error.captureStackTrace(this, ShapeNotFoundError);
-	    }
-
-	    this.name = "ShapeNotFoundError";
-	    this.code = code;
-	  }
-
-	}
 
 	function isString(x) {
 	  return typeof x === "string" || x instanceof String;
@@ -661,7 +569,7 @@
 	// see $/spike-pdf/tools/docs/add-new-parser.md
 
 	const PdfParser = {
-	  bankStatementsNormal: ["ABSA_ACTIVESAVE_ALL_0", "ABSA_CHEQUEACCOUNT_EMAIL_0", "ABSA_CHEQUEACCOUNT_WEB_0", "ABSA_ENQUIRY", "ABSA_ESTATEMENT_WEB_0", "BIDVEST_BUSINESSDEBITCARD_EMAIL_0", "BIDVEST_BUSINESS_EMAIL_0", "BIDVEST_BUSINESS_EMAIL_201902", "BIDVEST_BUSINESS_GPO_EMAIL", "BIDVEST_BUSINESS_WEB_0", "CAPITEC_ESTATEMENT_WEB_0", "DEA_ALL_0", "FNB_FLEXI_ALL_0", "FNB_RETAIL_ALL_0", "FNB_TRANSACTIONHISTORYDOWNLOAD_WEB_0", "FNB_INTERIM_STATEMENT_WEB_0", "INVESTEC_BANKACCOUNT", "INVESTEC_CALLACCOUNT", "MERCANTILE1", "NEDBANK_ALL_EMAIL_0", "NEDBANK_ALL_EMAIL_201711", "NEDBANK_BUSINESS", "NEDBANK_BUSINESS_201911", "NEDBANK_ESTATEMENT_WEB_0", "NEDBANK_PROVISIONAL_STATEMENT_WEB_0", "RMB_RETAIL_ALL_0", "SASFIN", "STANDARDBANK_ALL_EMAIL_0", "STANDARDBANK_COPYSTATEMENT", "STANDARDBANK_CURRENTACCOUNT", "STANDARDBANK_CUSTOMSTATEMENT_WEB_0", "STANDARDBANK_ESTATEMENT_WEB_0", "STANDARDBANK_STATEMENT2", "STANDARDBANK_STATEMENT3", "STANDARDBANK_STATEMENT4", "TYME"],
+	  bankStatementsNormal: ["ABSA_ACTIVESAVE_ALL_0", "ABSA_CHEQUEACCOUNT_EMAIL_0", "ABSA_CHEQUEACCOUNT_WEB_0", "ABSA_ENQUIRY", "ABSA_ESTATEMENT_WEB_0", "BIDVEST_BUSINESSDEBITCARD_EMAIL_0", "BIDVEST_BUSINESS_EMAIL_0", "BIDVEST_BUSINESS_EMAIL_201902", "BIDVEST_BUSINESS_GPO_EMAIL", "BIDVEST_BUSINESS_WEB_0", "CAPITEC_ESTATEMENT_WEB_0", "DEA_ALL_0", "FNB_FLEXI_ALL_0", "FNB_INTERIM_STATEMENT_WEB_0", "FNB_RETAIL_ALL_0", "FNB_TRANSACTIONHISTORYDOWNLOAD_WEB_0", "INVESTEC_BANKACCOUNT", "INVESTEC_CALLACCOUNT", "MERCANTILE1", "NEDBANK_ALL_EMAIL_0", "NEDBANK_ALL_EMAIL_201711", "NEDBANK_BUSINESS", "NEDBANK_BUSINESS_201911", "NEDBANK_ESTATEMENT_WEB_0", "NEDBANK_PROVISIONAL_STATEMENT_WEB_0", "NEDBANK_PROVISIONAL_STATEMENT_WEB_1", "RMB_RETAIL_ALL_0", "SASFIN", "STANDARDBANK_ALL_EMAIL_0", "STANDARDBANK_COPYSTATEMENT", "STANDARDBANK_CURRENTACCOUNT", "STANDARDBANK_CUSTOMSTATEMENT_WEB_0", "STANDARDBANK_ESTATEMENT_WEB_0", "STANDARDBANK_STATEMENT2", "STANDARDBANK_STATEMENT3", "STANDARDBANK_STATEMENT4", "TYME"],
 	  bankStatementsNoBalance: ["NEDBANK_ACCBAL_WEB"],
 	  creditCardBreakdown: ["ABSA_CREDITCARD_EMAIL_0", "NEDBANK_CREDITCARD"],
 	  creditCardBreakdownMultiUser: ["STANDARDBANK_CREDITCARD"],
@@ -739,6 +647,21 @@
 		Channel: Channel,
 		LogLevel: LogLevel
 	});
+
+	// see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
+	class ShapeNotFoundError extends Error {
+	  constructor(code) {
+	    super("Shape code does not exist: " + code); // Maintains proper stack trace for where our error was thrown (only available on V8)
+
+	    if (Error.captureStackTrace) {
+	      Error.captureStackTrace(this, ShapeNotFoundError);
+	    }
+
+	    this.name = "ShapeNotFoundError";
+	    this.code = code;
+	  }
+
+	}
 
 	// see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
 	class InputValidationError extends Error {
@@ -12861,6 +12784,15 @@
 	  blame: BLAME.CLIENT
 	};
 
+	const createUnused = () => {
+	  throw new Error("create() is unused");
+	};
+
+	var shape = /*#__PURE__*/Object.freeze({
+		__proto__: null,
+		createUnused: createUnused
+	});
+
 	const factory$m = {
 	  // parent
 	  type: TYPES.ERROR,
@@ -15222,6 +15154,103 @@
 	  return s;
 	};
 
+	function getResponseTypeString(response) {
+	  return TYPES.validValue(response.type) && TYPES.toString(response.type);
+	}
+	function getResponseBlameString(response) {
+	  let responseBlame;
+	  const shape = getShape(response.code);
+
+	  if (shape) {
+	    responseBlame = BLAME.validValue(shape.blame) && BLAME.toString(shape.blame);
+	  } else {
+	    log.fatal("getResponseBlameString = unknown result.code:", response.code);
+	    responseBlame = BLAME.toString(BLAME.SPIKE);
+	  }
+
+	  return responseBlame;
+	} //#endregion
+	//#region csv
+
+	/* TODO *
+
+	export interface CsvResponse extends StandardResponse {
+	  data: x | y;
+	}
+
+	/* */
+	//#endregion
+	//#region web
+
+	/* TODO *
+
+	export type AccountsResponse = {
+	  sessionId: string;
+	  final?: boolean;
+	};
+
+	export type CloseResponse = {
+	  sessionId: string;
+	  final?: boolean;
+	};
+
+	export type EstatementResponse = {
+	  sessionId: string;
+	  final?: boolean;
+	  accountNumber: string;
+	  numDays: number;
+	};
+
+	export type LoginResponse = {
+	  site: string;
+	  user: string;
+	  pin: string;
+	  usernum: string;
+	  pass: string;
+	};
+
+	export type LoginInterimInputAbsaPassResponse = {
+	  sessionId: string;
+	  final?: boolean;
+	  code: string;
+	  data: string[];
+	};
+
+	export type LoginInterimInputStdOtpResponse = {
+	  sessionId: string;
+	  final?: boolean;
+	  code: string;
+	  data: string; // note: not number = will remove leading zeros
+	};
+
+	export type LoginInterimWaitResponse = {
+	  sessionId: string;
+	  final?: boolean;
+	};
+
+	export type StatementsResponse = {
+	  sessionId: string;
+	  final?: boolean;
+	  accountNumber: string;
+	  numStatements: number;
+	};
+
+	export type TransactionsResponse = {
+	  sessionId: string;
+	  final?: boolean;
+	  accountNumber: string;
+	  numDays: number;
+	};
+
+	/* */
+	//#endregion
+
+	var responseTypes = /*#__PURE__*/Object.freeze({
+		__proto__: null,
+		getResponseTypeString: getResponseTypeString,
+		getResponseBlameString: getResponseBlameString
+	});
+
 	function isUserError(response) {
 	  const isError = TYPES.ERROR === response.type;
 	  if (!isError) return false; // check shape
@@ -16947,16 +16976,12 @@
 	var axios$1 = axios_1;
 
 	const MAX = 20 * 1024 * 1024;
-	const request = async function (APIKEY, USERKEY, url, inputs) {
+	const request = async function (TOKEN, url, inputs) {
 	  // check keys
 	  const validationErrors = [];
 
-	  if (!validUuidV4(APIKEY)) {
-	    validationErrors.push("apikey invalid");
-	  }
-
-	  if (!validUuidV4(USERKEY)) {
-	    validationErrors.push("userkey invalid");
+	  if (!TOKEN) {
+	    validationErrors.push("token invalid");
 	  }
 
 	  if (validationErrors.length) {
@@ -16966,9 +16991,8 @@
 
 	  const response = await axios$1.post(url, inputs, {
 	    headers: {
-	      "x-api-key": APIKEY,
-	      "x-user-key": USERKEY,
-	      "Content-Type": "application/json"
+	      "Content-Type": "application/json",
+	      Authorization: `Bearer ${TOKEN}`
 	    },
 	    maxContentLength: MAX
 	  });
@@ -16985,101 +17009,103 @@
 		request: request
 	});
 
-	var accounts$1 = (async function (APIKEY, USERKEY, sessionId, final) {
+	var accounts$1 = (async function (TOKEN, sessionId, final) {
 	  // inputs
 	  const inputs = getShape("client-gw/accounts").create(sessionId, final); // throws InputValidationError
 	  // request
 
 	  const url = url$a.accounts;
-	  return await request(APIKEY, USERKEY, url, inputs);
+	  return await request(TOKEN, url, inputs);
 	});
 
-	var close$1 = (async function (APIKEY, USERKEY, sessionId) {
+	var close$1 = (async function (TOKEN, sessionId) {
 	  // inputs
 	  const inputs = getShape("client-gw/close").create(sessionId); // throws InputValidationError
 	  // request
 
 	  const url = url$a.close;
-	  return await request(APIKEY, USERKEY, url, inputs);
+	  return await request(TOKEN, url, inputs);
 	});
 
-	var csv$1 = (async function (APIKEY, USERKEY, csvPath, buffer = undefined) {
+	var csv$1 = (async function (TOKEN, csvPath, buffer = undefined) {
 	  // inputs
 	  const inputs = getShape("client-gw/csv").create(csvPath, buffer); // request
 
 	  const url = url$a.csv;
-	  return await request(APIKEY, USERKEY, url, inputs);
+	  return await request(TOKEN, url, inputs);
 	});
 
-	var estatement$1 = (async function (APIKEY, USERKEY, sessionId, final, accountNumber, numDays) {
+	var estatement$1 = (async function (TOKEN, sessionId, final, accountNumber, numDays) {
 	  // inputs
 	  const inputs = getShape("client-gw/estatement").create(sessionId, final, accountNumber, numDays); // throws InputValidationError
 	  // request
 
 	  const url = url$a.estatement;
-	  return await request(APIKEY, USERKEY, url, inputs);
+	  return await request(TOKEN, url, inputs);
 	});
 
-	var absPass = (async function (APIKEY, USERKEY, sessionId, final, data) {
+	var absPass = (async function (TOKEN, sessionId, final, data) {
 	  // inputs
 	  const inputs = getShape("client-gw/login-interim-input/abs-pass").create(sessionId, final, data); // throws InputValidationError
 	  // request
 
-	  const url = url$a["login-interim-input"];
-	  return await request(APIKEY, USERKEY, url, inputs);
+	  const url = url$a["login-interim-input-abs-pass"]; // HACK:api
+
+	  return await request(TOKEN, url, inputs);
 	});
 
-	var stdOtp = (async function (APIKEY, USERKEY, sessionId, final, data) {
+	var stdOtp = (async function (TOKEN, sessionId, final, data) {
 	  // inputs
 	  const inputs = getShape("client-gw/login-interim-input/std-otp").create(sessionId, final, data); // throws InputValidationError
 	  // request
 
-	  const url = url$a["login-interim-input"];
-	  return await request(APIKEY, USERKEY, url, inputs);
+	  const url = url$a["login-interim-input-std-otp"]; // HACK:api
+
+	  return await request(TOKEN, url, inputs);
 	});
 
-	var loginInterimWait$1 = (async function (APIKEY, USERKEY, sessionId, final) {
+	var loginInterimWait$1 = (async function (TOKEN, sessionId, final) {
 	  // inputs
 	  const inputs = getShape("client-gw/login-interim-wait").create(sessionId, final); // throws InputValidationError
 	  // request
 
 	  const url = url$a["login-interim-wait"];
-	  return await request(APIKEY, USERKEY, url, inputs);
+	  return await request(TOKEN, url, inputs);
 	});
 
-	var login$1 = (async function (APIKEY, USERKEY, site, user, pin, pass, usernum) {
+	var login$1 = (async function (TOKEN, site, user, pin, pass, usernum) {
 	  // inputs
 	  const inputs = getShape("client-gw/login").create(site, user, pin, pass, usernum); // throws InputValidationError
 	  // request
 
 	  const url = url$a.login;
-	  return await request(APIKEY, USERKEY, url, inputs);
+	  return await request(TOKEN, url, inputs);
 	});
 
-	var pdf$1 = (async function (APIKEY, USERKEY, pdfPath, pass = undefined, buffer = undefined) {
+	var pdf$1 = (async function (TOKEN, pdfPath, pass = undefined, buffer = undefined) {
 	  // inputs
 	  const inputs = getShape("client-gw/pdf").create(pdfPath, pass, buffer); // request
 
 	  const url = url$a.pdf;
-	  return await request(APIKEY, USERKEY, url, inputs);
+	  return await request(TOKEN, url, inputs);
 	});
 
-	var statements$1 = (async function (APIKEY, USERKEY, sessionId, final, accountNumber, numStatements) {
+	var statements$1 = (async function (TOKEN, sessionId, final, accountNumber, numStatements) {
 	  // inputs
 	  const inputs = getShape("client-gw/statements").create(sessionId, final, accountNumber, numStatements); // throws InputValidationError
 	  // request
 
 	  const url = url$a.statements;
-	  return await request(APIKEY, USERKEY, url, inputs);
+	  return await request(TOKEN, url, inputs);
 	});
 
-	var transactions$2 = (async function (APIKEY, USERKEY, sessionId, final, accountNumber, numDays) {
+	var transactions$2 = (async function (TOKEN, sessionId, final, accountNumber, numDays) {
 	  // inputs
 	  const inputs = getShape("client-gw/transactions").create(sessionId, final, accountNumber, numDays); // throws InputValidationError
 	  // request
 
 	  const url = url$a.transactions;
-	  return await request(APIKEY, USERKEY, url, inputs);
+	  return await request(TOKEN, url, inputs);
 	});
 
 	function sanitize$x(response) {

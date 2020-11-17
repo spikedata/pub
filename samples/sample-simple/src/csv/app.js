@@ -1,11 +1,11 @@
 const config = require("./config");
 const spikeApi = require("@spike/api");
 
-async function run({ APIKEY, USERKEY, FILE }) {
+async function run({ TOKEN, FILE }) {
   try {
     // request
     console.log(`requesting ${spikeApi.config.url.csv} ...`);
-    const spikeResponse = await spikeApi.csv(APIKEY, USERKEY, FILE);
+    const spikeResponse = await spikeApi.csv(TOKEN, FILE);
 
     // process response
     if (spikeResponse.type === spikeApi.enums.TYPES.SUCCESS) {

@@ -12,8 +12,11 @@ async function initGlobals(logger, logSettings) {
 async function initDeps() {}
 
 async function initSelf(spikeConfigFile) {
-  _config.apiKey = spikeConfigFile.apiKey;
-  _config.userKey = spikeConfigFile.userKey;
+  if (!spikeConfigFile.token) {
+    console.error("token missing in config, re-run `configure`");
+    process.exit(-1);
+  }
+  _config.token = spikeConfigFile.token;
 }
 
 exports.ErrorCode = {
