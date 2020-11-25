@@ -13,15 +13,14 @@ function getConfigPath() {
 
 exports.read = async function () {
   const cp = getConfigPath();
-  let apiKey;
-  let userKey;
+  let token;
   if (!fs.existsSync(cp.configPath)) {
-    ({ apiKey, userKey } = await exports.write());
+    ({ token } = await exports.write());
   } else {
-    ({ apiKey, userKey } = JSON.parse(fs.readFileSync(cp.configPath, "utf8")));
+    ({ token } = JSON.parse(fs.readFileSync(cp.configPath, "utf8")));
   }
 
-  return { apiKey, userKey };
+  return { token };
 };
 
 exports.write = async function () {
@@ -35,33 +34,23 @@ exports.write = async function () {
     }
   }
 
-  // please enter apiKey
+  // please enter token
+  let token;
   while (true) {
-    apiKey = await userInput.question("Enter you apiKey: ", false, undefined, undefined);
-    if (validUuidV4(apiKey)) {
+    token = await userInput.question("Enter you token: ", false, undefined, undefined);
+    if (validateToken(token)) {
       break;
     } else {
-      output.red("Invalid key entered, please try again");
+      output.red("Invalid token entered, please try again");
     }
   }
 
-  // please enter userKey
-  while (true) {
-    userKey = await userInput.question("Enter you userKey: ", false, undefined, undefined);
-    if (validUuidV4(userKey)) {
-      break;
-    } else {
-      output.red("Invalid key entered, please try again");
-    }
-  }
-
-  const settings = { apiKey, userKey };
+  const settings = { token };
   fs.writeFileSync(cp.configPath, JSON.stringify(settings, null, 2), "utf8");
   console.log("wrote config file:", cp.configPath);
   return settings;
 };
 
-const uuidV4Regex = /[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}/;
-function validUuidV4(s) {
-  return uuidV4Regex.test(s);
+function validateToken(token) {
+  return true; // TODO
 }
