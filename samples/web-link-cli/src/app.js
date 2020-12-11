@@ -45,7 +45,7 @@ async function link({ token: tokenPath, dataDir, name }) {
   // run express to handle callback from link.spikedata.co.za
   const app = express();
   const callback = encodeURIComponent(`http://localhost:${localPort}/callback`);
-  app.get("/callback", linkCallback.bind({ name, dataDir }));
+  app.post("/callback", linkCallback.bind({ name, dataDir }));
   server = await app.listen(localPort);
 
   // launch browser
@@ -115,14 +115,13 @@ yargs(hideBin(process.argv))
   .options({
     d: {
       alias: "dataDir",
-      demandOption: true,
       describe: "root directory below which linked account data will be stored",
       default: defaultDataDir,
       type: "string",
     },
   })
   .command({
-    command: "link -n <name> -t <token>",
+    command: "link",
     desc: "launches the web interface to link a new account",
     builder: {
       n: {
@@ -146,7 +145,7 @@ yargs(hideBin(process.argv))
     handler: list,
   })
   .command({
-    command: "query -n <name> -t <token>",
+    command: "query",
     desc: "query a linked account",
     builder: {
       n: {
