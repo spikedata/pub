@@ -16,5 +16,5 @@ node ./src/app.js link
 node ./src/app.js list
 
 # query a linked account
-node ./src/app.js query --id 1
+node ./src/app.js query --id 1 --key xxx
 ```

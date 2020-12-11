@@ -8,66 +8,59 @@ const { hideBin } = require("yargs/helpers");
 const config = require("./config");
 
 let server = undefined; // used by link
-const DIR = path.resolve(path.join(__dirname, "..", "tokens"));
 const userId = 1;
 
-async function run() {
-  yargs(hideBin(process.argv))
-    .command({
-      command: "link",
-      desc: "launches the web interface to link a new account",
-      // builder: () => {},
-      handler: link,
-    })
-    .command({
-      command: "list",
-      desc: "list linked accounts",
-      handler: (argv) => {
-        console.log("TODO: list");
-      },
-    })
-    .command({
-      command: "query <id>",
-      desc: "query a linked account",
-      builder: (yargs) =>
-        yargs.positional("id", {
-          describe: "the id of the linked account as reported by 'list'",
-        }),
-      handler: query,
-    })
-    .demandCommand()
-    .help()
-    .wrap(72).argv;
+function getKeyPath(dataDir, name) {
+  return path.join(dataDir, name, "key");
+}
+
+function getTransactionsPath(dataDir, name) {
+  return path.join(dataDir, name, "transactions.json");
 }
 
 //#region link
 
-const callback = encodeURIComponent("http://localhost:3000/callback");
+async function link({ token: tokenPath, dataDir, name }) {
+  // config
+  const { linkUrl, localPort } = config;
 
-async function link(argv) {
-  const { token, clientId, linkUrl, linkSecret } = config;
+  // load token
+  if (!fs.existsSync(tokenPath)) {
+    console.error("token not found:", tokenPath);
+    process.exit(-1);
+  }
+  const token = fs.readFileSync(tokenPath, "utf8");
 
-  // run express to handle callback
+  // dataDir + check whether name already used
+  if (fs.existsSync(dataDir)) {
+    const keyPath = getKeyPath(dataDir, name);
+    if (fs.existsSync(keyPath)) {
+      console.error("already exists, pick another name:", keyPath);
+      process.exit(-1);
+    }
+  } else {
+    fs.mkdirSync(dataDir, { recursive: true });
+  }
+
+  // run express to handle callback from link.spikedata.co.za
   const app = express();
-  app.get("/callback", linkCallback);
-  server = await app.listen(3000);
-
-  // make encryptblock
-  const encryptblock = "todo";
+  const callback = encodeURIComponent(`http://localhost:${localPort}/callback`);
+  app.get("/callback", linkCallback.bind({ name, dataDir }));
+  server = await app.listen(localPort);
 
   // launch browser
-  open(`${linkUrl}?clientId=${clientId}&callback=${callback}&eb=${encryptblock}`);
+  open(`${linkUrl}?callback=${callback}&token=${token}`);
 }
 
 function linkCallback(req, res) {
   console.log("linkCallback", JSON.stringify(req.body, null, 2));
   if (req.body) {
-    res.end(`Your account is linked with id=${userId}. You may close this window.`);
+    res.end("Your account is linked. You may close this window.");
 
-    // save ./tokens/{userId}
-    const filePath = path.join(DIR, "" + userId);
-    fs.writeFileSync(filePath, req.body, "utf8");
-    console.log("Wrote:", filePath);
+    // save
+    const keyPath = getKeyPath(this.dataDir, this.name);
+    fs.writeFileSync(keyPath, req.body, "utf8");
+    console.log("Wrote:", keyPath);
   } else {
     res.end("Your account could not be linked, please try again. You may close this window.");
     console.error("Failed: link did not return a token");
@@ -79,8 +72,29 @@ function linkCallback(req, res) {
 
 //#region list
 
-async function list(argv) {
-  console.log("TODO: list");
+async function list({ dataDir }) {
+  const children = getChildDirs(dataDir).map((x) => path.basename(x));
+  if (children.length) {
+    console.table(children);
+  } else {
+    console.warn("no links found in:", dataDir);
+  }
+}
+
+function getChildDirs(dir) {
+  if (!fs.existsSync(dir)) {
+    return [];
+  }
+  const results = [];
+  const children = fs.readdirSync(dir, {});
+  for (const file of children) {
+    const fullPath = path.resolve(path.join(dir, file));
+    const stat = fs.statSync(fullPath);
+    if (stat && stat.isDirectory()) {
+      results.push(fullPath);
+    }
+  }
+  return results;
 }
 
 //#endregion
@@ -93,4 +107,64 @@ async function query(argv) {
 
 //#endregion
 
-run();
+//#region command line
+
+const defaultDataDir = path.resolve(path.join(__dirname, "..", "data"));
+
+yargs(hideBin(process.argv))
+  .options({
+    d: {
+      alias: "dataDir",
+      demandOption: true,
+      describe: "root directory below which linked account data will be stored",
+      default: defaultDataDir,
+      type: "string",
+    },
+  })
+  .command({
+    command: "link -n <name> -t <token>",
+    desc: "launches the web interface to link a new account",
+    builder: {
+      n: {
+        alias: "name",
+        demandOption: true,
+        describe: "what to name this linked account",
+        type: "string",
+      },
+      t: {
+        alias: "token",
+        demandOption: true,
+        describe: "path to token file",
+        type: "string",
+      },
+    },
+    handler: link,
+  })
+  .command({
+    command: "list",
+    desc: "list names of accounts that you have linked previously",
+    handler: list,
+  })
+  .command({
+    command: "query -n <name> -t <token>",
+    desc: "query a linked account",
+    builder: {
+      n: {
+        alias: "name",
+        demandOption: true,
+        describe: "name of previously linked account",
+        type: "string",
+      },
+      t: {
+        alias: "token",
+        demandOption: true,
+        describe: "path to token file",
+        type: "string",
+      },
+    },
+    handler: query,
+  })
+  .demandCommand()
+  .help()
+  .wrap(100).argv;
+//#endregion

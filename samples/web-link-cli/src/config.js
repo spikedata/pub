@@ -1,12 +1,8 @@
 // TODO: inputs
-const token = "";
-const clientId = "";
-const linkUrl = "http://localhost:3010";
-const linkSecret = "";
+const linkUrl = "http://localhost:3010"; // https://link.spikedata.co.za
+const localPort = 3000;
 
 module.exports = {
-  token,
-  clientId,
   linkUrl,
-  linkSecret,
+  localPort,
 };
