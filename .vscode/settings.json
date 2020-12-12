@@ -1,9 +1,24 @@
 {
-  "debug.node.autoAttach": "on",
+  "debug.javascript.usePreview": true,
+  "debug.javascript.autoAttachFilter": "onlyWithFlag",
+  // create vs-debugger traces
+  //  - check `debug console` for file output location
+  //  - and https://microsoft.github.io/vscode-pwa-analyzer/index.html to see what's in the trace
+  // "debug.javascript.terminalOptions": {
+  //   "trace": true
+  // },
   "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
   "editor.formatOnSave": true,
+  // "editor.rulers": [100],
+  // "editor.wordWrap": "wordWrapColumn",
+  // "editor.wordWrapColumn": 100,
   "eslint.validate": ["javascript", { "language": "typescript", "autoFix": true }],
-  // "prettier.eslintIntegration": true,
+  "eslint.packageManager": "yarn",
+  "prettier.eslintIntegration": true,
+  // "prettier.proseWrap": "always",
+  // "prettier.proseWrap": "never",
+  // "prettier.proseWrap": "preserve",
+  // "prettier.printWidth": 2000,
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -14,7 +29,11 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[markdown]": {
-    // "editor.formatOnSave": false
+    // "editor.wordWrap": "wordWrapColumn",
+    "editor.quickSuggestions": false,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    // "editor.defaultFormatter": "darkriszty.markdown-table-prettify"
   },
   "markdown-preview-enhanced.automaticallyShowPreviewOfMarkdownBeingEdited": false,
   "[typescript]": {

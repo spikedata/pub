@@ -2,38 +2,18 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Attach (default)",
       "type": "node",
       "request": "attach",
-      "name": "Attach by Process ID",
-      "processId": "${command:PickProcess}",
-      "skipFiles": [
-        "<node_internals>/**",
-        "${workspaceFolder}/node_modules/**/*.js"
-      ]
+      "port": 9229,
+      "skipFiles": ["<node_internals>/**"]
     },
     {
+      "name": "Attach (pick)",
       "type": "node",
-      "request": "launch",
-      "name": "Debug Project",
-      // we test in `build` to make cleanup fast and easy
-      "cwd": "${workspaceFolder}/build",
-      // Replace this with your project root. If there are multiple, you can
-      // automatically run the currently visible file with: "program": ${file}"
-      "program": "${workspaceFolder}/src/cli/cli.ts",
-      // "args": ["--no-install"],
-      "outFiles": ["${workspaceFolder}/build/main/**/*.js"],
-      "skipFiles": [
-        "<node_internals>/**/*.js",
-        "${workspaceFolder}/node_modules/**/*.js"
-      ],
-      "preLaunchTask": "npm: build",
-      "stopOnEntry": true,
-      "smartStep": true,
-      "runtimeArgs": ["--nolazy"],
-      "env": {
-        // env vars
-      },
-      "console": "externalTerminal"
-    }
+      "request": "attach",
+      "processId": "${command:PickProcess}",
+      "skipFiles": ["<node_internals>/**"]
+    },
   ]
 }
