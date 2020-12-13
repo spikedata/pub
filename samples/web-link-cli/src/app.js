@@ -10,8 +10,12 @@ const config = require("./config");
 let server = undefined; // used by link
 const userId = 1;
 
+function getUserDir(dataDir, name) {
+  return path.join(dataDir, name);
+}
+
 function getKeyPath(dataDir, name) {
-  return path.join(dataDir, name, "key");
+  return path.join(getUserDir(dataDir, name), "key");
 }
 
 function getTransactionsPath(dataDir, name) {
@@ -83,24 +87,32 @@ async function link({ token: tokenPath, dataDir, name }) {
 }
 
 function linkCallback(req, res) {
-  console.log("linkCallback", this.name, JSON.stringify(req.body, null, 2));
-  if (req.body) {
-    res.end("Your account is linked. You may close this window.");
+  try {
+    console.log("linkCallback", this.name, JSON.stringify(req.body, null, 2));
+    if (req.body) {
+      res.end("Your account is linked. You may close this window.");
 
-    // save
-    const keyPath = getKeyPath(this.dataDir, this.name);
-    const { buffer, linkId } = req.body;
-    if (linkId === this.name) {
-      fs.writeFileSync(keyPath, buffer, "utf8");
-      console.log("Wrote:", keyPath);
+      // save
+      const userDir = getUserDir(this.dataDir, this.name);
+      if (!fs.existsSync(userDir)) {
+        fs.mkdirSync(userDir, { recursive: true });
+      }
+      const keyPath = getKeyPath(this.dataDir, this.name);
+      const { buffer, linkId } = req.body;
+      if (linkId === this.name) {
+        fs.writeFileSync(keyPath, buffer, "utf8");
+        console.log("Wrote:", keyPath);
+      } else {
+        // in this simple example we expect to link one account at a time
+        // however your app should handle multiple concurrent account linkages
+        console.error(`Failed: received callback for ${linkId}, was expecting ${this.name}`);
+      }
     } else {
-      // in this simple example we expect to link one account at a time
-      // however your app should handle multiple concurrent account linkages
-      console.error(`Failed: received callback for ${linkId}, was expecting ${this.name}`);
+      res.end("Your account could not be linked, please try again. You may close this window.");
+      console.error("Failed: link did not return a token");
     }
-  } else {
-    res.end("Your account could not be linked, please try again. You may close this window.");
-    console.error("Failed: link did not return a token");
+  } catch (e) {
+    console.error("exception in callback:", e);
   }
   // only link one account at a time - can close after callback received
   server.close();
