@@ -1,6 +1,7 @@
 // const spikeApi = require("@spike/api");
 const fs = require("fs");
 const path = require("path");
+const readline = require("readline");
 const express = require("express");
 const open = require("open");
 const yargs = require("yargs/yargs");
@@ -65,6 +66,10 @@ async function link({ env, token: tokenPath, dataDir, name }) {
   }
   const token = fs.readFileSync(tokenPath, "utf8");
 
+  if (!name) {
+    name = await read("Enter a name for this linked account: ");
+  }
+
   // dataDir + check whether name already used
   if (fs.existsSync(dataDir)) {
     const keyPath = getKeyPath(dataDir, name);
@@ -85,6 +90,20 @@ async function link({ env, token: tokenPath, dataDir, name }) {
 
   // launch browser
   open(`${url}?callback=${callback}&token=${token}&linkId=${name}`);
+}
+
+async function read(message) {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  return await new Promise((resolve) => {
+    rl.question(message, (answer) => {
+      resolve(answer);
+      rl.close();
+    });
+  });
 }
 
 function linkCallback(req, res) {
@@ -176,7 +195,7 @@ yargs(hideBin(process.argv))
     builder: {
       n: {
         alias: "name",
-        demandOption: true,
+        demandOption: false, // will prompt user for a name if not supplied
         describe: "what to name this linked account",
         type: "string",
       },
