@@ -31,8 +31,9 @@ async function list({ dataDir }) {
   if (children.length) {
     console.table(children);
   } else {
-    console.warn("no links found in:", dataDir);
+    console.warn("no linked accounts found in:", dataDir);
   }
+  return children;
 }
 
 function getChildDirs(dir) {
@@ -159,8 +160,14 @@ async function query({ env, token: tokenPath, dataDir, name, numDays }) {
   }
   const token = fs.readFileSync(tokenPath, "utf8");
 
+  // input name if not supplied
   if (!name) {
-    name = await read("Enter a name for this linked account: ");
+    const names = await list({ dataDir });
+    if (names.length === 0) {
+      console.error("no linked accounts, run `link` first then retry");
+      process.exit(-1);
+    }
+    name = await read("\nWhich linked account do you want to query? (use name, not number): ");
   }
 
   // dataDir + check whether name already used
@@ -279,7 +286,7 @@ yargs(hideBin(process.argv))
     builder: {
       n: {
         alias: "name",
-        demandOption: true,
+        demandOption: false,
         describe: "name of previously linked account",
         type: "string",
       },
