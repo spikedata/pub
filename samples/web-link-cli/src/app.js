@@ -1,4 +1,5 @@
-// const spikeApi = require("@spike/api");
+const spikeApi = require("@spike/api");
+const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
 const readline = require("readline");
@@ -142,8 +143,71 @@ function linkCallback(req, res) {
 
 //#region query
 
-async function query(argv) {
-  console.log("TODO: query");
+async function query({ env, token: tokenPath, dataDir, name, numDays }) {
+  // config
+  const { queryUrl } = config;
+  const url = queryUrl[env];
+  if (!url) {
+    console.error("can't use env for query:", env);
+    process.exit(-1);
+  }
+
+  // load token
+  if (!fs.existsSync(tokenPath)) {
+    console.error("token not found:", tokenPath);
+    process.exit(-1);
+  }
+  const token = fs.readFileSync(tokenPath, "utf8");
+
+  if (!name) {
+    name = await read("Enter a name for this linked account: ");
+  }
+
+  // dataDir + check whether name already used
+  const keyPath = getKeyPath(dataDir, name);
+  if (!fs.existsSync(keyPath)) {
+    console.error("key not found, pick another name:", keyPath);
+    process.exit(-1);
+  }
+  const key = fs.readFileSync(keyPath, "utf8");
+
+  // query
+  const result = await postQueryTransactions(url, token, key, numDays);
+  if (result) {
+    if (result.type === spikeApi.enums.TYPES.SUCCESS) {
+      console.error("success:", JSON.stringify(result.data, null, 2));
+    } else {
+      console.error("failed:", JSON.stringify(result.data, null, 2));
+    }
+  } else {
+    console.error("failed: no result");
+  }
+}
+
+async function postQueryTransactions(queryUrl, token, key, numDays) {
+  try {
+    const body = {
+      key,
+      query: {
+        transactions: {
+          numDays,
+        },
+      },
+    };
+    const response = await axios.post(queryUrl, body, {
+      headers: {
+        "Content-Type": "applications/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (e) {
+    console.log("exception:", e);
+  }
+  return false;
 }
 
 //#endregion
@@ -232,7 +296,7 @@ yargs(hideBin(process.argv))
         default: defaultQuery,
         choices: queries,
       },
-      d: {
+      x: {
         alias: "numDays",
         demandOption: false,
         describe: "number of days for transactions and estatement queries",
