@@ -53,9 +53,10 @@ function getChildDirs(dir) {
 
 //#region link
 
-async function link({ token: tokenPath, dataDir, name }) {
+async function link({ env, token: tokenPath, dataDir, name }) {
   // config
   const { linkUrl, localPort } = config;
+  const url = linkUrl[env];
 
   // load token
   if (!fs.existsSync(tokenPath)) {
@@ -83,7 +84,7 @@ async function link({ token: tokenPath, dataDir, name }) {
   server = await app.listen(localPort);
 
   // launch browser
-  open(`${linkUrl}?callback=${callback}&token=${token}&linkId=${name}`);
+  open(`${url}?callback=${callback}&token=${token}&linkId=${name}`);
 }
 
 function linkCallback(req, res) {
@@ -129,6 +130,12 @@ async function query(argv) {
 //#endregion
 
 //#region command line
+const Env = {
+  local: "local",
+  localDev: "localDev",
+  prod: "prod",
+};
+const Envs = Object.keys(Env);
 
 const Query = {
   transactions: "transactions",
@@ -138,6 +145,7 @@ const Query = {
 const queries = Object.keys(Query);
 
 const defaultDataDir = path.resolve(path.join(__dirname, "..", "data"));
+const defaultEnv = Env.local;
 const defaultQuery = Query.transactions;
 const defaultNumDays = 1;
 
@@ -148,6 +156,13 @@ yargs(hideBin(process.argv))
       describe: "root directory below which linked account data will be stored",
       default: defaultDataDir,
       type: "string",
+    },
+    e: {
+      alias: "env",
+      demandOption: false,
+      describe: "environment - which server to connect to",
+      default: defaultEnv,
+      choices: Envs,
     },
   })
   .command({
