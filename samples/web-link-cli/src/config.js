@@ -7,7 +7,7 @@ const localPort = 3500;
 
 const queryUrl = {
   local: "http://localhost:3001/prod/transactions",
-  prod: "https://web-linked.spikedata.co.za/transactions", // TODO
+  prod: "https://web-linked.spikedata.co.za/transactions",
 };
 
 module.exports = {
