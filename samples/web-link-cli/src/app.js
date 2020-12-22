@@ -58,7 +58,7 @@ function getChildDirs(dir) {
 
 async function link({ env, token: tokenPath, dataDir, name }) {
   // config
-  const { linkUrl, localPort } = config;
+  const { linkUrl, callback } = config;
   const url = linkUrl[env];
 
   // load token
@@ -86,12 +86,13 @@ async function link({ env, token: tokenPath, dataDir, name }) {
   // run express to handle callback from link.spikedata.co.za
   const app = express();
   app.use(express.json());
-  const callback = encodeURIComponent(`http://localhost:${localPort}/callback`);
+  const callbackUrl = callback.url[env];
+  const callbackUri = encodeURIComponent(`${callbackUrl}/callback`);
   app.post("/callback", linkCallback.bind({ name, dataDir }));
-  server = await app.listen(localPort);
+  server = await app.listen(callback.localPort);
 
   // launch browser
-  open(`${url}?callback=${callback}&token=${token}&linkId=${name}`);
+  open(`${url}?callback=${callbackUri}&token=${token}&linkId=${name}`);
 }
 
 async function read(message) {
