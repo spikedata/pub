@@ -127,7 +127,7 @@ class AjvExt {
   }
 
   // NOTE: static class properties are stage 3 atm: https://javascript.info/static-properties-methods#static-properties
-  static swaggerReplacement() {
+  static openapiReplacement() {
     // https://swagger.io/specification/#dataTypes
     return {
       uuidV4: {
