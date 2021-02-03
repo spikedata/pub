@@ -43,6 +43,6 @@
     "typeRoots": ["node_modules/@types", "types"] // common node_module types + common custom types
   },
   // "include": ["src/**/*.ts", "src/**/*.js"],
-  "exclude": ["node_modules/**"],
+  "exclude": ["node_modules/**", "**/node_modules/**", "**/dist/**", "**/build/**", ".git", "docs", "scripts"],
   "compileOnSave": false
 }
