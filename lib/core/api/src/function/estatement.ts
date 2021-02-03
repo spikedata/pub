@@ -1,6 +1,8 @@
+import * as openapiBase from "./web-session/openapi";
+
 export const url = "/estatement";
-export const swagger = {
-  tags: ["Web"],
+export const openapi = {
+  ...openapiBase,
   method: "post",
   summary: "Branded statement (free to download)",
   operationId: "estatement",
@@ -33,6 +35,6 @@ export const shapes = {
 };
 export default {
   url,
-  swagger,
+  openapi,
   shapes,
 };

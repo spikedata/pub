@@ -1,6 +1,8 @@
+import * as openapiBase from "./web-session/openapi";
+
 export const url = "/statements";
-export const swagger = {
-  tags: ["Web"],
+export const openapi = {
+  ...openapiBase,
   method: "post",
   summary: "Archived history statement (some banks may charge)",
   operationId: "statements",
@@ -33,6 +35,6 @@ export const shapes = {
 };
 export default {
   url,
-  swagger,
+  openapi,
   shapes,
 };

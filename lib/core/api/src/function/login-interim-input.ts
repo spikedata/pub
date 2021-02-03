@@ -1,6 +1,8 @@
+import * as openapiBase from "./web-session/openapi";
+
 export const url = "/login-interim-input";
-export const swagger = {
-  tags: ["Web"],
+export const openapi = {
+  ...openapiBase,
   method: "post",
   summary: "2nd step in a 2-step login process where user input is required - e.g. STD OTP & ABS pass",
   operationId: "login",
@@ -34,6 +36,6 @@ export const shapes = {
 };
 export default {
   url,
-  swagger,
+  openapi,
   shapes,
 };

@@ -1,6 +1,8 @@
+import * as openapiBase from "./web-session/openapi";
+
 export const url = "/transactions";
-export const swagger = {
-  tags: ["Web"],
+export const openapi = {
+  ...openapiBase,
   method: "post",
   summary: "Up to 90 days transaction history",
   operationId: "transactions",
@@ -32,6 +34,6 @@ export const shapes = {
 };
 export default {
   url,
-  swagger,
+  openapi,
   shapes,
 };

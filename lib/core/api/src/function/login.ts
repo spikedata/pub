@@ -1,6 +1,8 @@
+import * as openapiBase from "./web-session/openapi";
+
 export const url = "/login";
-export const swagger = {
-  tags: ["Web"],
+export const openapi = {
+  ...openapiBase,
   method: "post",
   summary: "Initiate a session by logging in to an internet banking account",
   operationId: "login",
@@ -34,6 +36,6 @@ export const shapes = {
 };
 export default {
   url,
-  swagger,
+  openapi,
   shapes,
 };

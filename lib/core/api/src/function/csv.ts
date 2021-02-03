@@ -1,6 +1,8 @@
+import * as openapiBase from "./Statements/openapi";
+
 export const url = "/csv";
-export const swagger = {
-  tags: ["Utilities"],
+export const openapi = {
+  ...openapiBase,
   method: "post",
   summary: "Parse a csv statement and return transactions and account holder info",
   description: "Note - does not require login",
@@ -32,6 +34,6 @@ export const shapes = {
 };
 export default {
   url,
-  swagger,
+  openapi,
   shapes,
 };
