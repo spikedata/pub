@@ -1,8 +1,9 @@
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const userInput = require("./lib/userInput");
-const output = require("./lib/output");
+const jwtHelper = require("./jwtHelper");
+const output = require("./output");
+const userInput = require("./userInput");
 
 function getConfigPath() {
   const home = os.homedir();
@@ -37,11 +38,11 @@ exports.write = async function () {
   // please enter token
   let token;
   while (true) {
-    token = await userInput.question("Enter you token: ", false, undefined, undefined);
-    if (validateToken(token)) {
+    token = await userInput.question("Enter your token: ", false, undefined, undefined);
+    if (await validateToken(token)) {
       break;
     } else {
-      output.red("Invalid token entered, please try again");
+      output.red("Invalid token entered, please try again (Ctrl-c to exit)");
     }
   }
 
@@ -51,6 +52,8 @@ exports.write = async function () {
   return settings;
 };
 
-function validateToken(token) {
-  return true; // TODO
+async function validateToken(token) {
+  const decoded = await jwtHelper.verify(token, "http://127.0.0.1:8080/jwks.json");
+  // const decoded = await jwtHelper.verify(token, "https://app.spikedata.co.za/.well-known/jwks.json");
+  return !!decoded;
 }

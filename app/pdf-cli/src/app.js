@@ -1,8 +1,8 @@
 const defaultConfig = require("./config/default");
-const SpikeConfig = require("./spikeConfig");
+const SpikeConfig = require("./command/configure");
+const { output } = require("./lib/output");
 
 async function initGlobals(logger, logSettings) {
-  // logger
   if (!global.log) {
     logger.implementation.init(logSettings);
     global.log = logger.implementation;
@@ -13,7 +13,8 @@ async function initDeps() {}
 
 async function initSelf(spikeConfigFile) {
   if (!spikeConfigFile.token) {
-    console.error("token missing in config, re-run `configure`");
+    const x = process.argv[0] + " " + process.argv[1];
+    output.red(`token missing in config, try run:\n ${x} configure`);
     process.exit(-1);
   }
   _config.token = spikeConfigFile.token;
@@ -51,7 +52,6 @@ exports.init = async function (
   }
   _config = { singletons, logSettings, quiet };
 
-  // initGlobals, initDeps, initSelf, fixConfig, shutdown
   try {
     const { logger } = singletons;
     await initGlobals(logger, logSettings);
@@ -64,21 +64,15 @@ exports.init = async function (
     _initted = true;
     return true;
   } catch (err) {
-    const logger = global.log ? global.log.fatal : console.error;
-    logger("init error", err);
-    throw err;
+    log.error("init error", err);
+    output.error("intialisation failed");
+    process.exit(-1);
   }
 };
 
 exports.shutdown = async function () {
   _initted = false;
-  if (!_config.quiet) {
-    if (global.log) {
-      log.info("spike-pdf-cli shutdown");
-    } else {
-      console.log("spike-pdf-cli shutdown");
-    }
-  }
+  log.info("spike-pdf-cli shutdown");
   if (global.log && log.shutdown) {
     log.shutdown();
   }

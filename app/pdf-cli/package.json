@@ -44,8 +44,11 @@
     "deep-extend": "0.6.0",
     "duration": "0.2.2",
     "json5": "2.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^2.0.3",
     "minimatch": "3.0.4",
-    "read": "1.0.7"
+    "read": "1.0.7",
+    "yargs": "^17.0.1"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
