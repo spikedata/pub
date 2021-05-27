@@ -10,7 +10,7 @@ exports.verify = async function (token, jwksUri) {
   function getKey(header, callback) {
     client.getSigningKey(header.kid, function (err, key) {
       if (err) {
-        // console.error("getSigningKey failed:", err);
+        log.error("getSigningKey failed:", err);
         return callback(err);
       }
       const signingKey = key.publicKey || key.rsaPublicKey;
@@ -25,7 +25,7 @@ exports.verify = async function (token, jwksUri) {
     return decoded;
   } catch (err) {
     if (err) {
-      // console.error("invalid token: " + err);
+      log.error("invalid token:", err);
       return false;
     }
   }

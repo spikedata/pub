@@ -21,6 +21,11 @@ yargs(hideBin(process.argv))
         default: "default",
         describe: "Specify filtering on commandline, rather than by manual input",
       },
+      verbose: {
+        type: "boolean",
+        describe: "print log messages",
+        default: false,
+      },
       jwksUri: {
         type: "string",
         describe: "url for jwks.json to verify jwt token (for unit testing primarily)",
