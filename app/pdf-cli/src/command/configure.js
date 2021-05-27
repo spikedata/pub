@@ -1,7 +1,8 @@
+const App = require("../app");
 const configure = require("../lib/configure");
+const output = require("../lib/output");
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-exports.command = async function (_args) {
+exports.command = async function (args) {
   try {
     await App.init(args);
     await configure.write();

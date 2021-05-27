@@ -4,6 +4,8 @@ const basicColoredLogger = require("../lib/log/basicColoredLogger");
 const AppLogName = "pdf-cli";
 
 module.exports = {
+  quiet: true,
+
   logger: {
     host: AppLogName,
     /* */
@@ -37,5 +39,5 @@ module.exports = {
     quiet: false,
   },
 
-  quiet: true,
+  jwksUri: "https://app.spikedata.co.za/.well-known/jwks.json",
 };

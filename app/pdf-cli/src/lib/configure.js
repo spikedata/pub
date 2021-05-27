@@ -12,6 +12,13 @@ function getConfigPath() {
   return { dir, configPath };
 }
 
+// let jwksUri = "http://127.0.0.1:8080/jwks.json"
+let jwksUri = "https://app.spikedata.co.za/.well-known/jwks.json";
+
+exports.init = function (config, inputs) {
+  jwksUri = inputs.jwksUri || config.jwksUri;
+};
+
 exports.read = async function () {
   const cp = getConfigPath();
   let token;
@@ -53,7 +60,7 @@ exports.write = async function () {
 };
 
 async function validateToken(token) {
-  const decoded = await jwtHelper.verify(token, "http://127.0.0.1:8080/jwks.json");
-  // const decoded = await jwtHelper.verify(token, "https://app.spikedata.co.za/.well-known/jwks.json");
+  output.gray("validating token ...");
+  const decoded = await jwtHelper.verify(token, jwksUri);
   return !!decoded;
 }

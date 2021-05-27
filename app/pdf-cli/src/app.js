@@ -1,8 +1,10 @@
 const Config = require("./config/index");
-const SpikeConfig = require("./lib/configure");
+const Configure = require("./lib/configure");
 const basicColoredLogger = require("./lib/log/basicColoredLogger");
 const noLogger = require("./lib/log/noLogger");
 const { output } = require("./lib/output");
+
+global.log = console;
 
 exports.ErrorCode = {
   Success: 0,
@@ -39,7 +41,8 @@ async function initGlobals(config, args) {
 async function initDeps(config, args) {}
 
 async function initSelf(config, args) {
-  const spikeConfigFile = await SpikeConfig.read();
+  Configure.init(config, args);
+  const spikeConfigFile = await Configure.read();
   if (!spikeConfigFile.token) {
     const x = process.argv[0] + " " + process.argv[1];
     output.red(`token missing in config, try run:\n ${x} configure`);
@@ -63,9 +66,6 @@ exports.config = function () {
 exports.init = async function (args) {
   if (exports.state.initialized) {
     output.red("initialization error: already initialized");
-    process.exit(-1);
-  }
-  if (!Config.checkConfig(args.config)) {
     process.exit(-1);
   }
   const config = Config[args.config];

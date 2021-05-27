@@ -12,7 +12,22 @@ const allFilterTypes = Object.keys(Folder.filterTypes);
 
 yargs(hideBin(process.argv))
   .version(version)
-  .command("configure", "Configure the tool with your keys", {}, Configure.command)
+  .command(
+    "configure",
+    "Configure the tool with your keys",
+    {
+      config: {
+        choices: allConfigs,
+        default: "default",
+        describe: "Specify filtering on commandline, rather than by manual input",
+      },
+      jwksUri: {
+        type: "string",
+        describe: "url for jwks.json to verify jwt token (for unit testing primarily)",
+      },
+    },
+    Configure.command
+  )
   .command(
     "folder",
     "Recurse through a folder and process all .pdfs found",
