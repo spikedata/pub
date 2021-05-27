@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const JSON5 = require("json5");
 const Csv = require("./csv");
+const output = require("./output");
 
 //#region spike-pdf/tools/lib/finder
 
@@ -136,7 +137,7 @@ exports.writeOutputJson = function (filename, data) {
   const p = exports.path_replace_ext(filename, ".json");
   const buffer = JSON.stringify(data, null, 2);
   fs.writeFileSync(p, buffer);
-  log.info("Wrote:", p);
+  output.gray("wrote:", p);
   return buffer;
 };
 
@@ -150,11 +151,11 @@ exports.writeTransactionsToCsv = function (csvPath, data, extraColFile = false, 
   const { cols, transactions } = getTransactionsForCsv(data, extraColFile, extraColParser);
   // log.info(JSON.stringify(transactions));
   if (transactions.length === 0) {
-    log.info("No transactions to output");
+    output.yellow("no transactions to output");
     return undefined;
   }
   const buffer = Csv.writeCsv(csvPath, transactions, cols, true);
-  log.info("Wrote:", csvPath);
+  output.gray("wrote:", csvPath);
   return buffer;
 };
 

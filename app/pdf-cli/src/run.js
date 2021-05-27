@@ -1,6 +1,6 @@
+const path = require("path");
 const yargs = require("yargs/yargs");
 const { hideBin } = require("yargs/helpers");
-const App = require("./app");
 const Configure = require("./command/configure");
 const Folder = require("./command/folder");
 const Single = require("./command/single");
@@ -8,38 +8,7 @@ const Config = require("./config/index");
 const { version } = require("../package.json");
 
 const allConfigs = Object.keys(Config).filter((x) => x !== "checkConfig");
-const filterTypes = {
-  all: {
-    option: 1,
-    text: "all",
-  },
-  "new-only": {
-    option: 2,
-    text: "new files only",
-  },
-  "new-and-prev-errors": {
-    option: 3,
-    text: "new + prev errors",
-  },
-  pattern: {
-    option: 4,
-    text: "filename matching a pattern",
-  },
-  none: {
-    option: 5,
-    text: "none = quit",
-  },
-};
-const allFilterTypes = Object.keys(filterTypes);
-const optionTofilterType = Object.keys(filterTypes).reduce((prev, cur) => {
-  prev[filterTypes[cur].option] = cur;
-  return prev;
-}, {});
-// console.log(JSON.stringify(optionTofilterType, null, 2))
-const filterTypesMenu = Object.keys(filterTypes).reduce((prev, cur) => {
-  const filterType = filterTypes[cur];
-  return `${prev}\n${filterType.option}. ${filterType.text}`;
-}, "");
+const allFilterTypes = Object.keys(Folder.filterTypes);
 
 yargs(hideBin(process.argv))
   .version(version)
@@ -48,81 +17,82 @@ yargs(hideBin(process.argv))
     "folder",
     "Recurse through a folder and process all .pdfs found",
     {
-      /* shared
+      // shared
       config: {
         choices: allConfigs,
-        defaultValue: "default",
-        help: "config settings",
+        default: "default",
+        describe: "Specify filtering on commandline, rather than by manual input",
       },
-      quiet: {
-        action: "storeTrue",
-        defaultValue: false,
-        help: "don't print library logs",
+      verbose: {
+        type: "boolean",
+        describe: "print log messages",
+        default: false,
       },
       test: {
-        action: "storeTrue",
-        defaultValue: false,
-        help: "don't use this flag, it's used internally for unit tests",
+        type: "boolean",
+        default: false,
+        describe: "don't use this flag, it's used internally for unit tests",
       },
       writeOutputCsv: {
-        type: bool,
-        defaultValue: true,
-        help: "write .csv = just transactions from .pdf",
+        type: "boolean",
+        default: true,
+        describe: "write .csv = just transactions from .pdf",
       },
       writeOutputJson: {
-        type: bool,
-        defaultValue: true,
-        help: "write .json = full result extracted from .pdf",
+        type: "boolean",
+        default: true,
+        describe: "write .json = full result extracted from .pdf",
       },
       writeOutput: {
-        type: bool,
-        help: "shortcut to set --writeOutput*=true|false",
+        type: "boolean",
+        default: true,
+        describe: "shortcut to set --writeOutput*=true|false",
       },
       // command-specific
       writeIndex: {
-        type: bool,
-        defaultValue: true,
-        help: "write results to index.csv file - useful to switch it off if changing identify() functions",
+        type: "boolean",
+        default: true,
+        describe: "write results to index.csv file - useful to switch it off if changing identify() functions",
       },
       index: {
-        type: rawPathType,
-        help: "path to summary index file",
+        type: "string",
+        // default: path.join(args.folder, "folder.csv"), // see fixArgs
+        describe: "path to summary index file",
       },
       folder: {
         type: "string",
-        required: true,
-        help: "folder with PDF files",
+        demand: true,
+        describe: "folder with PDF files",
       },
       stripFolder: {
-        action: "storeTrue",
-        defaultValue: true,
-        help: "remove folder from path in outputs",
+        type: "boolean",
+        default: true,
+        describe: "remove folder from path in outputs",
       },
       filterPath: {
-        type: regex,
-        help: "regex to match against paths of files found in folder",
+        type: "string",
+        describe: "regex to match against paths of files found in folder",
       },
       max: {
-        type: "int",
-        defaultValue: -1,
-        help: "End after max files - ignored if max <= 0",
+        type: "number",
+        default: -1,
+        describe: "End after max files - ignored if max <= 0",
       },
-      listFilesOnly: {
-        action: "storeTrue",
-        defaultValue: false,
-        help: "just list files found which match filters",
+      "dry-run": {
+        type: "boolean",
+        default: false,
+        describe: "just list files found which match filters",
       },
       concurrent: {
-        type: "int",
-        defaultValue: 1,
-        help: "Number of concurrent requests to execute in parallel",
+        type: "number",
+        default: 1,
+        describe: "Number of concurrent requests to execute in parallel",
       },
       filterType: {
         choices: allFilterTypes,
-        defaultValue: undefined,
-        help: "Specify filtering on commandline, rather than by manual input",
+        default: "all",
+        describe: "Specify filtering on commandline, rather than by manual input",
       },
-      */
     },
     Folder.command
   )
@@ -130,47 +100,46 @@ yargs(hideBin(process.argv))
     "single",
     "Process a single .pdf",
     {
-      /* shared
+      // shared
       config: {
         choices: allConfigs,
-        defaultValue: "default",
-        help: "config settings",
+        default: "default",
+        describe: "Specify filtering on commandline, rather than by manual input",
       },
-      quiet: {
-        action: "storeTrue",
-        defaultValue: false,
-        help: "don't print library logs",
+      verbose: {
+        type: "boolean",
+        describe: "print log messages",
+        default: false,
       },
       test: {
-        action: "storeTrue",
-        defaultValue: false,
-        help: "don't use this flag, it's used internally for unit tests",
+        type: "boolean",
+        default: false,
+        describe: "don't use this flag, it's used internally for unit tests",
       },
       writeOutputCsv: {
-        type: bool,
-        defaultValue: true,
-        help: "write .csv = just transactions from .pdf",
+        type: "boolean",
+        default: true,
+        describe: "write .csv = just transactions from .pdf",
       },
       writeOutputJson: {
-        type: bool,
-        defaultValue: true,
-        help: "write .json = full result extracted from .pdf",
+        type: "boolean",
+        default: true,
+        describe: "write .json = full result extracted from .pdf",
       },
       writeOutput: {
-        type: bool,
-        help: "shortcut to set --writeOutput*=true|false",
+        type: "boolean",
+        default: false,
+        describe: "shortcut to set --writeOutput*=true|false",
       },
-      */
       // command-specific
       file: {
-        alias: "file",
-        demandOption: true,
+        alias: "f",
+        demand: true,
         describe: "the .pdf file to process",
         type: "string",
       },
       password: {
-        alias: "file",
-        demandOption: false,
+        alias: "p",
         describe: "the password for the .pdf (if password protected)",
         type: "string",
       },

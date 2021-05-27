@@ -1,18 +1,10 @@
 const chalk = require("chalk");
-const basicColoredLogger = require("../lib/basicColoredLogger");
+const basicColoredLogger = require("../lib/log/basicColoredLogger");
 
 const AppLogName = "pdf-cli";
 
 module.exports = {
-  singletons: {
-    logger: {
-      interface: basicColoredLogger,
-      implementation: basicColoredLogger,
-      implementationName: "basicColoredLogger",
-    },
-  },
-
-  log: {
+  logger: {
     host: AppLogName,
     /* */
     levelFilter: {
@@ -42,7 +34,7 @@ module.exports = {
       screen: chalk.gray,
       step: chalk.gray,
     },
-    quiet: true,
+    quiet: false,
   },
 
   quiet: true,

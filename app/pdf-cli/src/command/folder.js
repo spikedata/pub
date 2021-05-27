@@ -10,9 +10,49 @@ const output = require("../lib/output");
 const pdfHelpers = require("../lib/pdfHelpers");
 const userInput = require("../lib/userInput");
 
+const filterTypes = {
+  all: {
+    option: 1,
+    text: "all",
+  },
+  "new-only": {
+    option: 2,
+    text: "new files only",
+  },
+  "new-and-prev-errors": {
+    option: 3,
+    text: "new + prev errors",
+  },
+  pattern: {
+    option: 4,
+    text: "filename matching a pattern",
+  },
+  none: {
+    option: 5,
+    text: "none = quit",
+  },
+};
+exports.filterTypes = filterTypes;
+
+const optionTofilterType = Object.keys(filterTypes).reduce((prev, cur) => {
+  prev[filterTypes[cur].option] = cur;
+  return prev;
+}, {});
+const filterTypesMenu = Object.keys(filterTypes).reduce((prev, cur) => {
+  const filterType = filterTypes[cur];
+  return `${prev}\n${filterType.option}. ${filterType.text}`;
+}, "");
+
+function fixArgs(args) {
+  if (!args.index) {
+    args.index = path.join(args.folder, "folder.csv");
+  }
+}
+
 exports.command = async function (args) {
   try {
-    setIndexPath(args);
+    fixArgs(args);
+    await App.init(args);
 
     // read prevIndex
     let prevIndex;
@@ -53,7 +93,7 @@ exports.command = async function (args) {
       process.exit(-1);
     }
 
-    output.red("An unknown error halted the application");
+    output.red("An unknown error halted the application. Try re-run with `--verbose`.");
     log.error("exception", ex);
   }
 };
@@ -66,12 +106,6 @@ function arrayToObject(array, key, deleteKey = false) {
     }
     return obj;
   }, {});
-}
-
-function setIndexPath(args) {
-  if (!args.index) {
-    args.index = path.join(args.folder, "folder.csv");
-  }
 }
 
 async function findPdfs(args, prevIndex) {
@@ -363,16 +397,16 @@ async function requestPdf(TOKEN, pdfPath, pass) {
     if (e instanceof spikeApi.PdfTooLargeError) {
       output.red("Error: the pdf is too large:", pdfPath);
     } else if (e instanceof spikeApi.InputValidationError) {
-      output.red("EXCEPTION: invalid inputs:", pdfPath, "\n ", e.validationErrors.join("\n "));
+      output.red("Error: invalid inputs:", pdfPath, "\n ", e.validationErrors.join("\n "));
     } else {
       if (!e.response) {
         // net connection error (e.g. down, timeout) or > axios maxBodyLength limit
         // e : AxiosResponse
-        output.red("EXCEPTION: net connection error:", pdfPath + ":", e.code || e.message);
+        output.red("Error: net connection error:", pdfPath + ":", e.code || e.message);
       } else {
         // http status error (e.g. 500 internal server error, 413 too big)
         // e : AxiosResponse
-        output.red("EXCEPTION: http status error:", pdfPath + ":", e.response.status, e.response.statusText);
+        output.red("Error: http status error:", pdfPath + ":", e.response.status, e.response.statusText);
       }
     }
     return undefined;
