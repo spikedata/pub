@@ -10,7 +10,7 @@ const output = require("../lib/output");
 const pdfHelpers = require("../lib/pdfHelpers");
 const userInput = require("../lib/userInput");
 
-const filterTypes = {
+const FilterTypes = {
   all: {
     option: 1,
     text: "all",
@@ -23,23 +23,29 @@ const filterTypes = {
     option: 3,
     text: "new + prev errors",
   },
-  pattern: {
+  "by-id": {
     option: 4,
+    text: "ids from grid above (comma separated)",
+  },
+  pattern: {
+    option: 5,
     text: "filename matching a pattern",
   },
   none: {
-    option: 5,
+    option: 6,
     text: "none = quit",
   },
 };
-exports.filterTypes = filterTypes;
+exports.FilterTypes = FilterTypes;
 
-const optionTofilterType = Object.keys(filterTypes).reduce((prev, cur) => {
-  prev[filterTypes[cur].option] = cur;
+const optionToFilterType = Object.keys(FilterTypes).reduce((prev, cur) => {
+  const filterType = FilterTypes[cur];
+  // prev[filterType.option] = filterType;
+  prev[filterType.option] = cur;
   return prev;
 }, {});
-const filterTypesMenu = Object.keys(filterTypes).reduce((prev, cur) => {
-  const filterType = filterTypes[cur];
+const filterTypesMenu = Object.keys(FilterTypes).reduce((prev, cur) => {
+  const filterType = FilterTypes[cur];
   return `${prev}\n${filterType.option}. ${filterType.text}`;
 }, "");
 
@@ -62,10 +68,9 @@ exports.command = async function (args) {
     }
 
     const found = await findPdfs(args, prevIndex);
-    // console.log(JSON.stringify(found, null, 2))
 
-    // early out if  --listFilesOnly
-    if (args.listFilesOnly) {
+    // early out
+    if (args.dryRun) {
       return;
     }
 
@@ -74,8 +79,6 @@ exports.command = async function (args) {
       output.white("No files to process, exiting ...");
       process.exit(0);
     }
-    // console.log(JSON.stringify(filtered, null, 2))
-    // return // HACK
 
     const { start, end, results } = await processAll(args, filtered);
 
@@ -110,9 +113,9 @@ function arrayToObject(array, key, deleteKey = false) {
 
 async function findPdfs(args, prevIndex) {
   let filePaths = await pdfHelpers.find(args.folder, args.filterPath);
-  output.green("--------------------------------");
+  output.green("----------------------------------------------------------------");
   output.green("Pdfs found:");
-  output.green("--------------------------------");
+  output.green("----------------------------------------------------------------");
   if (args.max > 0) {
     filePaths = filePaths.slice(0, args.max);
   }
@@ -120,26 +123,8 @@ async function findPdfs(args, prevIndex) {
   const { categorized, counts } = categorize(args, filePaths, prevIndex);
 
   // print with state = new, prev-error, prev-success
-  for (const x of categorized) {
-    let logger;
-    switch (x.state) {
-      case Category.new:
-        logger = output.green;
-        break;
-      case Category.prevError:
-        logger = output.orange;
-        break;
-      case Category.prevSuccess:
-        logger = output.white;
-        break;
-    }
-    logger(` ${x.short} (${x.state})`);
-  }
-
-  output.white("---");
-  output.white(`new: ${counts.new}`);
-  output.white(`prev-success: ${counts.prevSuccess}`);
-  output.white(`prev-error: ${counts.prevError}`);
+  console.table(categorized.map((x) => ({ path: x.short, state: x.state })));
+  console.table(counts);
 
   return categorized;
 }
@@ -194,8 +179,8 @@ async function filterPdfs(args, found) {
     while (true) {
       let option = await userInput.question("Enter option: ", false, undefined, undefined);
       option = +option;
-      if (1 <= option && option <= 5) {
-        filterType = optionTofilterType[option];
+      if (1 <= option && option <= 6) {
+        filterType = optionToFilterType[option];
         break;
       } else {
         output.red("Invalid, please try again");
@@ -217,6 +202,10 @@ async function filterPdfs(args, found) {
       filtered = found.filter((x) => x.state === Category.new || x.state === Category.prevError);
       break;
     }
+    case "by-id": {
+      filtered = await byIds(args, found);
+      break;
+    }
     case "pattern": {
       filtered = await wildcardMatch(args, found);
       break;
@@ -226,6 +215,22 @@ async function filterPdfs(args, found) {
     }
   }
   return filtered;
+}
+
+async function byIds(args, found) {
+  output.green("--------------------------------");
+  while (true) {
+    const idsText = await userInput.question("Enter ids (comma separated): ", false, undefined, undefined);
+    const ids = idsText.split(",").map((x) => +x.trim());
+    let i = 0;
+    const filtered = found.filter(() => ids.includes(i++));
+
+    output.white("Matches:\n " + filtered.map((x) => x.short).join("\n "));
+    const cont = await userInput.question("Process these files? (Y/n): ", false, undefined, "y");
+    if (cont == "y" || cont == "Y") {
+      return filtered;
+    }
+  }
 }
 
 async function wildcardMatch(args, found) {
@@ -255,10 +260,10 @@ async function processAll(args, filtered) {
   // create queue to process tasks concurrently
   const q = Async.queue(async function (task) {
     const { i, filePath, args, prev } = task;
-    // console.log(`start ${i}. ${filePath}`);
+    log.debug(`start ${i}. ${filePath}`);
     const summary = await doProcess(filePath, args, prev);
     results.push(summary);
-    // console.log(`end ${i}. ${filePath}`);
+    log.debug(`end ${i}. ${filePath}`);
   }, args.concurrent);
 
   // add files to task queue
@@ -279,7 +284,7 @@ async function processAll(args, filtered) {
       if (err) {
         output.red("task error", i, err);
       } else {
-        // console.log("task done", i);
+        log.debug("task done", i);
       }
     });
   }
@@ -418,7 +423,6 @@ async function processPdf({ folder, filePath, shortFilePath, password, writeOutp
   const { token } = App.config();
   const result = await requestPdf(token, filePath, password);
   const responseTime = new Date();
-  // console.log("JSON", JSON.stringify(response, null, 2));
 
   // report success | fail
   if (!quiet) {

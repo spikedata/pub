@@ -8,7 +8,7 @@ const Config = require("./config/index");
 const { version } = require("../package.json");
 
 const allConfigs = Object.keys(Config).filter((x) => x !== "checkConfig");
-const allFilterTypes = Object.keys(Folder.filterTypes);
+const allFilterTypes = Object.keys(Folder.FilterTypes);
 
 yargs(hideBin(process.argv))
   .version(version)
@@ -80,6 +80,7 @@ yargs(hideBin(process.argv))
         describe: "path to summary index file",
       },
       folder: {
+        alias: "f",
         type: "string",
         demand: true,
         describe: "folder with PDF files",
@@ -110,7 +111,7 @@ yargs(hideBin(process.argv))
       },
       filterType: {
         choices: allFilterTypes,
-        default: "all",
+        // default: "all",
         describe: "Specify filtering on commandline, rather than by manual input",
       },
     },

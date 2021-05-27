@@ -1,5 +1,5 @@
 {
-  "requestId": "00000000-0000-4000-a000-000000000001",
+  "requestId": "9763a3f2-ef07-4397-8c60-d91781d44987",
   "code": "pdf/success/bank-statement-normal",
   "type": 2,
   "data": {
@@ -2524,6 +2524,7 @@
       }
     ],
     "valid": true,
-    "breaks": []
+    "breaks": [],
+    "authenticity": "original"
   }
 }
