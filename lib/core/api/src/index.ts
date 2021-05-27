@@ -7,6 +7,7 @@ import * as types from "./shape";
 import * as shapes from "./shapes";
 import * as helpers from "./helpers";
 import * as enums from "./enums";
+import FN from "./function/index";
 import * as common from "./lib/common";
 import BadShapeError from "./lib/badShapeError";
 import InputValidationError from "./lib/inputValidationError";
@@ -55,6 +56,9 @@ const lib = {
   AjvExt,
   object,
 };
+const api = {
+  pdf: FN.pdf,
+};
 
 export {
   config,
@@ -90,4 +94,5 @@ export {
   statements,
   transactions,
   lib,
+  api,
 };
