@@ -5,19 +5,13 @@ const Csv = require("./csv");
 
 //#region spike-pdf/tools/lib/finder
 
-exports.find = async function (
-  dataDir,
-  re = undefined,
-  extension = ".pdf",
-  extensionCaseInsensitive = true
-) {
+exports.find = async function (dataDir, re = undefined, extension = ".pdf", extensionCaseInsensitive = true) {
   if (extensionCaseInsensitive) {
     extension = extension.toLowerCase();
   }
   const filePaths = await exports.getFilesRecursive(
     dataDir,
-    (fullPath) =>
-      (extensionCaseInsensitive ? fullPath.toLowerCase() : fullPath).endsWith(extension),
+    (fullPath) => (extensionCaseInsensitive ? fullPath.toLowerCase() : fullPath).endsWith(extension),
     -1,
     exports.FsType.File
   );
@@ -111,9 +105,7 @@ exports.getFilesRecursive = function (
         }
       }
       if (maxDepth === -1 || currentDepth + 1 <= maxDepth) {
-        results = results.concat(
-          exports.getFilesRecursive(fullPath, filterCB, maxDepth, type, currentDepth + 1)
-        );
+        results = results.concat(exports.getFilesRecursive(fullPath, filterCB, maxDepth, type, currentDepth + 1));
       }
     } else {
       if (type & exports.FsType.File) {
@@ -154,12 +146,7 @@ exports.writeOutputCsv = function (filePath, data) {
   return exports.writeTransactionsToCsv(p, data);
 };
 
-exports.writeTransactionsToCsv = function (
-  csvPath,
-  data,
-  extraColFile = false,
-  extraColParser = false
-) {
+exports.writeTransactionsToCsv = function (csvPath, data, extraColFile = false, extraColParser = false) {
   const { cols, transactions } = getTransactionsForCsv(data, extraColFile, extraColParser);
   // log.info(JSON.stringify(transactions));
   if (transactions.length === 0) {

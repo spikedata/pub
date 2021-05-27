@@ -13,12 +13,7 @@ exports.objectArrayToCsvHeaders = function (rows) {
   return cols;
 };
 
-exports.objectArrayToCsvRows = function (
-  rows,
-  cols = undefined,
-  truncateDateTime = false,
-  quoted = false
-) {
+exports.objectArrayToCsvRows = function (rows, cols = undefined, truncateDateTime = false, quoted = false) {
   // col headers
   if (!cols) {
     cols = exports.objectArrayToCsvHeaders(rows);

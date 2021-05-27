@@ -96,75 +96,34 @@ exports.shutdown = function () {
 //#region API
 
 exports.net = function (...args) {
-  logger(
-    exports.LogLevel.net,
-    exports.config.levelFilter.net,
-    exports.config.colors.net,
-    console.log,
-    ...args
-  );
+  logger(exports.LogLevel.net, exports.config.levelFilter.net, exports.config.colors.net, console.log, ...args);
 };
 
 exports.debug = function (...args) {
-  logger(
-    exports.LogLevel.debug,
-    exports.config.levelFilter.debug,
-    exports.config.colors.debug,
-    console.log,
-    ...args
-  );
+  logger(exports.LogLevel.debug, exports.config.levelFilter.debug, exports.config.colors.debug, console.log, ...args);
 };
 
 exports.info = function (...args) {
-  logger(
-    exports.LogLevel.info,
-    exports.config.levelFilter.info,
-    exports.config.colors.info,
-    console.log,
-    ...args
-  );
+  logger(exports.LogLevel.info, exports.config.levelFilter.info, exports.config.colors.info, console.log, ...args);
 };
 
 exports.warn = function (...args) {
-  logger(
-    exports.LogLevel.warn,
-    exports.config.levelFilter.warn,
-    exports.config.colors.warn,
-    console.log,
-    ...args
-  );
+  logger(exports.LogLevel.warn, exports.config.levelFilter.warn, exports.config.colors.warn, console.log, ...args);
 };
 
 exports.error = function (...args) {
-  logger(
-    exports.LogLevel.error,
-    exports.config.levelFilter.error,
-    exports.config.colors.error,
-    console.log,
-    ...args
-  );
+  logger(exports.LogLevel.error, exports.config.levelFilter.error, exports.config.colors.error, console.log, ...args);
 };
 
 exports.fatal = function (...args) {
-  logger(
-    exports.LogLevel.fatal,
-    exports.config.levelFilter.fatal,
-    exports.config.colors.fatal,
-    console.log,
-    ...args
-  );
+  logger(exports.LogLevel.fatal, exports.config.levelFilter.fatal, exports.config.colors.fatal, console.log, ...args);
 };
 
 exports.alert = function (alertLevel, ...args) {
-  const level =
-    alertLevel === exports.AlertLevel.Warn
-      ? exports.LogLevel.alertWarn
-      : exports.LogLevel.alertError;
+  const level = alertLevel === exports.AlertLevel.Warn ? exports.LogLevel.alertWarn : exports.LogLevel.alertError;
 
   const colors =
-    alertLevel === exports.AlertLevel.Warn
-      ? exports.config.colors.alertWarn
-      : exports.config.colors.alertError;
+    alertLevel === exports.AlertLevel.Warn ? exports.config.colors.alertWarn : exports.config.colors.alertError;
 
   logger(level, exports.config.levelFilter.alert, colors, console.log, ...args);
 };
