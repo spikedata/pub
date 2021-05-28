@@ -12,7 +12,7 @@ module.exports = {
     path: path.join(__dirname, "..", "dist"),
     filename: "[name].js",
   },
-  module: {
-    rules: [{ test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }],
-  },
+  // module: {
+  //   rules: [{ test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }],
+  // },
 };
