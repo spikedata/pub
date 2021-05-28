@@ -337,6 +337,18 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@fast-csv/format@^4.3.5":
+  version "4.3.5"
+  resolved "https://registry.npmjs.org/@fast-csv/format/-/format-4.3.5.tgz#90d83d1b47b6aaf67be70d6118f84f3e12ee1ff3"
+  integrity sha512-8iRn6QF3I8Ak78lNAa+Gdl5MJJBM5vRHivFtMRUWINdevNo00K7OXxS2PshawLKTejVwieIlPmK5YlLu6w4u8A==
+  dependencies:
+    "@types/node" "^14.0.1"
+    lodash.escaperegexp "^4.1.2"
+    lodash.isboolean "^3.0.3"
+    lodash.isequal "^4.5.0"
+    lodash.isfunction "^3.0.9"
+    lodash.isnil "^4.0.0"
+
 "@panva/asn1.js@^1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@panva/asn1.js/-/asn1.js-1.0.0.tgz#dd55ae7b8129e02049f009408b97c61ccf9032f6"
@@ -497,6 +509,11 @@
   version "14.0.4"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.4.tgz#43a63fc5edce226bed106b31b875165256271107"
   integrity sha512-k3NqigXWRzQZVBDS5D1U70A5E8Qk4Kh+Ha/x4M8Bt9pF0X05eggfnC9+63Usc9Q928hRUIpIhTQaXsZwZBl4Ew==
+
+"@types/node@^14.0.1":
+  version "14.17.1"
+  resolved "https://registry.npmjs.org/@types/node/-/node-14.17.1.tgz#5e07e0cb2ff793aa7a1b41deae76221e6166049f"
+  integrity sha512-/tpUyFD7meeooTRwl3sYlihx2BrJE7q9XF71EguPFIySj9B7qgnRtHsHTho+0AUm4m1SvWGm6uSncrR94q6Vtw==
 
 "@types/qs@*":
   version "6.9.6"
@@ -4489,6 +4506,11 @@ lodash.clonedeep@^4.5.0:
   resolved "https://registry.npmjs.org/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
   integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
 
+lodash.escaperegexp@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.npmjs.org/lodash.escaperegexp/-/lodash.escaperegexp-4.1.2.tgz#64762c48618082518ac3df4ccf5d5886dae20347"
+  integrity sha1-ZHYsSGGAglGKw99Mz11YhtriA0c=
+
 lodash.includes@^4.3.0:
   version "4.3.0"
   resolved "https://registry.npmjs.org/lodash.includes/-/lodash.includes-4.3.0.tgz#60bb98a87cb923c68ca1e51325483314849f553f"
@@ -4499,10 +4521,25 @@ lodash.isboolean@^3.0.3:
   resolved "https://registry.npmjs.org/lodash.isboolean/-/lodash.isboolean-3.0.3.tgz#6c2e171db2a257cd96802fd43b01b20d5f5870f6"
   integrity sha1-bC4XHbKiV82WgC/UOwGyDV9YcPY=
 
+lodash.isequal@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.npmjs.org/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
+  integrity sha1-QVxEePK8wwEgwizhDtMib30+GOA=
+
+lodash.isfunction@^3.0.9:
+  version "3.0.9"
+  resolved "https://registry.npmjs.org/lodash.isfunction/-/lodash.isfunction-3.0.9.tgz#06de25df4db327ac931981d1bdb067e5af68d051"
+  integrity sha512-AirXNj15uRIMMPihnkInB4i3NHeb4iBtNg9WRWuK2o31S+ePwwNmDPaTL3o7dTJ+VXNZim7rFs4rxN4YU1oUJw==
+
 lodash.isinteger@^4.0.4:
   version "4.0.4"
   resolved "https://registry.npmjs.org/lodash.isinteger/-/lodash.isinteger-4.0.4.tgz#619c0af3d03f8b04c31f5882840b77b11cd68343"
   integrity sha1-YZwK89A/iwTDH1iChAt3sRzWg0M=
+
+lodash.isnil@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npmjs.org/lodash.isnil/-/lodash.isnil-4.0.0.tgz#49e28cd559013458c814c5479d3c663a21bfaa6c"
+  integrity sha1-SeKM1VkBNFjIFMVHnTxmOiG/qmw=
 
 lodash.isnumber@^3.0.3:
   version "3.0.3"

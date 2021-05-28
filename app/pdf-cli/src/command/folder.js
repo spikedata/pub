@@ -53,6 +53,9 @@ function fixArgs(args) {
   if (!args.index) {
     args.index = path.join(args.folder, "folder.csv");
   }
+  if (args.filterPath) {
+    args.filterPath = new RegExp(args.filterPath);
+  }
 }
 
 exports.command = async function (args) {

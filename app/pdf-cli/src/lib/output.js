@@ -21,6 +21,10 @@ exports.red = function (...args) {
   logger(chalk.red, console.log, ...args);
 };
 
+exports.yellow = function (...args) {
+  logger(chalk.yellow, console.log, ...args);
+};
+
 function logger(colors, consolelogger, ...args) {
   // errorHelper.stringifyErrors(args);
   consolelogger(colors(...args));
