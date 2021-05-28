@@ -1,4 +1,3 @@
-const path = require("path");
 const yargs = require("yargs/yargs");
 const { hideBin } = require("yargs/helpers");
 const Configure = require("./command/configure");
