@@ -11,7 +11,7 @@
     "fix": "./scripts/workspace/fix-all.sh",
     "build": "./scripts/workspace/build-all.sh",
     "test": "./scripts/workspace/test-all.sh",
-    "publish": "./scripts/workspace/publish-all.sh"
+    "publish": "./scripts/workspace/publish-all.sh --minor"
   },
   "devDependencies": {
     "@babel/core": "7.8.6",
