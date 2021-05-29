@@ -232,13 +232,11 @@ yargs(hideBin(process.argv))
       sortAsc: {
         array: true,
         choices: Columnss,
-        default: undefined,
         describe: "sort combined csv by this/these column(s) in ascending order",
       },
       sortDesc: {
         array: true,
         choices: Columnss,
-        default: undefined,
         describe: "sort combined csv by this/these column(s) in descending order",
       },
       "dry-run": {
