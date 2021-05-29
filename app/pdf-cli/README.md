@@ -2,7 +2,7 @@
 
 `@spike/pdf-cli` allows you to to extract transactions from South African bank statements (pdfs). The list of supported pdf formats can be found here:
 
-- [supported bank statements](https://app.spikedata.co.za/docs/solutions/statement-processing/creditcard-library.html)
+- [supported bank statements](https://app.spikedata.co.za/docs/solutions/statement-processing/statement-library.html)
 - [supported credit card statements](https://app.spikedata.co.za/docs/solutions/statement-processing/creditcard-library.html)
 
 ## Usage
