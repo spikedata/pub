@@ -1,6 +1,6 @@
 const fs = require("fs");
 const { format } = require("@fast-csv/format");
-const App = require("../app");
+const App = require("../App");
 const output = require("../lib/output");
 const pdfHelpers = require("../lib/pdfHelpers");
 

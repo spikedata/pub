@@ -1,6 +1,6 @@
 const Duration = require("duration");
 const spikeApi = require("@spike/api");
-const App = require("../app");
+const App = require("../App");
 const output = require("../lib/output");
 const pdfHelpers = require("../lib/pdfHelpers");
 
