@@ -6,7 +6,7 @@ import PdfTooLargeError from "./lib/pdfTooLargeError";
 import request from "./lib/req";
 import { PdfRequest } from "./request";
 
-export default async function pdf(TOKEN, pdfPath, pass = undefined, buffer = undefined) {
+export default async function pdf(TOKEN: string, pdfPath?: string, pass?: string, buffer?: string | Buffer) {
   // inputs
   const inputs = create(pdfPath, pass, buffer);
 
@@ -15,7 +15,7 @@ export default async function pdf(TOKEN, pdfPath, pass = undefined, buffer = und
   return await request(TOKEN, url, inputs);
 }
 
-function create(pdfPath, pass, buffer) {
+function create(pdfPath?: string, pass?: string, buffer?: string | Buffer) {
   if (!buffer && !pdfPath) {
     throw new InputValidationError(["must supply pdfPath or buffer"]);
   }

@@ -1,23 +1,23 @@
 const config = require("./config");
-const spikeApi = require("@spike/api-statements");
+const StatementsApi = require("@spike/api-statements");
 
 async function run({ TOKEN, FILE, PASS }) {
   try {
     // request
-    console.log(`requesting ${spikeApi.constants.url} ...`);
-    const spikeResponse = await spikeApi.pdf(TOKEN, FILE, PASS);
+    console.log(`requesting ${StatementsApi.constants.url} ...`);
+    const spikeResponse = await StatementsApi.pdf(TOKEN, FILE, PASS);
 
     // process response
-    if (spikeResponse.type === spikeApi.constants.TYPES.SUCCESS) {
+    if (spikeResponse.type === StatementsApi.constants.TYPES.SUCCESS) {
       console.log("JSON", JSON.stringify(spikeResponse, null, 2));
       console.log("SUCCESS");
     } else {
-      console.error("ERROR:", spikeApi.constants.TYPES.toString(spikeResponse.type) + ":" + spikeResponse.code);
+      console.error("ERROR:", StatementsApi.constants.TYPES[spikeResponse.type] + ":" + spikeResponse.code);
     }
   } catch (e) {
-    if (e instanceof spikeApi.PdfTooLargeError) {
+    if (e instanceof StatementsApi.PdfTooLargeError) {
       console.error("EXCEPTION: the pdf is too large");
-    } else if (e instanceof spikeApi.InputValidationError) {
+    } else if (e instanceof StatementsApi.InputValidationError) {
       console.error("EXCEPTION: invalid inputs:\n ", e.validationErrors.join("\n "));
     } else {
       if (!e.response) {
