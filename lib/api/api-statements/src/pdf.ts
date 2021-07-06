@@ -3,11 +3,11 @@ import path from "path"; // NOTE: for browser builds need to make path external
 import * as constants from "./constants";
 import InputValidationError from "./lib/inputValidationError";
 import PdfTooLargeError from "./lib/pdfTooLargeError";
-import request from "./lib/req";
+import axiosRequest from "./lib/req";
 import { PdfRequest } from "./request";
 import { PdfErrorResponse, PdfSuccessResponse } from "./response";
 
-export default async function pdf(
+export async function request(
   TOKEN: string,
   pdfPath?: string,
   pass?: string,
@@ -18,7 +18,7 @@ export default async function pdf(
 
   // request
   const url = constants.url;
-  return await request(TOKEN, url, inputs);
+  return await axiosRequest(TOKEN, url, inputs);
 }
 
 // exported so that this can be called from front-end code (even though this is not strictly necessary because the front-end should proxy via a server when calling the Spike Statements API)

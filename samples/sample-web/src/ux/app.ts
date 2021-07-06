@@ -5,7 +5,7 @@ const _pass = undefined; // change this if you have a password protected pdf
 
 function init() {
   new DropArea("drop-area", onDrop);
-  document?.getElementById("fileElem").addEventListener("change", onChoosePdfs, false);
+  document?.getElementById("fileElem")?.addEventListener("change", onChoosePdfs, false);
 }
 
 function onDrop(files) {
@@ -48,7 +48,7 @@ async function uploadPdf(i, file, base64Txt) {
 
 function output(val) {
   const el = document.getElementById("json-output");
-  el.innerText = val ? JSON.stringify(val, null, 2) : "";
+  if (el) el.innerText = val ? JSON.stringify(val, null, 2) : "";
 }
 
 init();

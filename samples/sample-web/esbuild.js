@@ -49,6 +49,18 @@ const stubNodePkgs = {
         loader: "js",
       };
     });
+
+    build.onEnd((result) => {
+      if (result.warnings.length) {
+        console.warn(result.warnings.join("\n"));
+      }
+      if (result.errors.length) {
+        console.error(result.errors.join("\n"));
+      }
+      if (!result.warnings.length && !result.errors.length) {
+        console.log("wrote:", outfile);
+      }
+    });
   },
 };
 
@@ -64,16 +76,5 @@ require("esbuild")
     sourcemap: "external",
     outfile,
     plugins: [stubNodePkgs],
-  })
-  .then((result) => {
-    if (result.warnings.length) {
-      console.warn(result.warnings.join("\n"));
-    }
-    if (result.errors.length) {
-      console.error(result.errors.join("\n"));
-    }
-    if (!result.warnings.length && !result.errors.length) {
-      console.log("wrote:", outfile);
-    }
   })
   .catch(() => process.exit(1));
