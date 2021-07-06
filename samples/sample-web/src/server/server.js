@@ -1,6 +1,13 @@
 const path = require("path");
 const express = require("express");
 const pdf = require("./pdf");
+const { TOKEN } = require("./config");
+
+if (!TOKEN) {
+  const x = path.join(__dirname, "config.js");
+  console.error(`token missing in config, try run:\n code ${x}`);
+  process.exit(-1);
+}
 
 // config
 const _port = 5000;

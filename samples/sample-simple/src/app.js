@@ -7,6 +7,10 @@ async function run({ TOKEN, FILE, PASS }) {
     console.log(`requesting ${StatementsApi.constants.url} ...`);
     const spikeResponse = await StatementsApi.pdf.request(TOKEN, FILE, PASS);
 
+    // NOTE:
+    // - the .js sample does not benefit from typechecking
+    // - try sample-simple-ts to get intellisense on the spikeResponse object
+
     // process response
     if (spikeResponse.type === StatementsApi.constants.TYPES.SUCCESS) {
       console.log("JSON", JSON.stringify(spikeResponse, null, 2));

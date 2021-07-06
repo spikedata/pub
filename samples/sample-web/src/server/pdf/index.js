@@ -1,4 +1,4 @@
-const SpikeApi = require("@spike/api");
+const StatementsApi = require("@spike/api-statements");
 const { TOKEN } = require("../config");
 
 module.exports = async (req, res) => {
@@ -7,17 +7,21 @@ module.exports = async (req, res) => {
   return res.json(proxyResponse);
 };
 
-async function pdfProxy(TOKEN, fileName, pass, buffer) {
+async function pdfProxy(TOKEN, FILE, PASS, BUFFER) {
   try {
     // request
-    console.log(`requesting ${SpikeApi.config.url.pdf} ...`);
-    const spikeResponse = await SpikeApi.pdf(TOKEN, fileName, pass, buffer);
+    console.log(`requesting ${StatementsApi.constants.url} ...`);
+    const spikeResponse = await StatementsApi.pdf.request(TOKEN, FILE, PASS, BUFFER);
 
-    // response
-    if (spikeResponse.type === SpikeApi.enums.TYPES.SUCCESS) {
+    // NOTE:
+    // - the .js sample does not benefit from typechecking
+    // - try sample-simple-ts to get intellisense on the spikeResponse object
+
+    // process response
+    if (spikeResponse.type === StatementsApi.constants.TYPES.SUCCESS) {
       console.log("SUCCESS");
     } else {
-      console.error("ERROR:", SpikeApi.enums.TYPES.toString(spikeResponse.type) + ":" + spikeResponse.code);
+      console.error("ERROR:", StatementsApi.constants.TYPES[spikeResponse.type] + ":" + spikeResponse.code);
     }
     return spikeResponse;
   } catch (e) {
@@ -29,11 +33,11 @@ async function pdfProxy(TOKEN, fileName, pass, buffer) {
       return e;
     } else {
       if (!e.response) {
-        console.error("EXCEPTION: ux -> server : net connection error:", e);
+        console.error("EXCEPTION: server -> api : net connection error:", e);
       } else {
-        console.error("EXCEPTION: ux -> server : http status error:", e.response.status, e.response.statusText);
+        console.error("EXCEPTION: server -> api : http status error:", e.response.status, e.response.statusText);
       }
-      delete e.config; // make sure spike-api keys from the axios request are not exposed to the frontend
+      delete e.config; // make sure tokens from the axios request are not exposed to the frontend
       return { serverToSpikeError: e };
     }
   }
