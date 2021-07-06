@@ -19,23 +19,20 @@ async function run(i: RunInputs) {
 
       // cast spikeResponse in order to get intellisense
       const success = spikeResponse as StatementsApi.response.PdfSuccessResponse;
-      if (Array.isArray(success.data)) {
-        const data = success.data as StatementsApi.response.CreditCardBreakdownMultiUser;
-        for (let i = 0; i < data.length; ++i) {
-          console.log(`accountHolder ${i}:`, data[i].statement.nameAddress);
-        }
-      } else {
-        switch (success.data.parser) {
-          case "CAPITEC_CREDITCARD_0":
-          case "DISCOVERY_0":
-          case "DISCOVERY_CREDITCARD_ALL_0":
-          case "FNB_CREDITCARD_ALL_0":
-          case "RMB_CREDITCARD_ALL_0":
-            // typescript has control flow analysis: so intellisense knows that success.data is a CreditCardSimple here
-            // console.log(success.data.transactions[0].balance);
-            console.log(`accountHolder ${i}:`, success.data.statement.nameAddress);
-            break;
-        }
+      switch (success.data.type) {
+        case StatementsApi.response.PdfDataType.BankStatementNoBalance:
+        case StatementsApi.response.PdfDataType.BankStatementNormal:
+        case StatementsApi.response.PdfDataType.CreditCardSimple:
+        case StatementsApi.response.PdfDataType.CreditCardBreakdown:
+          // typescript has control flow analysis: so intellisense knows that success.data.statement is StatementInfo | CreditCardStatementInfo here
+          console.log("accountHolder:", success.data.statement.nameAddress);
+          break;
+        case StatementsApi.response.PdfDataType.CreditCardBreakdownMultiUser:
+          // typescript has control flow analysis: so intellisense knows that success.data is a CreditCardBreakdownMultiUser here
+          for (let i = 0; i < success.data.all.length; ++i) {
+            console.log(`accountHolder ${i}:`, success.data.all[i].statement.nameAddress);
+          }
+          break;
       }
     } else {
       console.error("ERROR:", StatementsApi.constants.TYPES[spikeResponse.type] + ":" + spikeResponse.code);

@@ -15,5 +15,5 @@ export interface SessionResponse extends StandardResponse {
 
 export interface ErrorResponse extends StandardResponse {
   message: string;
-  blame: string;
+  blame: constants.BLAME;
 }
