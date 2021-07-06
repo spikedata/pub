@@ -4,7 +4,7 @@ const pdf = require("./pdf");
 
 // config
 const _port = 5000;
-const _root = path.join(__dirname, "..", "ux");
+const _root = path.join(__dirname, "public");
 const _url = "http://localhost:" + _port;
 const _sizeLimit = "10mb";
 

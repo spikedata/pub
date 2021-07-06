@@ -18,22 +18,22 @@ let _PROXY_BEHAVIOUR: ProxyBehaviour;
 // eslint-disable-next-line prefer-const
 _PROXY_BEHAVIOUR = ProxyBehaviour.normal;
 
-export default async function proxy(fileName, pass, buffer) {
+export default async function proxy(buffer: Buffer, file?: string, pass?: string) {
   switch (_PROXY_BEHAVIOUR) {
     case ProxyBehaviour.normal:
-      return await real(fileName, pass, buffer);
+      return await real(buffer, file, pass);
     case ProxyBehaviour.mock:
       throw new Error("problem");
     case ProxyBehaviour.error:
-      return mock(fileName, pass, buffer);
+      return mock(buffer, file, pass);
   }
 }
 
-async function real(fileName, pass, buffer) {
+async function real(buffer: Buffer, file?: string, pass?: string) {
   try {
     // request
     console.log(`requesting ${location.origin}/pdf ...`);
-    const proxyResponse = await request(fileName, pass, buffer);
+    const proxyResponse = await request(buffer, file, pass);
 
     // process response
     if (proxyResponse.serverToSpikeError) {
@@ -65,7 +65,7 @@ async function real(fileName, pass, buffer) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function mock(_fileName, _pass, _buffer) {
+function mock(_buffer: Buffer, _file?: string, _pass?: string) {
   return {
     requestId: "10000000-0000-4000-a000-000000000001",
     code: "pdf/success/bank-statement-normal",
@@ -110,7 +110,7 @@ function mock(_fileName, _pass, _buffer) {
   };
 }
 
-async function request(file, pass, buffer) {
+async function request(buffer: Buffer, file?: string, pass?: string) {
   // inputs
   const inputs = StatementsApi.pdf.create(file, pass, buffer); // throws StatementsApi.InputValidationError||PdfTooLargeError
 
