@@ -10,8 +10,11 @@
     "url": "https://github.com/spikedata/pub"
   },
   "scripts": {
-    "build": "./build-cdn.sh",
     "start": "node src/server/server.js",
+    "esbuild:browser": "esbuild ./src/ux/src/app.ts --platform=browser --external:fs --external:path --bundle --minify --sourcemap=external --outfile=build/esbuild/app.js",
+    "esbuild:browser:dev": "esbuild ./src/ux/src/app.ts --platform=browser --external:fs --external:path --bundle --outfile=build/esbuild/app.js",
+    "esbuild:browser:watch": "esbuild ./src/ux/src/app.ts --platform=browser --external:fs --external:path --bundle --watch --outfile=build/esbuild/app.js",
+    "build": "./build-cdn.sh",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"{src,test,tools}/**/*.{js,cjs,mjs,ts}\" --write",
     "fix:lint": "eslint \"{src,test,tools}/**/*.{js,cjs,mjs,ts}\" --quiet --fix",
@@ -19,7 +22,9 @@
     "test": "echo there is no test"
   },
   "dependencies": {
-    "@spike/api": "^1.0.0",
+    "@spike/api-statements": "^1.0.0",
+    "axios": "^0.19.2",
+    "esbuild": "^0.11.11",
     "express": "4.17.1"
   }
 }

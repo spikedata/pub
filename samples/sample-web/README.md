@@ -32,3 +32,19 @@ There are 2 demos:
 - now browse the 2 samples:
   - http://localhost:5000/pdf-cdn/
   - http://localhost:5000/pdf/
+
+## TODO
+
+- [x] check
+  - multi user statement
+- unpkg
+  - statements-api - publish esbuild
+- client
+  - rm direct call to /pdf - only via server
+  - use unpkg (use live-server statements-api/dist/... in test)
+    - convert ux to .ts for typings
+      - need build process = esbuild?
+    - NB only use on response
+    - request is to server not to api (doesn't need to be same format as AP)
+- server
+  - use statements-api

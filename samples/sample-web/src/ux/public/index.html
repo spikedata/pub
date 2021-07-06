@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Dropzone</title>
-    <link rel="stylesheet" href="../shared/dropArea.css" />
+    <link rel="stylesheet" href="./dropArea.css" />
     <style>
       #output {
         width: 480px;
@@ -17,8 +17,7 @@
     <div id="drop-area">
       <form>
         <p>
-          Upload 1 or more pdfs by dragging and dropping onto the dashed region or clicking "Choose
-          pdfs"
+          Upload 1 or more pdfs by dragging and dropping onto the dashed region or clicking "Choose pdfs"
         </p>
         <input type="file" id="fileElem" multiple accept="application/pdf" />
         <label class="button" for="fileElem">Choose pdfs</label>
@@ -28,10 +27,7 @@
       <pre id="json-output"></pre>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
-    <script src="spike-api-proxy.js"></script>
-    <script src="../cdn/spike-api.umd.js"></script>
-    <script src="../shared/dropArea.js"></script>
-    <script src="app.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script> -->
+    <script src="./dist/app.js"></script>
   </body>
 </html>

@@ -7,6 +7,9 @@
 //  - https://www.freecodecamp.org/news/integrating-prettier-with-eslint-and-stylelint-99e74fede33f/
 
 module.exports = {
+  env: {
+    browser: true,
+  },
   parser: "@typescript-eslint/parser",
   extends: ["plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
   parserOptions: {

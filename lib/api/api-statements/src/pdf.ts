@@ -21,7 +21,8 @@ export default async function pdf(
   return await request(TOKEN, url, inputs);
 }
 
-function create(pdfPath?: string, pass?: string, buffer?: string | Buffer) {
+// exported so that this can be called from front-end code (even though this is not strictly necessary because the front-end should proxy via a server when calling the Spike Statements API)
+export function create(pdfPath?: string, pass?: string, buffer?: string | Buffer) {
   if (!buffer && !pdfPath) {
     throw new InputValidationError(["must supply pdfPath or buffer"]);
   }
