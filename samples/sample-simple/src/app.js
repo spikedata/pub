@@ -15,7 +15,6 @@ async function run({ TOKEN, FILE, PASS }) {
       console.error("ERROR:", spikeApi.constants.TYPES.toString(spikeResponse.type) + ":" + spikeResponse.code);
     }
   } catch (e) {
-    console.error(e);
     if (e instanceof spikeApi.PdfTooLargeError) {
       console.error("EXCEPTION: the pdf is too large");
     } else if (e instanceof spikeApi.InputValidationError) {
