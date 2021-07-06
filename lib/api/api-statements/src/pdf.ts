@@ -5,8 +5,14 @@ import InputValidationError from "./lib/inputValidationError";
 import PdfTooLargeError from "./lib/pdfTooLargeError";
 import request from "./lib/req";
 import { PdfRequest } from "./request";
+import { PdfErrorResponse, PdfSuccessResponse } from "./response";
 
-export default async function pdf(TOKEN: string, pdfPath?: string, pass?: string, buffer?: string | Buffer) {
+export default async function pdf(
+  TOKEN: string,
+  pdfPath?: string,
+  pass?: string,
+  buffer?: string | Buffer
+): Promise<PdfSuccessResponse | PdfErrorResponse> {
   // inputs
   const inputs = create(pdfPath, pass, buffer);
 

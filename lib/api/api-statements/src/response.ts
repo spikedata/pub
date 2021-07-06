@@ -50,8 +50,10 @@ export interface Transaction extends TransactionNoBalance {
   balance: number;
 }
 
+// determinant = /spike/v8/priv/lib/api/api-statements/src/api/constants.ts : PdfParser
 export interface BankStatementNoBalance {
-  parser: string; // ../parsers/index.ts : bankStatements.noBalance
+  parser: // determinant = PdfParser.bankStatementsNoBalance
+  "NEDBANK_ACCBAL_WEB";
   statement: StatementInfo;
   transactions: TransactionNoBalance[];
   valid: boolean;
@@ -59,7 +61,48 @@ export interface BankStatementNoBalance {
 }
 
 export interface BankStatementNormal {
-  parser: string; // ../parsers/index.ts : bankStatements.normal
+  parser: // determinant = PdfParser.bankStatementsNormal
+  | "ABSA_ACTIVESAVE_ALL_0"
+    | "ABSA_CHEQUEACCOUNT_EMAIL_0"
+    | "ABSA_CHEQUEACCOUNT_WEB_0"
+    | "ABSA_ENQUIRY"
+    | "ABSA_ESTATEMENT_WEB_0"
+    | "BIDVEST_BUSINESSDEBITCARD_EMAIL_0"
+    | "BIDVEST_BUSINESS_EMAIL_0"
+    | "BIDVEST_BUSINESS_EMAIL_201902"
+    | "BIDVEST_BUSINESS_GPO_EMAIL"
+    | "BIDVEST_BUSINESS_WEB_0"
+    | "CAPITEC_ESTATEMENT_WEB_0"
+    | "CAPITEC_ESTATEMENT_WEB_1"
+    | "DEA_ALL_0"
+    | "FNB_6"
+    | "FNB_FLEXI_ALL_0"
+    | "FNB_INTERIM_STATEMENT_WEB_0"
+    | "FNB_INTERIM2_0"
+    | "FNB_RETAIL_ALL_0"
+    | "FNB_TRANSACTIONHISTORYDOWNLOAD_WEB_0"
+    | "INVESTEC_BANKACCOUNT"
+    | "INVESTEC_CALLACCOUNT"
+    | "MERCANTILE1"
+    | "NEDBANK_ALL_EMAIL_0"
+    | "NEDBANK_ALL_EMAIL_201711"
+    | "NEDBANK_BUSINESS"
+    | "NEDBANK_BUSINESS_201911"
+    | "NEDBANK_ESTATEMENT_WEB_0"
+    | "NEDBANK_PROVISIONAL_STATEMENT_WEB_0"
+    | "NEDBANK_PROVISIONAL_STATEMENT_WEB_1"
+    | "RMB_RETAIL_ALL_0"
+    | "SASFIN"
+    | "STANDARDBANK_ALL_EMAIL_0"
+    | "STANDARDBANK_COPYSTATEMENT"
+    | "STANDARDBANK_CURRENTACCOUNT"
+    | "STANDARDBANK_CUSTOMSTATEMENT_WEB_0"
+    | "STANDARDBANK_ESTATEMENT_WEB_0"
+    | "STANDARDBANK_STATEMENT2"
+    | "STANDARDBANK_STATEMENT3"
+    | "STANDARDBANK_STATEMENT4"
+    | "STANDARDBANK_STATEMENT5"
+    | "TYME";
   statement: StatementInfo;
   transactions: Transaction[];
   valid: boolean;
@@ -86,8 +129,9 @@ export interface CreditCardBreakdownBreak {
 }
 
 export interface CreditCardBreakdown {
-  parser: string; // ../parsers/index.ts : creditCard.breakdown
+  parser: // determinant = PdfParser.creditCardBreakdown
 
+  "ABSA_CREDITCARD_EMAIL_0" | "NEDBANK_CREDITCARD" | "STANDARDBANK_CREDITCARD"; // NOTE: "STANDARDBANK_CREDITCARD" = CreditCardBreakdownMultiUser
   statement: CreditCardStatementInfo;
   transactions: CreditCardBreakdownTransaction[];
   valid: boolean;
@@ -96,10 +140,20 @@ export interface CreditCardBreakdown {
 }
 
 export type CreditCardBreakdownMultiUser = CreditCardBreakdown[]; // only difference is the range of allowable .parser strings
-// parser: string; // ../parsers/index.ts : creditCard.breakdownMultiUser
 
-export type CreditCardSimple = BankStatementNoBalance; // only difference is the range of allowable .parser strings
-// parser: string; // ../parsers/index.ts : creditCard.simple
+// same as BankStatementNoBalance - only difference is the range of allowable .parser strings
+export type CreditCardSimple = {
+  parser: // determinant = PdfParser.creditCardSimple
+  | "CAPITEC_CREDITCARD_0"
+    | "DISCOVERY_0"
+    | "DISCOVERY_CREDITCARD_ALL_0"
+    | "FNB_CREDITCARD_ALL_0"
+    | "RMB_CREDITCARD_ALL_0";
+  statement: StatementInfo;
+  transactions: TransactionNoBalance[];
+  valid: boolean;
+  authenticity: constants.Authenticity;
+};
 
 export interface PdfSuccessResponse extends CommonResponse.StandardResponse {
   data:
