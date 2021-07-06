@@ -10,7 +10,7 @@ async function run(i: RunInputs) {
   try {
     // request
     console.log(`requesting ${StatementsApi.constants.url} ...`);
-    const spikeResponse = await StatementsApi.pdf(i.TOKEN, i.FILE, i.PASS);
+    const spikeResponse = await StatementsApi.pdf.request(i.TOKEN, i.FILE, i.PASS);
 
     // process response
     if (spikeResponse.type === StatementsApi.constants.TYPES.SUCCESS) {
