@@ -1,5 +1,7 @@
 # NOTE: must be in build order
 lib/base/global
+lib/api/api-core
+lib/api/api-statements
 lib/core/api
 samples/sample-web
 samples/sample-simple

@@ -1,0 +1,32 @@
+{
+  "name": "@spike/api-core",
+  "version": "1.0.0",
+  "description": "Spike API common definitions",
+  "author": "ilan@spikedata.co.za",
+  "license": "UNLICENSED",
+  "repository": "https://github.com/spikedata/priv",
+  "main": "build/main/index.js",
+  "typings": "build/main/index.d.ts",
+  "xtype": "module",
+  "xmodule": "build/module/index.mjs",
+  "exports": {
+    ".": {
+      "import": "./build/module/index.mjs",
+      "require": "./build/main/index.js"
+    }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "run-s clean && run-p build:main build:module",
+    "build:main": "tsc -p tsconfig.json",
+    "build:module": "../../../scripts/tsc/build-module.sh $(pwd)",
+    "fix": "run-s fix:*",
+    "fix:prettier": "prettier \"{src,test,tools}/**/*.{js,cjs,mjs,ts}\" --write",
+    "fix:lint": "tsc --noEmit -p tsconfig.all.json && eslint \"{src,test,tools}/**/*.{js,cjs,mjs,ts}\" --quiet --fix",
+    "diff:fix": "run-s fix:lint && prettier \"{src,test,tools}/**/*.{js,cjs,mjs,ts}\" --list-different",
+    "watch": "run-s clean && run-s \"build:main -- -w\"",
+    "clean": "trash build",
+    "pre-publish": "run-s test"
+  },
+  "dependencies": {}
+}

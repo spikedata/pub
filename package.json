@@ -3,6 +3,7 @@
   "private": true,
   "workspaces": [
     "app/*",
+    "lib/api/*",
     "lib/base/*",
     "lib/core/*",
     "samples/*"
