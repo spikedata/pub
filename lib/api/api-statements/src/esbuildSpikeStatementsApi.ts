@@ -20,28 +20,39 @@ import type { Plugin } from "esbuild";
 */
 
 const _name = "esbuildSpikeStatementsApi";
-const _stubs = {
-  fs: ["readFileSync"], // see ./pdf.ts
-  path: ["basename"], // see ./pdf.ts
+const _stubs: Record<string, object> = {
+  fs: {
+    readFileSync() {
+      // used by ./pdf.ts
+    },
+  },
+  path: {
+    basename(x) {
+      // used by ./pdf.ts
+      return x;
+    },
+  },
 };
 
-function generateStub(cjs: boolean, stubs: string[]) {
+const _resolveFilter = new RegExp(`^(${Object.keys(_stubs).join("|")})$`);
+
+function generateStub(cjs: boolean, stubs: object) {
   return cjs ? generateStubCjs(stubs) : generateStubEsm(stubs);
 }
 
-function generateStubEsm(stubs: string[]) {
+function generateStubEsm(stubs: object) {
   let contents = "export default {";
-  for (const s of stubs) {
-    contents += `${s}() {}\n`;
+  for (const s in stubs) {
+    contents += `${stubs[s].toString()}\n`;
   }
   contents += "}";
   return contents;
 }
 
-function generateStubCjs(stubs: string[]) {
+function generateStubCjs(stubs: object) {
   let contents = "module.exports = {";
-  for (const s of stubs) {
-    contents += `${s}() {}\n`;
+  for (const s in stubs) {
+    contents += `${stubs[s].toString()}\n`;
   }
   contents += "}";
   return contents;
@@ -51,7 +62,7 @@ export default function plugin(cjs: boolean): Plugin {
   return {
     name: _name,
     setup(build) {
-      build.onResolve({ filter: /^(fs|path)$/ }, (args) => ({
+      build.onResolve({ filter: _resolveFilter }, (args) => ({
         path: args.path,
         namespace: _name,
       }));
