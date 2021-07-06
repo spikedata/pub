@@ -16,18 +16,34 @@ export enum BLAME {
   CLIENT = 4,
 }
 
-export const Bank = {
-  ABS: { code: "ABS", name: "ABSA" },
-  BID: { code: "BID", name: "Bidvest" },
-  CAP: { code: "CAP", name: "Capitec" },
-  DEA: { code: "DEA", name: "Document Exchange Association" },
-  DIS: { code: "DIS", name: "Discovery" },
-  FNB: { code: "FNB", name: "FNB" },
-  INV: { code: "INV", name: "Investec" },
-  NED: { code: "NED", name: "Nedbank" },
-  MRC: { code: "MRC", name: "Mercantile Bank" },
-  RMB: { code: "RMB", name: "RMB" },
-  SAS: { code: "SAS", name: "Safin" },
-  STD: { code: "STD", name: "Standard Bank" },
-  TYM: { code: "TYM", name: "TYME" },
-};
+export enum BankName {
+  ABS = "ABSA",
+  BID = "Bidvest",
+  CAP = "Capitec",
+  DEA = "Document Exchange Association",
+  DIS = "Discovery",
+  FNB = "FNB",
+  INV = "Investec",
+  NED = "Nedbank",
+  MRC = "Mercantile Bank",
+  RMB = "RMB",
+  SAS = "Safin",
+  STD = "Standard Bank",
+  TYM = "TYME",
+}
+
+export enum BankCode {
+  ABS = "ABS",
+  BID = "BID",
+  CAP = "CAP",
+  DEA = "DEA",
+  DIS = "DIS",
+  FNB = "FNB",
+  INV = "INV",
+  NED = "NED",
+  MRC = "MRC",
+  RMB = "RMB",
+  SAS = "SAS",
+  STD = "STD",
+  TYM = "TYM",
+}

@@ -4,7 +4,8 @@ import { constants } from "@spike/api-core";
 
 export const TYPES = constants.TYPES;
 export const BLAME = constants.BLAME;
-export const Bank = constants.Bank;
+export const BankCode = constants.BankCode;
+export const BankName = constants.BankName;
 
 //#endregion
 

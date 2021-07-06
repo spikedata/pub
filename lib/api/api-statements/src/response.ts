@@ -1,12 +1,10 @@
-// import { constants as CommonConstants } from "@spike/api-core";
-import { response as CommonResponse } from "@spike/api-core";
+import { response as CoreResponse, constants as CoreConstants } from "@spike/api-core";
 import * as constants from "./constants";
 
-export interface PdfErrorResponse extends CommonResponse.ErrorResponse {
+export interface PdfErrorResponse extends CoreResponse.ErrorResponse {
   authenticity: constants.Authenticity; // for PdfSuccessResponse its in response.data.authenticity, for PdfErrorResponse it's response.authenticity (because most errors have no data - i.e. response.data === undefined)
 }
 
-// spike-api-pdf/src/outputs/nested/breaks.ts
 export type Break = {
   prev_id: number;
   cur_id: number;
@@ -21,8 +19,15 @@ export type ValidBreaks = {
   valid: boolean;
 };
 
+export enum PdfDataType {
+  BankStatementNoBalance = "BankStatementNoBalance",
+  BankStatementNormal = "BankStatementNormal",
+  CreditCardBreakdown = "CreditCardBreakdown",
+  CreditCardBreakdownMultiUser = "CreditCardBreakdownMultiUser",
+  CreditCardSimple = "CreditCardSimple",
+}
 export interface StatementInfo {
-  bank?: string; // spikeApi.enums.Banks
+  bank?: CoreConstants.BankCode;
   accountNumber?: string;
   statementNumber?: string;
   dates: {
@@ -50,8 +55,8 @@ export interface Transaction extends TransactionNoBalance {
   balance: number;
 }
 
-// determinant = /spike/v8/priv/lib/api/api-statements/src/api/constants.ts : PdfParser
 export interface BankStatementNoBalance {
+  type: PdfDataType.BankStatementNoBalance;
   parser: // determinant = PdfParser.bankStatementsNoBalance
   "NEDBANK_ACCBAL_WEB";
   statement: StatementInfo;
@@ -61,6 +66,7 @@ export interface BankStatementNoBalance {
 }
 
 export interface BankStatementNormal {
+  type: PdfDataType.BankStatementNormal;
   parser: // determinant = PdfParser.bankStatementsNormal
   | "ABSA_ACTIVESAVE_ALL_0"
     | "ABSA_CHEQUEACCOUNT_EMAIL_0"
@@ -128,10 +134,7 @@ export interface CreditCardBreakdownBreak {
   diff: number;
 }
 
-export interface CreditCardBreakdown {
-  parser: // determinant = PdfParser.creditCardBreakdown
-
-  "ABSA_CREDITCARD_EMAIL_0" | "NEDBANK_CREDITCARD" | "STANDARDBANK_CREDITCARD"; // NOTE: "STANDARDBANK_CREDITCARD" = CreditCardBreakdownMultiUser
+export interface CreditCardBreakdownShared {
   statement: CreditCardStatementInfo;
   transactions: CreditCardBreakdownTransaction[];
   valid: boolean;
@@ -139,10 +142,23 @@ export interface CreditCardBreakdown {
   breaks?: CreditCardBreakdownBreak[];
 }
 
-export type CreditCardBreakdownMultiUser = CreditCardBreakdown[]; // only difference is the range of allowable .parser strings
+export interface CreditCardBreakdown extends CreditCardBreakdownShared {
+  type: PdfDataType.CreditCardBreakdown;
+  parser: // determinant = PdfParser.creditCardBreakdown
 
-// same as BankStatementNoBalance - only difference is the range of allowable .parser strings
+  "ABSA_CREDITCARD_EMAIL_0" | "NEDBANK_CREDITCARD";
+}
+
+export type CreditCardBreakdownMultiUser = {
+  type: PdfDataType.CreditCardBreakdownMultiUser;
+  parser: // determinant = PdfParser.creditCardBreakdown
+
+  "STANDARDBANK_CREDITCARD";
+  all: CreditCardBreakdownShared[];
+};
+
 export type CreditCardSimple = {
+  type: PdfDataType.CreditCardSimple;
   parser: // determinant = PdfParser.creditCardSimple
   | "CAPITEC_CREDITCARD_0"
     | "DISCOVERY_0"
@@ -155,7 +171,7 @@ export type CreditCardSimple = {
   authenticity: constants.Authenticity;
 };
 
-export interface PdfSuccessResponse extends CommonResponse.StandardResponse {
+export interface PdfSuccessResponse extends CoreResponse.StandardResponse {
   data:
     | BankStatementNoBalance
     | BankStatementNormal

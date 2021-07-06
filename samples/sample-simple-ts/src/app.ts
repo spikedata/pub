@@ -31,7 +31,8 @@ async function run(i: RunInputs) {
           case "DISCOVERY_CREDITCARD_ALL_0":
           case "FNB_CREDITCARD_ALL_0":
           case "RMB_CREDITCARD_ALL_0":
-            console.log(success.data.transactions[0].balance); // control flow analysis: we know we have a CreditCardSimple
+            // typescript has control flow analysis: so intellisense knows that success.data is a CreditCardSimple here
+            // console.log(success.data.transactions[0].balance);
             console.log(`accountHolder ${i}:`, success.data.statement.nameAddress);
             break;
         }
