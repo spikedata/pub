@@ -1,5 +1,5 @@
 // TODO: keys
-const TOKEN = "x";
+const TOKEN = "";
 
 module.exports = {
   TOKEN,

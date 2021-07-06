@@ -4,11 +4,14 @@ Sample app demonstrating how to access Spike API. See full [docs](https://app.sp
 
 This sample demonstrates how to use the Spike API in your own web application.
 
-There are 2 demos:
+**NOTE**:
 
-- [/pdf-cdn](./src/ux/pdf-cdn/app.js) - a simple demo showing how to access the spike-api directly from your front-end code
-  - **warning!** this method is not secure - your spike-api keys can be stolen
-- [/pdf](./src/ux/pdf/app.js) - a production ready demo showing how to keep your spike-api keys safe by accessing the spike-api from your webserver
+- all calls to Spike are authenticated using tokens
+- in order to protect your token you must **NOT** make direct calls to Spike from the frontend
+- instead you should proxy the call via a web server - i.e. frontend -> server -> spike
+  - see:
+  - frontend [proxy.ts](./src/ux/proxy.ts)
+  - server [/pdf](./src/server/pdf/index.js)
 
 ## Register
 
@@ -20,31 +23,18 @@ There are 2 demos:
 - run the proxy server locally
 
   ```sh
-  git clone https://github.com/spikedata/sample-web
-  cd sample-web
+  git clone https://github.com/spikedata/pub
+  cd samples/sample-web
   npm i
 
   # run pdf sample
-  vi ./src/server/config.js # enter your apikey & userkey
+  code ./src/server/config.js # enter your TOKEN
   npm run start
   ```
 
-- now browse the 2 samples:
-  - http://localhost:5000/pdf-cdn/
-  - http://localhost:5000/pdf/
+- now browse the site:
+  - http://localhost:5000/
 
-## TODO
+## Screenshot
 
-- [x] check
-  - multi user statement
-- unpkg
-  - statements-api - publish esbuild
-- client
-  - rm direct call to /pdf - only via server
-  - use unpkg (use live-server statements-api/dist/... in test)
-    - convert ux to .ts for typings
-      - need build process = esbuild?
-    - NB only use on response
-    - request is to server not to api (doesn't need to be same format as AP)
-- server
-  - use statements-api
+![](docs/screenshot.png)
