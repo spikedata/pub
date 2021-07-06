@@ -17,7 +17,7 @@
   },
   "sideEffects": false,
   "scripts": {
-    "build": "run-s clean && run-p build:main build:module && run-s build:module-data",
+    "build": "run-s clean && run-p build:main build:module",
     "build:main": "tsc -p tsconfig.json",
     "build:module": "../../../scripts/tsc/build-module.sh $(pwd)",
     "fix": "run-s fix:*",
@@ -29,6 +29,6 @@
     "pre-publish": "run-s test"
   },
   "dependencies": {
-    "@spike/api2": "^1.0.0"
+    "@spike/api-core": "^1.0.0"
   }
 }

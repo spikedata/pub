@@ -18,11 +18,16 @@ source /spike/v8/priv/scripts/spikeenv.sh
 
 ```sh
 cd /spike/v8/pub/lib/core/api
+cd /spike/v8/pub/lib/api/api-core
+yarn link
+cd /spike/v8/pub/lib/api/api-statements
 yarn link
 cd /spike/v8/pub/lib/base/global
 yarn link
 cd /spike/v8/priv
 yarn link @spike/api
+yarn link @spike/api-core
+yarn link @spike/api-statements
 yarn link @spike/global
 # check symlinks:
 # ls -l ~/.config/yarn/link/@spike/

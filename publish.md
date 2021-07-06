@@ -1,4 +1,4 @@
-# How to publish changes to @spike/api, @spike/global, @spike/pdf-cli
+# How to publish changes to @spike/api-core, @spike/api-statements, @spike/global, @spike/pdf-cli
 
 ```sh
 cd /spike/v8/pub

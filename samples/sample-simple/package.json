@@ -10,19 +10,9 @@
     "url": "https://github.com/spikedata/pub"
   },
   "scripts": {
-    "start": "run-s start:*",
-    "start:pdf": "node ./src/pdf/app.js",
-    "start:csv": "node ./src/csv/app.js",
-    "start:web": "node ./src/web/app.js",
-    "build": "echo there is no build",
-    "fix": "run-s fix:*",
-    "fix:prettier": "prettier \"{src,test,tools}/**/*.{js,cjs,mjs,ts}\" --write",
-    "fix:lint": "eslint \"{src,test,tools}/**/*.{js,cjs,mjs,ts}\" --quiet --fix",
-    "diff:fix": "run-s fix:lint && prettier \"{src,test,tools}/**/*.{js,cjs,mjs,ts}\" --list-different",
-    "test": "echo there is no test"
+    "start": "node ./src/app.js"
   },
   "dependencies": {
-    "@spike/api": "^1.0.0",
-    "chalk": "^2.4.2"
+    "@spike/api-statements": "^1.0.0"
   }
 }

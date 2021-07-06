@@ -1,3 +1,15 @@
+import { constants } from "@spike/api-core";
+
+//re-export @spike/api constants
+
+export const TYPES = constants.TYPES;
+export const BLAME = constants.BLAME;
+export const Bank = constants.Bank;
+
+//#endregion
+
+export let url = "https://api.spikedata.co.za/pdf";
+
 export enum PdfType {
   BANK = 0,
   INSURANCE = 1,
@@ -93,5 +105,11 @@ export enum Authenticity {
   blank = "blank", // means that all the meta.info fields are blank
 }
 export const AllAuthenticity = Object.keys(Authenticity);
+
+//#region internal
+
+export function changeServer(u) {
+  url = u;
+}
 
 //#endregion

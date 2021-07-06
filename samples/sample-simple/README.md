@@ -1,8 +1,8 @@
 # Spike API
 
-Sample app demonstrating how to access Spike API. See full [docs](https://app.spikedata.co.za/docs/code/) online.
+Sample app demonstrating how to access Spike API. See full [docs](https://docs.spikedata.co.za/) online.
 
-This sample runs all web functions using hardcoded login credentials
+This sample converts one of the pdfs in the `./data` folder to json using the all web functions using hardcoded login credentials
 
 ## Requirements
 
@@ -11,8 +11,8 @@ This sample runs all web functions using hardcoded login credentials
 
 ## Register
 
-- First register for an account on [spike](https://app.spikedata.co.za/)
-- Get your apikey and userkey from the [settings](https://app.spikedata.co.za/dash/settings/) page - you'll use them below
+- First register for an account on [spike](https://spikedata.co.za/)
+- Get your token from the [settings](https://app.spikedata.co.za/dash/settings/) page - you'll use them below
 
 ## How to run
 
@@ -21,14 +21,19 @@ git clone https://github.com/spikedata/sample-simple
 cd sample-simple
 npm i
 
-# run pdf sample
-vi ./src/pdf/config.js # enter your apikey & userkey
-npm run start:pdf
+# run = convert ./data/example.pdf
+code ./src/pdf/config.js # edit config.js and enter your token
+npm run start
 # you may want to open ./data/example.pdf in a pdf viewer at this point and compare the output visually
-
-# run all web samples
-vi ./src/web/config.js # enter your apikey & userkey
-vi ./src/web/testAccounts.js # enter your login credentials for one or more internet banking accounts
-npm run start:web # run all sites configured in testAccounts.js
-npm run start:web -- ned # run single site = nedbank (configured in testAccounts.js)
 ```
+
+# Run other example pdfs
+
+Open [config.js](./src/pdf/config.js) and change to any of the example pdfs. NB you can change to your own pdf if you like.
+
+| pdf                      | notes                                                                                                   |
+| ------------------------ | ------------------------------------------------------------------------------------------------------- |
+| `./data/example.pdf`     | this is the default pdf which is converted above - it is not encrypted                                  |
+| `./data/encrypted.pdf`   | a password protected pdf - the password is in [password.txt](./data/password.txt)                       |
+| `./data/too-big.pdf`     | this pdf is too large, it will not reach our servers - AWS will return a HTTP 413 (`Payload Too Large`) |
+| `./data/way-too-big.pdf` |                                                                                                         |

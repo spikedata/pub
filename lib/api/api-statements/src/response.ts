@@ -1,5 +1,5 @@
-// import { constants as CommonConstants } from "@spike/api2";
-import { response as CommonResponse } from "@spike/api2";
+// import { constants as CommonConstants } from "@spike/api-core";
+import { response as CommonResponse } from "@spike/api-core";
 import * as constants from "./constants";
 
 export interface PdfErrorResponse extends CommonResponse.ErrorResponse {
